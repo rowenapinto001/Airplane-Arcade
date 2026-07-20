@@ -81,6 +81,15 @@ export function describeGameControls(settings, gameId) {
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }
+  if (gameId === "cake-maker") {
+    return [
+      "Mouse: choose options and drag toppings or candles",
+      `Undo: ${labelsFor(controls.undo)}`,
+      `Save: ${labelsFor(controls.save)}`,
+      `Party Mode: ${labelsFor(controls.party)}`,
+      `Pause: ${labelsFor(controls.pause)}`,
+    ];
+  }
   return [
     `Player 1: ${labelsFor(controls.p1Action)}`,
     `Player 2: ${labelsFor(controls.p2Action)}`,

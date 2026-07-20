@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160" role="img" aria-label="Cute striped birthday candle">
+  <rect width="120" height="160" rx="24" fill="#f7fbff"/>
+  <rect x="43" y="58" width="34" height="82" rx="10" fill="#46c7d9" stroke="#29364e" stroke-width="6"/>
+  <path d="M43 83l34-18M43 108l34-18M45 132l30-16" stroke="#fff8e8" stroke-width="8" stroke-linecap="round"/>
+  <path d="M60 19c24 25 13 47 0 54-15-7-20-29 0-54z" fill="#ffd35a"/>
+  <path d="M60 36c10 12 5 22 0 25-6-4-8-13 0-25z" fill="#ff8a3d"/>
+</svg>

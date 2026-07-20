@@ -122,6 +122,30 @@ export const GAME_CATALOG = [
       two: ["Shared mouse or keyboard", "Arrow keys aim, Space or Enter shoots", "Pause: P or Escape"],
     },
   },
+  {
+    id: "cake-maker",
+    name: "Cake Maker",
+    shortName: "Cake",
+    description: "Design your own cake, add a personal message, and start an optional birthday celebration.",
+    longDescription:
+      "A relaxing creative cake studio with live preview, layer-by-layer flavours, toppings, candles, saved cakes, and optional birthday party mode.",
+    image: "../assets/games/cake-maker.svg",
+    accent: "#ef5b63",
+    modes: ["solo"],
+    difficulties: ["normal"],
+    badges: ["Creative", "Party Mode"],
+    defaultDifficulty: "normal",
+    hasPlayerSetup: false,
+    instructions: [
+      "Choose flavours, shape, layers, icing, decorations, candles, and cake writing.",
+      "Use the live preview to drag toppings and candles while you edit.",
+      "Save finished cakes locally in My Cakes and open, edit, duplicate, rename, or delete them later.",
+      "Birthday Party Mode is optional and starts only when you choose it.",
+    ],
+    controls: {
+      solo: ["Mouse: choose tools and drag decorations", "Keyboard: Tab through controls, Z to undo", "Pause: Escape"],
+    },
+  },
 ];
 
 export const COMING_SOON = [
@@ -187,6 +211,9 @@ export const DIFFICULTY_DETAILS = {
     easy: "Large target, stable crosshair, no wind, and a very gentle aim challenge.",
     normal: "Standard target size with smooth crosshair sway and light aiming pressure.",
     hard: "Smaller target, stronger fair sway, and light wind that nudges the shot.",
+  },
+  "cake-maker": {
+    normal: "Creative sandbox mode with no timer, score, winner, or loser.",
   },
 };
 

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 220" role="img" aria-label="Party balloon asset">
+  <rect width="180" height="220" rx="32" fill="#f9ecff"/>
+  <path d="M90 148c26 25 28 42 5 60" fill="none" stroke="#5e6980" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="90" cy="83" rx="53" ry="66" fill="#ef5b63" stroke="#9c1735" stroke-width="7"/>
+  <path d="M76 28c-18 7-28 22-30 43" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round" opacity="0.6"/>
+  <path d="M78 145h24l-12 18z" fill="#9c1735"/>
+</svg>

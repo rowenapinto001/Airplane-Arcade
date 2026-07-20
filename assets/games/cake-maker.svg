@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="Cartoon birthday cake with candles and decorations">
+  <defs>
+    <linearGradient id="cakeBg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fff5d9"/>
+      <stop offset="0.48" stop-color="#e9fbff"/>
+      <stop offset="1" stop-color="#ffe7ef"/>
+    </linearGradient>
+    <linearGradient id="plate" x1="0" x2="1">
+      <stop offset="0" stop-color="#46c7d9"/>
+      <stop offset="1" stop-color="#7f59e8"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" rx="44" fill="url(#cakeBg)"/>
+  <ellipse cx="320" cy="337" rx="205" ry="40" fill="url(#plate)" opacity="0.82"/>
+  <rect x="147" y="220" width="346" height="98" rx="22" fill="#e38d4f"/>
+  <ellipse cx="320" cy="219" rx="173" ry="55" fill="#ffd0dd"/>
+  <path d="M149 221c30 25 44-9 70 9 29 19 41-12 74 6 31 16 45-15 75 2 33 18 55-10 84-3 24 6 33 20 40-12v42c-13 24-35 11-54 2-25-12-40 19-71 1-31-18-43 13-75-3-31-15-45 14-76-6-28-17-43 13-68-5z" fill="#fff8e8"/>
+  <rect x="197" y="146" width="246" height="76" rx="18" fill="#f4d46b"/>
+  <ellipse cx="320" cy="145" rx="123" ry="39" fill="#fff8e8"/>
+  <path d="M198 146c22 19 34-8 53 6 23 16 34-9 58 2 26 13 37-9 62 2 24 11 41-8 72-4v33c-17 17-34 5-51-3-23-10-35 13-57 1-25-12-35 10-61-2-22-10-34 13-53-3-18-14-31 9-43-7z" fill="#72c8f2"/>
+  <rect x="262" y="92" width="116" height="58" rx="14" fill="#9dcf77"/>
+  <ellipse cx="320" cy="92" rx="58" ry="22" fill="#fff4d8"/>
+  <g fill="#ef5b63" stroke="#9c1735" stroke-width="5" stroke-linejoin="round">
+    <path d="M263 214c-20-21-12-47 13-47 13 0 23 9 26 18 4-10 14-18 27-18 25 0 32 27 13 47l-39 39z"/>
+  </g>
+  <g fill="#ffd35a" stroke="#b77717" stroke-width="5">
+    <path d="M413 206l16 33 36 5-26 25 6 36-32-17-32 17 6-36-26-25 36-5z"/>
+  </g>
+  <g fill="#e51f4f" stroke="#9c1735" stroke-width="4">
+    <circle cx="235" cy="128" r="13"/>
+    <circle cx="407" cy="127" r="13"/>
+    <circle cx="321" cy="70" r="12"/>
+  </g>
+  <g stroke="#2f8b52" stroke-width="5" fill="none" stroke-linecap="round">
+    <path d="M236 116c8-22 26-22 39-19"/>
+    <path d="M407 115c10-24 29-24 40-19"/>
+    <path d="M321 59c7-16 20-18 32-15"/>
+  </g>
+  <g>
+    <rect x="282" y="37" width="18" height="54" rx="6" fill="#ef5b63"/>
+    <rect x="315" y="27" width="18" height="64" rx="6" fill="#46c7d9"/>
+    <rect x="348" y="37" width="18" height="54" rx="6" fill="#ff9b47"/>
+    <path d="M291 26c13 14 8 26 0 29-9-4-12-16 0-29z" fill="#ffd35a"/>
+    <path d="M324 15c13 14 8 26 0 29-9-4-12-16 0-29z" fill="#ffd35a"/>
+    <path d="M357 26c13 14 8 26 0 29-9-4-12-16 0-29z" fill="#ffd35a"/>
+  </g>
+  <g fill="#fff">
+    <circle cx="178" cy="248" r="8"/>
+    <circle cx="462" cy="246" r="8"/>
+    <circle cx="256" cy="191" r="7"/>
+    <circle cx="383" cy="189" r="7"/>
+  </g>
+  <g stroke-linecap="round" stroke-width="7">
+    <path d="M209 287l19 6" stroke="#46c7d9"/>
+    <path d="M277 275l-18 8" stroke="#7f59e8"/>
+    <path d="M348 286l18-8" stroke="#2fb36d"/>
+    <path d="M417 278l17 7" stroke="#ef5b63"/>
+  </g>
+</svg>

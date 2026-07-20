@@ -42,6 +42,12 @@ export const DEFAULT_CONTROLS = {
     shoot: ["Space", "Enter"],
     pause: ["KeyP", "Escape"],
   },
+  "cake-maker": {
+    undo: ["KeyZ"],
+    save: ["KeyS"],
+    party: ["KeyB"],
+    pause: ["Escape"],
+  },
 };
 
 export const DEFAULT_DATA = {
@@ -51,6 +57,7 @@ export const DEFAULT_DATA = {
     music: false,
     volume: 0.65,
     theme: "light",
+    reduceMotion: false,
     controls: DEFAULT_CONTROLS,
   },
   progress: {
@@ -66,6 +73,7 @@ export const DEFAULT_DATA = {
       memory: 0,
       sumo: 0,
       archery: 0,
+      "cake-maker": 0,
     },
     footballWins: {
       solo: 0,
@@ -110,6 +118,13 @@ export const DEFAULT_DATA = {
       sharedTieWins: 0,
       recentFinalScores: null,
       selectedDifficulty: "normal",
+    },
+    cakeMakerRecords: {
+      cakesMade: 0,
+      partyStarts: 0,
+      recentlyCreatedCake: null,
+      recentCakeName: null,
+      savedCakes: [],
     },
     recentResults: [],
   },
@@ -211,6 +226,13 @@ export function getGameProgress(data, gameId) {
     const record = progress.archeryRecords;
     const played = record.soloGamesPlayed + record.twoPlayerMatchesPlayed;
     return `Best ${record.bestSoloTotal} | ${played} played`;
+  }
+  if (gameId === "cake-maker") {
+    const saved = progress.cakeMakerRecords.savedCakes.length;
+    const recent = progress.cakeMakerRecords.recentCakeName;
+    return recent
+      ? `${saved} saved cake${saved === 1 ? "" : "s"} | Recent: ${recent}`
+      : `${saved} saved cake${saved === 1 ? "" : "s"}`;
   }
   return "Ready offline";
 }

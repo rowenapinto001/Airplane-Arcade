@@ -1,0 +1,696 @@
+.cake-maker-game {
+  display: grid;
+  gap: 12px;
+  min-height: calc(100vh - 126px);
+}
+
+.cake-maker-game .game-bar,
+.cake-modal,
+.cake-workflow,
+.cake-preview-panel,
+.cake-tools,
+.cake-finish-details,
+.cake-gallery-screen,
+.cake-details-screen,
+.party-controls {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.cake-maker-game .game-title h1,
+.cake-maker-game .game-title p,
+.cake-tools h2,
+.cake-finish-details h2,
+.cake-section-header h2,
+.saved-cake-card h3 {
+  margin: 0;
+}
+
+.cake-maker-game .game-title p,
+.cake-live-note,
+.cake-summary span,
+.saved-cake-card p,
+.cake-facts dd,
+.cake-modal p {
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.cake-maker-game .game-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+
+.cake-actions,
+.finish-actions,
+.modal-actions,
+.saved-cake-actions,
+.cake-step-actions,
+.cake-preview-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cake-actions button,
+.cake-tools button,
+.cake-preview-toolbar button,
+.finish-actions button,
+.saved-cake-actions button,
+.modal-actions button,
+.party-controls button {
+  min-height: 40px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--line);
+}
+
+.cake-actions .primary-action,
+.cake-tools .primary-action,
+.finish-actions .primary-action,
+.modal-actions .primary-action,
+.party-controls .primary-action,
+.saved-cake-actions .primary-action {
+  color: #fff;
+  background: linear-gradient(135deg, var(--red), var(--orange));
+  border-color: transparent;
+}
+
+.cake-mini-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.cake-mini-stats span {
+  display: grid;
+  min-width: 74px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.cake-mini-stats small {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.cake-mini-stats strong {
+  font-size: 1.05rem;
+}
+
+.cake-shell {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 320px;
+  gap: 12px;
+}
+
+.cake-shell.is-clean {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.cake-shell.is-clean .cake-workflow,
+.cake-shell.is-clean .cake-tools {
+  display: none;
+}
+
+.cake-workflow,
+.cake-tools,
+.cake-finish-details {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 14px;
+}
+
+.cake-step-list,
+.tool-stack,
+.tool-group,
+.layer-picker,
+.layer-overview,
+.selected-actions {
+  display: grid;
+  gap: 9px;
+}
+
+.cake-step-list button {
+  min-height: 36px;
+  padding: 0 10px;
+  color: var(--ink);
+  text-align: left;
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid var(--line);
+}
+
+.cake-step-list button.is-active,
+.choice-button.is-selected,
+.layer-card.is-active,
+.segmented button.is-selected,
+.swatch-button.is-selected {
+  color: #fff;
+  background: var(--ink);
+  border-color: transparent;
+}
+
+.cake-summary {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.cake-summary strong {
+  overflow-wrap: anywhere;
+}
+
+.cake-preview-panel {
+  display: grid;
+  grid-template-rows: auto minmax(460px, 1fr) auto;
+  gap: 10px;
+  min-height: 590px;
+  padding: 12px;
+}
+
+.cake-preview-panel.finish-preview {
+  min-height: 540px;
+}
+
+.cake-preview-toolbar {
+  align-items: center;
+}
+
+.cake-preview-toolbar .icon-action {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  padding: 0;
+  font-size: 1.15rem;
+}
+
+.cake-canvas-wrap {
+  position: relative;
+  overflow: hidden;
+  min-height: 460px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff8f0;
+}
+
+.cake-canvas-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 460px;
+  touch-action: none;
+  cursor: grab;
+}
+
+.cake-canvas-wrap canvas:active {
+  cursor: grabbing;
+}
+
+.cake-live-note {
+  min-height: 20px;
+  margin: 0;
+  font-weight: 780;
+}
+
+.option-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.option-grid.compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.flavour-grid,
+.toppings-grid {
+  grid-template-columns: 1fr;
+}
+
+.choice-button,
+.topping-button {
+  justify-content: start;
+  text-align: left;
+}
+
+.choice-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.choice-button .flavour-swatch {
+  width: 30px;
+  height: 22px;
+  border: 2px solid rgba(19, 32, 53, 0.18);
+  border-radius: 8px;
+  background:
+    linear-gradient(var(--cream), var(--cream)) top / 100% 46% no-repeat,
+    linear-gradient(var(--flavour), var(--flavour)) bottom / 100% 54% no-repeat;
+}
+
+.shape-icon {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 28px;
+  margin-left: auto;
+  background: #ffbfca;
+  border: 3px solid #ef5b63;
+}
+
+.shape-icon.oval {
+  border-radius: 999px;
+}
+
+.shape-icon.square {
+  border-radius: 6px;
+}
+
+.shape-icon.heart {
+  width: 28px;
+  height: 28px;
+  transform: rotate(-45deg);
+  border-radius: 4px;
+}
+
+.shape-icon.heart::before,
+.shape-icon.heart::after {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: inherit;
+  border: inherit;
+  border-radius: 50%;
+}
+
+.shape-icon.heart::before {
+  left: 0;
+  top: -15px;
+}
+
+.shape-icon.heart::after {
+  left: 15px;
+  top: 0;
+}
+
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.swatch-button {
+  min-width: 0;
+  color: transparent;
+  background: var(--swatch);
+  border: 2px solid rgba(19, 32, 53, 0.2);
+}
+
+.swatch-button::after {
+  content: "";
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.52);
+}
+
+.layer-card {
+  display: grid;
+  gap: 4px;
+  min-height: 56px;
+  padding: 9px 10px;
+  color: var(--ink);
+  text-align: left;
+  background: rgba(255, 255, 255, 0.74);
+  border: 1px solid var(--line);
+}
+
+.layer-card span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 820;
+}
+
+.layer-card.is-active span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.segmented.wide {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.selected-actions {
+  padding: 10px;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field input,
+.field select {
+  min-height: 40px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 10px;
+  color: var(--ink);
+  background: var(--panel-solid);
+}
+
+.cake-warning {
+  min-height: 1.3em;
+  margin: 0;
+  color: #9b2444;
+  font-weight: 850;
+}
+
+.cake-finish-screen,
+.cake-details-screen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 12px;
+}
+
+.cake-facts {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 8px 10px;
+  margin: 0;
+}
+
+.cake-facts dt {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.cake-facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-weight: 820;
+}
+
+.finish-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.cake-gallery-screen {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+
+.cake-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cake-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.saved-cake-card {
+  display: grid;
+  gap: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.saved-cake-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  background: #fff8f0;
+}
+
+.saved-cake-body {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.saved-cake-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.cake-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(19, 32, 53, 0.46);
+}
+
+.cake-modal {
+  display: grid;
+  gap: 14px;
+  width: min(420px, 100%);
+  padding: 16px;
+  background: var(--panel-solid);
+}
+
+.cake-modal h2 {
+  margin: 0;
+}
+
+.modal-actions {
+  justify-content: end;
+}
+
+.party-mode-screen {
+  display: grid;
+  grid-template-rows: minmax(560px, 1fr) auto;
+  gap: 12px;
+  min-height: calc(100vh - 126px);
+}
+
+.party-stage {
+  position: relative;
+  overflow: hidden;
+  min-height: 560px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f9ecff;
+  box-shadow: var(--shadow);
+}
+
+.party-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 560px;
+  touch-action: manipulation;
+}
+
+.party-heading {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  display: grid;
+  gap: 5px;
+  width: min(520px, calc(100% - 36px));
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.party-heading input {
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-radius: 8px;
+  color: #172033;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 12px 24px rgba(19, 32, 53, 0.12);
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  font-weight: 950;
+  text-align: center;
+  pointer-events: auto;
+}
+
+.party-heading span {
+  color: #7a3250;
+  font-weight: 950;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.party-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px;
+  padding: 12px;
+}
+
+.party-volume {
+  width: 150px;
+}
+
+.party-mode-screen.is-clean .party-controls {
+  max-height: 54px;
+  overflow: hidden;
+}
+
+.topping-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topping-mini {
+  position: relative;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ffd35a;
+}
+
+.topping-strawberry {
+  background: #ef4d75;
+  clip-path: polygon(50% 100%, 10% 36%, 28% 8%, 50% 22%, 72% 8%, 90% 36%);
+}
+
+.topping-pineapple {
+  background: #ffd35a;
+  clip-path: polygon(20% 88%, 52% 8%, 88% 82%);
+}
+
+.topping-chocolate {
+  border-radius: 5px;
+  background: #5a321f;
+}
+
+.topping-butterscotch {
+  background: #f3a936;
+}
+
+.topping-pista {
+  background: #9ad36c;
+  border-radius: 50% 8px;
+}
+
+.topping-sprinkles {
+  background:
+    linear-gradient(45deg, transparent 43%, #ef5b63 44% 56%, transparent 57%),
+    linear-gradient(-35deg, transparent 43%, #46c7d9 44% 56%, transparent 57%),
+    #fff8e8;
+}
+
+.topping-star {
+  background: #ffd35a;
+  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 56%, 79% 92%, 50% 70%, 21% 92%, 32% 56%, 2% 35%, 39% 35%);
+}
+
+.topping-heart {
+  background: #ff7aa4;
+  clip-path: polygon(50% 90%, 8% 45%, 15% 15%, 42% 16%, 50% 31%, 58% 16%, 85% 15%, 92% 45%);
+}
+
+.topping-swirl {
+  background: radial-gradient(circle, #fff 0 22%, #f0d9af 23% 40%, #fff8e8 41% 100%);
+}
+
+.topping-ball {
+  background: radial-gradient(circle at 30% 30%, #d6a16d, #59311f 72%);
+}
+
+.topping-wafer {
+  border-radius: 5px;
+  background: repeating-linear-gradient(45deg, #e2a35e 0 5px, #ffdca4 5px 8px);
+}
+
+[data-theme="dark"] .cake-maker-game .game-bar,
+[data-theme="dark"] .cake-modal,
+[data-theme="dark"] .cake-workflow,
+[data-theme="dark"] .cake-preview-panel,
+[data-theme="dark"] .cake-tools,
+[data-theme="dark"] .cake-finish-details,
+[data-theme="dark"] .cake-gallery-screen,
+[data-theme="dark"] .cake-details-screen,
+[data-theme="dark"] .party-controls,
+[data-theme="dark"] .cake-actions button,
+[data-theme="dark"] .cake-tools button,
+[data-theme="dark"] .cake-preview-toolbar button,
+[data-theme="dark"] .finish-actions button,
+[data-theme="dark"] .saved-cake-actions button,
+[data-theme="dark"] .modal-actions button,
+[data-theme="dark"] .party-controls button,
+[data-theme="dark"] .cake-step-list button,
+[data-theme="dark"] .layer-card {
+  background: rgba(24, 34, 53, 0.88);
+}
+
+[data-theme="dark"] .cake-canvas-wrap,
+[data-theme="dark"] .party-stage {
+  background: #17233a;
+}
+
+[data-theme="contrast"] .cake-maker-game button,
+[data-theme="contrast"] .cake-canvas-wrap,
+[data-theme="contrast"] .party-stage,
+[data-theme="contrast"] .saved-cake-card,
+[data-theme="contrast"] .cake-summary,
+[data-theme="contrast"] .selected-actions {
+  border-color: #050a12;
+}
+
+@media (max-width: 1080px) {
+  .cake-maker-game .game-bar,
+  .cake-shell,
+  .cake-finish-screen,
+  .cake-details-screen {
+    grid-template-columns: 1fr;
+  }
+
+  .cake-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cake-preview-panel {
+    min-height: 520px;
+  }
+}

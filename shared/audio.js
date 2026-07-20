@@ -29,6 +29,12 @@ const SOUND_FILES = {
   archeryTurn: "archery/turn.wav",
   archeryRound: "archery/round.wav",
   archeryTie: "archery/tie.wav",
+  cakeDecorate: "cake-maker/decorate.wav",
+  cakeSave: "cake-maker/save.wav",
+  cakeCandle: "cake-maker/candle.wav",
+  cakeConfetti: "cake-maker/confetti.wav",
+  cakeWish: "cake-maker/wish.wav",
+  cakeParty: "cake-maker/party.wav",
 };
 
 function assetUrl(path) {

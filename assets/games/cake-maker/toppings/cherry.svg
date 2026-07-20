@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Cartoon cherry topping">
+  <rect width="120" height="120" rx="24" fill="#fff8f0"/>
+  <path d="M55 47c8-30 28-37 49-31" fill="none" stroke="#2f8b52" stroke-width="8" stroke-linecap="round"/>
+  <path d="M45 56c-23-3-35 16-26 35 8 18 33 20 45 5 15 16 43 13 50-8 6-20-10-37-33-32-11 2-20 9-25 18-4-10-5-16-11-18z" fill="#e51f4f" stroke="#9c1735" stroke-width="6" stroke-linejoin="round"/>
+  <ellipse cx="37" cy="74" rx="7" ry="4" fill="#fff1f4" opacity="0.9"/>
+  <ellipse cx="80" cy="72" rx="7" ry="4" fill="#fff1f4" opacity="0.9"/>
+</svg>

@@ -24,6 +24,7 @@ import { createBasketballGame } from "../games/basketball/basketball.js";
 import { createMemoryGame } from "../games/memory/memory.js";
 import { createSumoGame } from "../games/sumo/sumo.js";
 import { createArcheryGame } from "../games/archery/archery.js";
+import { createCakeMakerGame } from "../games/cake-maker/cake-maker.js";
 
 const app = document.querySelector("#arcadeApp");
 const view = document.querySelector("#arcadeView");
@@ -37,6 +38,7 @@ const GAME_FACTORIES = {
   memory: createMemoryGame,
   sumo: createSumoGame,
   archery: createArcheryGame,
+  "cake-maker": createCakeMakerGame,
 };
 
 let data;
@@ -104,7 +106,7 @@ function renderLibrary(filter = libraryFilter) {
   const copy = createElement(
     "p",
     "",
-    "A small offline arcade for laptops: five original games, solo and local two-player modes, saved progress, and no internet needed after install.",
+    "A small offline arcade for laptops: six original games, solo and local two-player modes, saved progress, and no internet needed after install.",
   );
   heroCopy.append(title, copy);
 
@@ -175,11 +177,9 @@ function gameCard(game) {
   body.append(createElement("p", "", game.description));
 
   const badges = createElement("div", "badge-row");
-  badges.append(
-    createElement("span", "mode-badge", "Solo"),
-    createElement("span", "mode-badge two", "Two Players"),
-    createElement("span", "mode-badge offline", "Offline"),
-  );
+  if (game.modes.includes("solo")) badges.append(createElement("span", "mode-badge", "Solo"));
+  if (game.modes.includes("two")) badges.append(createElement("span", "mode-badge two", "Two Players"));
+  badges.append(createElement("span", "mode-badge offline", "Offline"));
   for (const badge of game.badges || []) {
     badges.append(createElement("span", "mode-badge", badge));
   }
@@ -277,6 +277,7 @@ function modeBox(game) {
 }
 
 function difficultyBox(game) {
+  if (!game.difficulties || game.difficulties.length <= 1) return document.createDocumentFragment();
   const box = createElement("div", "option-box");
   box.append(createElement("span", "field-label", "Difficulty"));
   const segmented = createElement("div", "segmented");
@@ -321,6 +322,7 @@ function challengeBox(game) {
 }
 
 function playerBox(game) {
+  if (!game.hasPlayerSetup) return document.createDocumentFragment();
   const box = createElement("div", "option-box");
   box.append(createElement("span", "field-label", "Players"));
   const grid = createElement("div", "name-grid");
@@ -451,6 +453,11 @@ function renderStats() {
       data.progress.archeryRecords.recentFinalScores || "No shots",
       `Best solo ${data.progress.archeryRecords.bestSoloTotal}. ${data.progress.archeryRecords.totalBullseyes} bullseyes.`,
     ),
+    resultCard(
+      "Cake Maker",
+      data.progress.cakeMakerRecords.recentCakeName || "No cake",
+      `${data.progress.cakeMakerRecords.savedCakes.length} saved. ${data.progress.cakeMakerRecords.partyStarts} parties started.`,
+    ),
   );
   panel.append(grid, recentResultsList());
   view.append(panel);
@@ -492,12 +499,14 @@ function renderSettings() {
   grid.append(
     soundSettings(),
     themeSettings(),
+    accessibilitySettings(),
     resetSettings(),
     controlsSettings("football"),
     controlsSettings("basketball"),
     controlsSettings("memory"),
     controlsSettings("sumo"),
     controlsSettings("archery"),
+    controlsSettings("cake-maker"),
   );
   panel.append(grid);
   view.append(panel);
@@ -550,8 +559,9 @@ function themeSettings() {
   const card = createElement("article", "settings-card");
   card.append(createElement("h2", "", "Theme"));
   const row = createElement("div", "segmented");
-  const buttons = ["light", "dark"].map((theme) => {
-    const themeButton = button(theme === "light" ? "Light" : "Dark", "", async () => {
+  const labels = { light: "Light", dark: "Dark", contrast: "High Contrast" };
+  const buttons = ["light", "dark", "contrast"].map((theme) => {
+    const themeButton = button(labels[theme], "", async () => {
       data = await updateData((draft) => {
         draft.settings.theme = theme;
         return draft;
@@ -565,6 +575,20 @@ function themeSettings() {
   row.append(...buttons);
   setPressed(buttons, data.settings.theme);
   card.append(row, createElement("p", "settings-note", "Theme is stored locally for the next arcade visit."));
+  return card;
+}
+
+function accessibilitySettings() {
+  const card = createElement("article", "settings-card");
+  card.append(createElement("h2", "", "Accessibility"));
+  const motion = toggleRow("Reduce Motion", data.settings.reduceMotion, async (enabled) => {
+    data = await updateData((draft) => {
+      draft.settings.reduceMotion = enabled;
+      return draft;
+    });
+    renderSettings();
+  });
+  card.append(motion, createElement("p", "settings-note", "Cake Maker uses this to calm confetti, balloons, and candle animation."));
   return card;
 }
 

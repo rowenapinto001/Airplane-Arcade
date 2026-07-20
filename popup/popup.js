@@ -22,7 +22,12 @@ function renderGameCards() {
   for (const game of GAME_CATALOG) {
     const card = document.createElement("article");
     card.className = "game-card";
-    const badges = ["Solo", "Two Player", "Offline", ...(game.badges || [])];
+    const badges = [
+      ...(game.modes.includes("solo") ? ["Solo"] : []),
+      ...(game.modes.includes("two") ? ["Two Player"] : []),
+      "Offline",
+      ...(game.badges || []),
+    ];
     card.innerHTML = `
       <img src="${game.image}" alt="" />
       <div>
