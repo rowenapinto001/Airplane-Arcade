@@ -18,6 +18,17 @@ const SOUND_FILES = {
   sumoImpact: "sumo/impact.wav",
   sumoFall: "sumo/fall.wav",
   sumoPoint: "sumo/point.wav",
+  archeryAim: "archery/aim.wav",
+  archeryShoot: "archery/shoot.wav",
+  archeryTravel: "archery/travel.wav",
+  archeryImpact: "archery/impact.wav",
+  archery25: "archery/hit25.wav",
+  archery50: "archery/hit50.wav",
+  archery75: "archery/hit75.wav",
+  archeryBullseye: "archery/bullseye.wav",
+  archeryTurn: "archery/turn.wav",
+  archeryRound: "archery/round.wav",
+  archeryTie: "archery/tie.wav",
 };
 
 function assetUrl(path) {

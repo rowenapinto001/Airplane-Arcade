@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-label="Archery game illustration">
+  <rect width="360" height="220" rx="28" fill="#e3f8ff"/>
+  <path d="M0 155c48-24 86-3 127-18 45-17 73-43 134-20 42 16 70 5 99-12v115H0z" fill="#fff4d7"/>
+  <g opacity=".72" fill="#fff">
+    <ellipse cx="52" cy="64" rx="42" ry="13"/>
+    <ellipse cx="91" cy="69" rx="27" ry="10"/>
+    <ellipse cx="284" cy="52" rx="46" ry="14"/>
+    <ellipse cx="242" cy="58" rx="26" ry="10"/>
+  </g>
+  <g transform="translate(222 102)">
+    <circle r="78" fill="#132035" opacity=".18" transform="translate(10 13)"/>
+    <circle r="75" fill="#46c7d9" stroke="#132035" stroke-width="8"/>
+    <circle r="52" fill="#ffd35a" stroke="#132035" stroke-width="5"/>
+    <circle r="34" fill="#ff8a3d" stroke="#132035" stroke-width="5"/>
+    <circle r="16" fill="#de5b8c" stroke="#132035" stroke-width="5"/>
+    <g fill="#132035" font-family="system-ui, sans-serif" font-weight="900" font-size="16" text-anchor="middle">
+      <text y="-54">25</text>
+      <text y="-37">50</text>
+      <text y="-23">75</text>
+      <text y="6" fill="#fffdf8">100</text>
+    </g>
+  </g>
+  <g transform="translate(75 160) rotate(-18)">
+    <ellipse cx="13" cy="35" rx="55" ry="12" fill="#132035" opacity=".18"/>
+    <rect x="-5" y="-14" width="116" height="34" rx="13" fill="#7f59e8" stroke="#132035" stroke-width="6"/>
+    <rect x="70" y="-9" width="48" height="24" rx="12" fill="#46c7d9" stroke="#132035" stroke-width="5"/>
+    <circle cx="-8" cy="3" r="28" fill="#ffd35a" stroke="#132035" stroke-width="6"/>
+    <rect x="10" y="16" width="27" height="39" rx="9" fill="#ff8a3d" stroke="#132035" stroke-width="5"/>
+    <circle cx="126" cy="3" r="7" fill="#de5b8c" stroke="#132035" stroke-width="4"/>
+  </g>
+  <g transform="translate(187 91)" fill="none" stroke-linecap="round">
+    <circle r="15" stroke="#132035" stroke-width="4"/>
+    <path d="M-28 0h16M12 0h16M0-28v16M0 12v16" stroke="#132035" stroke-width="4"/>
+    <circle r="6" stroke="#fffdf8" stroke-width="3"/>
+  </g>
+</svg>

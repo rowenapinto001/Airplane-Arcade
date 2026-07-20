@@ -442,6 +442,10 @@ select:focus-visible {
   gap: 10px;
 }
 
+.name-grid.is-single {
+  grid-template-columns: 1fr;
+}
+
 .field {
   display: grid;
   gap: 6px;

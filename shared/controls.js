@@ -73,6 +73,14 @@ export function describeGameControls(settings, gameId) {
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }
+  if (gameId === "archery") {
+    return [
+      "Mouse: move to aim, click to shoot",
+      `Keyboard aim: ${labelsFor([controls.up[0], controls.left[0], controls.down[0], controls.right[0]])}`,
+      `Shoot: ${labelsFor(controls.shoot)}`,
+      `Pause: ${labelsFor(controls.pause)}`,
+    ];
+  }
   return [
     `Player 1: ${labelsFor(controls.p1Action)}`,
     `Player 2: ${labelsFor(controls.p2Action)}`,

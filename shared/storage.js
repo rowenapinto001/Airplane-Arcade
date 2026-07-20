@@ -34,6 +34,14 @@ export const DEFAULT_CONTROLS = {
     p2Push: ["Enter"],
     pause: ["KeyP", "Escape"],
   },
+  archery: {
+    up: ["ArrowUp"],
+    down: ["ArrowDown"],
+    left: ["ArrowLeft"],
+    right: ["ArrowRight"],
+    shoot: ["Space", "Enter"],
+    pause: ["KeyP", "Escape"],
+  },
 };
 
 export const DEFAULT_DATA = {
@@ -57,6 +65,7 @@ export const DEFAULT_DATA = {
       basketball: 0,
       memory: 0,
       sumo: 0,
+      archery: 0,
     },
     footballWins: {
       solo: 0,
@@ -88,6 +97,18 @@ export const DEFAULT_DATA = {
       player2Wins: 0,
       draws: 0,
       recentFinalScore: null,
+      selectedDifficulty: "normal",
+    },
+    archeryRecords: {
+      bestSoloTotal: 0,
+      bestShot: 0,
+      totalBullseyes: 0,
+      soloGamesPlayed: 0,
+      twoPlayerMatchesPlayed: 0,
+      player1Wins: 0,
+      player2Wins: 0,
+      sharedTieWins: 0,
+      recentFinalScores: null,
       selectedDifficulty: "normal",
     },
     recentResults: [],
@@ -186,6 +207,11 @@ export function getGameProgress(data, gameId) {
       progress.sumoRecords.player2Wins;
     return `${wins} Sumo wins`;
   }
+  if (gameId === "archery") {
+    const record = progress.archeryRecords;
+    const played = record.soloGamesPlayed + record.twoPlayerMatchesPlayed;
+    return `Best ${record.bestSoloTotal} | ${played} played`;
+  }
   return "Ready offline";
 }
 
@@ -270,6 +296,24 @@ export async function recordGameResult(result) {
       if (stamped.winner === "player1") progress.sumoRecords.player1Wins += 1;
       if (stamped.winner === "player2") progress.sumoRecords.player2Wins += 1;
       if (stamped.winner === "draw") progress.sumoRecords.draws += 1;
+    }
+
+    if (stamped.gameId === "archery") {
+      const record = progress.archeryRecords;
+      record.selectedDifficulty = stamped.difficulty || record.selectedDifficulty;
+      record.recentFinalScores =
+        stamped.mode === "solo" ? `${stamped.score}/300` : `${stamped.player1Score}-${stamped.player2Score}`;
+      record.bestShot = Math.max(record.bestShot, stamped.bestShot || 0);
+      record.totalBullseyes += stamped.bullseyes || 0;
+      if (stamped.mode === "solo") {
+        record.soloGamesPlayed += 1;
+        record.bestSoloTotal = Math.max(record.bestSoloTotal, stamped.score || 0);
+      } else {
+        record.twoPlayerMatchesPlayed += 1;
+        if (stamped.winner === "player1") record.player1Wins += 1;
+        if (stamped.winner === "player2") record.player2Wins += 1;
+        if (stamped.winner === "draw") record.sharedTieWins += 1;
+      }
     }
 
     return data;

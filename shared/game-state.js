@@ -97,6 +97,31 @@ export const GAME_CATALOG = [
       two: ["Player 1: WASD and Space", "Player 2: Arrow keys and Enter", "Pause: P or Escape"],
     },
   },
+  {
+    id: "archery",
+    name: "Archery",
+    shortName: "Archery",
+    description: "Aim for the centre, score across three rounds, and finish with the highest total.",
+    longDescription:
+      "A colourful target range with a fictional launcher, moving crosshair challenge, four scoring rings, and exactly three turn-based rounds.",
+    image: "../assets/games/archery.svg",
+    accent: "#46c7d9",
+    modes: ["solo", "two"],
+    difficulties: ["easy", "normal", "hard"],
+    badges: ["Three Rounds"],
+    defaultDifficulty: "normal",
+    hasPlayerSetup: true,
+    instructions: [
+      "Aim at the circular target board and fire one shot per turn.",
+      "Score 25, 50, 75, or 100 points based on distance from the centre.",
+      "A miss outside the target scores 0. Boundary hits award the higher ring value.",
+      "Each player gets exactly three shots. Equal two-player totals make both players winners.",
+    ],
+    controls: {
+      solo: ["Mouse: move and click to shoot", "Keyboard: Arrow keys to aim, Space or Enter to shoot", "Pause: P or Escape"],
+      two: ["Shared mouse or keyboard", "Arrow keys aim, Space or Enter shoots", "Pause: P or Escape"],
+    },
+  },
 ];
 
 export const COMING_SOON = [
@@ -157,6 +182,11 @@ export const DIFFICULTY_DETAILS = {
     easy: "Slower computer reactions, weaker push timing, and more forgiving edge pressure.",
     normal: "Balanced movement, push force, cooldowns, and centre-seeking computer play.",
     hard: "Sharper positioning, faster reactions, better edge recovery, and strategic pushes.",
+  },
+  archery: {
+    easy: "Large target, stable crosshair, no wind, and a very gentle aim challenge.",
+    normal: "Standard target size with smooth crosshair sway and light aiming pressure.",
+    hard: "Smaller target, stronger fair sway, and light wind that nudges the shot.",
   },
 };
 

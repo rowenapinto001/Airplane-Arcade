@@ -22,15 +22,14 @@ function renderGameCards() {
   for (const game of GAME_CATALOG) {
     const card = document.createElement("article");
     card.className = "game-card";
+    const badges = ["Solo", "Two Player", "Offline", ...(game.badges || [])];
     card.innerHTML = `
       <img src="${game.image}" alt="" />
       <div>
         <h2>${game.name}</h2>
         <p>${getGameProgress(data, game.id)}</p>
         <div class="badges">
-          <span class="badge">Solo</span>
-          <span class="badge two">Two Player</span>
-          <span class="badge offline">Offline</span>
+          ${badges.map((badge) => `<span class="badge ${badge === "Two Player" ? "two" : ""} ${badge === "Offline" ? "offline" : ""}">${badge}</span>`).join("")}
         </div>
       </div>
     `;

@@ -1,11 +1,12 @@
 # Airplane Arcade
 
-Airplane Arcade is a Manifest V3 Chrome extension containing a small offline mini-game arcade. It includes a compact popup launcher and a full arcade page with four playable games:
+Airplane Arcade is a Manifest V3 Chrome extension containing a small offline mini-game arcade. It includes a compact popup launcher and a full arcade page with five playable games:
 
 - Simple Football
 - Basket & Ball
 - Memory Match
 - Sumo
+- Archery
 
 The extension uses vanilla HTML, CSS, JavaScript, Canvas, local SVG art, local PNG icons, local WAV sounds, and `chrome.storage.local`.
 
@@ -26,6 +27,7 @@ The extension uses vanilla HTML, CSS, JavaScript, Canvas, local SVG art, local P
   /basketball/
   /memory/
   /sumo/
+  /archery/
 /shared/
   audio.js
   controls.js
@@ -73,15 +75,21 @@ Sumo:
 - Pause: `P` or `Escape`
 - Mouse: use the on-screen push buttons
 
+Archery:
+- Mouse: move to aim and click to shoot
+- Keyboard: Arrow keys move the crosshair
+- Shoot: `Space` or `Enter`
+- Pause: `P` or `Escape`
+
 Controls can be changed from **Settings**.
 
 ## Difficulty Levels
 
 Each game supports **Easy**, **Normal**, and **Hard** from the game setup screen.
 
-- Easy uses more forgiving rules, such as smaller Memory boards, wider basketball rims, longer timers, bigger football goals, larger Sumo rings, and slower AI.
+- Easy uses more forgiving rules, such as smaller Memory boards, wider basketball rims, longer timers, bigger football goals, larger Sumo rings, larger Archery targets, and slower AI.
 - Normal is the balanced default.
-- Hard increases pressure with larger Memory boards, tighter basketball timing, wind, shorter timers, smaller football goals, tighter Sumo rings, and stronger AI.
+- Hard increases pressure with larger Memory boards, tighter basketball timing, wind, shorter timers, smaller football goals, tighter Sumo rings, smaller Archery targets, and stronger AI.
 
 ## Offline Operation
 

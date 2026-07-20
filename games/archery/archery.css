@@ -1,0 +1,155 @@
+.archery-game {
+  display: grid;
+  gap: 12px;
+  min-height: calc(100vh - 126px);
+}
+
+.archery-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 14px;
+}
+
+.archery-range,
+.archery-side {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.archery-range {
+  position: relative;
+  overflow: hidden;
+  min-height: 560px;
+}
+
+.archery-range canvas {
+  display: block;
+  width: 100%;
+  height: 560px;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.archery-side {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 14px;
+}
+
+.archery-side h2,
+.archery-score-group h3,
+.archery-result-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.archery-side p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.archery-scoring {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.archery-scoring span,
+.archery-wind,
+.archery-best {
+  min-height: 34px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.58);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.archery-wind {
+  color: #173c52;
+  background: rgba(70, 199, 217, 0.16);
+}
+
+.archery-scoreboard {
+  display: grid;
+  gap: 10px;
+}
+
+.archery-score-group {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.archery-score-row,
+.archery-total,
+.archery-result-card div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.archery-score-row span,
+.archery-result-card span {
+  color: var(--muted);
+  font-weight: 850;
+}
+
+.archery-score-row strong {
+  min-width: 3ch;
+  min-height: 1.2em;
+  text-align: right;
+}
+
+.archery-total,
+.archery-result-total {
+  margin-top: 2px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+  font-weight: 950;
+}
+
+.archery-fire {
+  min-height: 50px;
+  color: white;
+  background: linear-gradient(135deg, var(--aqua), var(--violet));
+}
+
+.archery-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.archery-result-card {
+  display: grid;
+  gap: 7px;
+  min-width: 210px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.archery-result-card p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-weight: 850;
+}
+
+@media (max-width: 1080px) {
+  .archery-shell,
+  .archery-result-grid {
+    grid-template-columns: 1fr;
+  }
+}

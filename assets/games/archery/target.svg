@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" role="img" aria-label="Archery target board">
+  <circle cx="210" cy="210" r="188" fill="#46c7d9" stroke="#132035" stroke-width="18"/>
+  <circle cx="210" cy="210" r="132" fill="#ffd35a" stroke="#132035" stroke-width="10"/>
+  <circle cx="210" cy="210" r="85" fill="#ff8a3d" stroke="#132035" stroke-width="10"/>
+  <circle cx="210" cy="210" r="38" fill="#de5b8c" stroke="#132035" stroke-width="10"/>
+  <g fill="#132035" font-family="system-ui, sans-serif" font-size="34" font-weight="900" text-anchor="middle">
+    <text x="210" y="61">25</text>
+    <text x="210" y="105">50</text>
+    <text x="210" y="151">75</text>
+    <text x="210" y="222" fill="#fffdf8">100</text>
+  </g>
+</svg>

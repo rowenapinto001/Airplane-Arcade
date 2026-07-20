@@ -23,6 +23,7 @@ import { createFootballGame } from "../games/football/football.js";
 import { createBasketballGame } from "../games/basketball/basketball.js";
 import { createMemoryGame } from "../games/memory/memory.js";
 import { createSumoGame } from "../games/sumo/sumo.js";
+import { createArcheryGame } from "../games/archery/archery.js";
 
 const app = document.querySelector("#arcadeApp");
 const view = document.querySelector("#arcadeView");
@@ -35,6 +36,7 @@ const GAME_FACTORIES = {
   basketball: createBasketballGame,
   memory: createMemoryGame,
   sumo: createSumoGame,
+  archery: createArcheryGame,
 };
 
 let data;
@@ -102,7 +104,7 @@ function renderLibrary(filter = libraryFilter) {
   const copy = createElement(
     "p",
     "",
-    "A small offline arcade for laptops: four original games, solo and local two-player modes, saved progress, and no internet needed after install.",
+    "A small offline arcade for laptops: five original games, solo and local two-player modes, saved progress, and no internet needed after install.",
   );
   heroCopy.append(title, copy);
 
@@ -178,6 +180,9 @@ function gameCard(game) {
     createElement("span", "mode-badge two", "Two Players"),
     createElement("span", "mode-badge offline", "Offline"),
   );
+  for (const badge of game.badges || []) {
+    badges.append(createElement("span", "mode-badge", badge));
+  }
 
   const playRow = createElement("div", "play-row");
   const recent = getRecentResult(data, game.id);
@@ -246,7 +251,7 @@ function renderGameSetup(gameId) {
   art.append(img);
 
   const controls = createElement("div", "setup-controls");
-  controls.append(modeBox(game), difficultyBox(game), challengeBox(game), playerBox(), instructionsBox(game), startBox(game));
+  controls.append(modeBox(game), difficultyBox(game), challengeBox(game), playerBox(game), instructionsBox(game), startBox(game));
   grid.append(art, controls);
   panel.append(title, grid);
   view.append(panel);
@@ -315,18 +320,25 @@ function challengeBox(game) {
   return box;
 }
 
-function playerBox() {
+function playerBox(game) {
   const box = createElement("div", "option-box");
   box.append(createElement("span", "field-label", "Players"));
   const grid = createElement("div", "name-grid");
-  const p1 = nameField("Player 1", setup.player1, (value) => {
+  const singlePlayerSolo = setup.mode === "solo" && !["football", "sumo"].includes(game.id);
+  grid.classList.toggle("is-single", singlePlayerSolo);
+  const p1 = nameField(singlePlayerSolo ? "Player" : "Player 1", setup.player1, (value) => {
     setup.player1 = value || "Player 1";
   });
+  grid.append(p1);
+  if (singlePlayerSolo) {
+    box.append(grid);
+    return box;
+  }
   const p2 = nameField(setup.mode === "solo" ? "Computer" : "Player 2", setup.player2, (value) => {
     setup.player2 = value || "Player 2";
   });
   p2.querySelector("input").disabled = setup.mode === "solo";
-  grid.append(p1, p2);
+  grid.append(p2);
   box.append(grid);
   return box;
 }
@@ -377,9 +389,10 @@ async function launchGame(gameId) {
   setRibbon(`${game.name} is running. Pause, restart, or return to the library from inside the game.`);
   clearNode(view);
 
-  if (gameId === "sumo") {
+  if (gameId === "sumo" || gameId === "archery") {
     data = await updateData((draft) => {
-      draft.progress.sumoRecords.selectedDifficulty = setup.difficulty;
+      if (gameId === "sumo") draft.progress.sumoRecords.selectedDifficulty = setup.difficulty;
+      if (gameId === "archery") draft.progress.archeryRecords.selectedDifficulty = setup.difficulty;
       return draft;
     });
   }
@@ -433,6 +446,11 @@ function renderStats() {
       data.progress.sumoRecords.recentFinalScore || "No match",
       `${data.progress.sumoRecords.matchesPlayed} matches played.`,
     ),
+    resultCard(
+      "Archery",
+      data.progress.archeryRecords.recentFinalScores || "No shots",
+      `Best solo ${data.progress.archeryRecords.bestSoloTotal}. ${data.progress.archeryRecords.totalBullseyes} bullseyes.`,
+    ),
   );
   panel.append(grid, recentResultsList());
   view.append(panel);
@@ -479,6 +497,7 @@ function renderSettings() {
     controlsSettings("basketball"),
     controlsSettings("memory"),
     controlsSettings("sumo"),
+    controlsSettings("archery"),
   );
   panel.append(grid);
   view.append(panel);
