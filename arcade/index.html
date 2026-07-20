@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Airplane Arcade</title>
+    <link rel="icon" href="../assets/games/logo.svg" />
+    <link rel="stylesheet" href="arcade.css" />
+    <link rel="stylesheet" href="../games/football/football.css" />
+    <link rel="stylesheet" href="../games/basketball/basketball.css" />
+    <link rel="stylesheet" href="../games/memory/memory.css" />
+    <link rel="stylesheet" href="../games/sumo/sumo.css" />
+    <script type="module" src="arcade.js"></script>
+  </head>
+  <body>
+    <main class="arcade-app" id="arcadeApp">
+      <header class="topbar">
+        <button class="brand-button" id="homeLogo" type="button" aria-label="Return to library">
+          <img src="../assets/games/logo.svg" alt="" />
+          <span>
+            <strong>Airplane Arcade</strong>
+            <small>Offline Arcade</small>
+          </span>
+        </button>
+        <nav class="topnav" aria-label="Arcade navigation">
+          <button type="button" data-nav="library">Library</button>
+          <button type="button" data-nav="stats">Statistics</button>
+          <button type="button" data-nav="settings">Settings</button>
+          <button type="button" data-nav="help">Help</button>
+        </nav>
+      </header>
+
+      <section class="status-ribbon" id="statusRibbon" aria-live="polite"></section>
+      <section class="arcade-view" id="arcadeView" tabindex="-1"></section>
+    </main>
+  </body>
+</html>

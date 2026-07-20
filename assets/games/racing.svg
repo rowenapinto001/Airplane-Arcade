@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-label="Runway Rally coming soon">
+  <rect width="360" height="220" rx="18" fill="#dff8ff"/>
+  <path d="M80 220 170 20h20l90 200z" fill="#39465e"/>
+  <path d="M180 36v38M180 96v38M180 156v38" stroke="#fffdf8" stroke-width="7" stroke-dasharray="22 16"/>
+  <rect x="68" y="92" width="86" height="44" rx="12" fill="#ef5b63"/>
+  <circle cx="88" cy="136" r="10" fill="#132035"/>
+  <circle cx="132" cy="136" r="10" fill="#132035"/>
+  <rect x="214" y="116" width="78" height="42" rx="12" fill="#46c7d9"/>
+  <circle cx="234" cy="158" r="10" fill="#132035"/>
+  <circle cx="274" cy="158" r="10" fill="#132035"/>
+</svg>

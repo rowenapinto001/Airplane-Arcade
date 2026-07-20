@@ -1,0 +1,89 @@
+.basketball-game {
+  display: grid;
+  gap: 12px;
+  min-height: calc(100vh - 126px);
+}
+
+.basketball-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 14px;
+}
+
+.basketball-court,
+.basketball-side {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.basketball-court {
+  position: relative;
+  overflow: hidden;
+  min-height: 540px;
+}
+
+.basketball-court canvas {
+  display: block;
+  width: 100%;
+  height: 540px;
+  touch-action: none;
+}
+
+.basketball-side {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 14px;
+}
+
+.basketball-side h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.basketball-side p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.power-stack {
+  display: grid;
+  gap: 8px;
+}
+
+.power-meter,
+.angle-meter {
+  height: 16px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(19, 32, 53, 0.12);
+}
+
+.power-meter span,
+.angle-meter span {
+  display: block;
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--green), var(--yellow), var(--orange));
+}
+
+.angle-meter span {
+  background: linear-gradient(90deg, var(--aqua), var(--violet));
+}
+
+.court-action {
+  min-height: 52px;
+  color: #fff;
+  background: var(--orange);
+  border: 0;
+}
+
+@media (max-width: 1080px) {
+  .basketball-shell {
+    grid-template-columns: 1fr;
+  }
+}

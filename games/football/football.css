@@ -1,0 +1,62 @@
+.football-game {
+  display: grid;
+  gap: 12px;
+  min-height: calc(100vh - 126px);
+}
+
+.football-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 14px;
+}
+
+.football-field,
+.football-side {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.football-field {
+  position: relative;
+  overflow: hidden;
+  min-height: 540px;
+}
+
+.football-field canvas {
+  display: block;
+  width: 100%;
+  height: 540px;
+  touch-action: none;
+}
+
+.football-side {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 14px;
+}
+
+.football-side h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.football-side p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.tap-button {
+  min-height: 52px;
+  color: white;
+  background: var(--green);
+}
+
+@media (max-width: 1080px) {
+  .football-shell {
+    grid-template-columns: 1fr;
+  }
+}

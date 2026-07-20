@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-label="Simple Football illustration">
+  <rect width="360" height="220" rx="18" fill="#75d76d"/>
+  <path d="M0 42h360M0 178h360M180 0v220" stroke="#fffdf8" stroke-width="8" opacity="0.72"/>
+  <circle cx="180" cy="110" r="48" fill="none" stroke="#fffdf8" stroke-width="7" opacity="0.72"/>
+  <rect x="0" y="68" width="36" height="84" fill="#fffdf8" opacity="0.75"/>
+  <rect x="324" y="68" width="36" height="84" fill="#fffdf8" opacity="0.75"/>
+  <g transform="translate(112 112)">
+    <ellipse cx="0" cy="42" rx="32" ry="10" fill="#132035" opacity="0.16"/>
+    <rect x="-24" y="-2" width="48" height="58" rx="12" fill="#46c7d9"/>
+    <circle cx="0" cy="-24" r="22" fill="#ffe3ba"/>
+    <path d="m-24-36 46-4-12-18z" fill="#ffd35a"/>
+    <circle cx="-7" cy="-27" r="3" fill="#132035"/>
+    <circle cx="8" cy="-27" r="3" fill="#132035"/>
+  </g>
+  <g transform="translate(250 112)">
+    <ellipse cx="0" cy="42" rx="32" ry="10" fill="#132035" opacity="0.16"/>
+    <rect x="-24" y="-2" width="48" height="58" rx="12" fill="#ef5b63"/>
+    <circle cx="0" cy="-24" r="22" fill="#ffe3ba"/>
+    <path d="m-24-36 46-4-12-18z" fill="#7f59e8"/>
+    <circle cx="-7" cy="-27" r="3" fill="#132035"/>
+    <circle cx="8" cy="-27" r="3" fill="#132035"/>
+  </g>
+  <g transform="translate(184 122)">
+    <circle r="18" fill="#fffdf8"/>
+    <path d="M-18 0h36M0-18v36M-11-11 11 11M11-11-11 11" stroke="#132035" stroke-width="3"/>
+  </g>
+</svg>

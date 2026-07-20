@@ -1,0 +1,251 @@
+.memory-game {
+  display: grid;
+  gap: 12px;
+  min-height: calc(100vh - 126px);
+}
+
+.memory-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 14px;
+}
+
+.game-bar,
+.memory-playfield,
+.memory-side,
+.game-overlay-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.game-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+}
+
+.game-title h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.game-title p {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.score-strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.score-pill {
+  min-width: 88px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--line);
+  font-weight: 900;
+  text-align: center;
+}
+
+[data-theme="dark"] .score-pill {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.game-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.game-actions button,
+.overlay-actions button,
+.memory-side button {
+  min-height: 40px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: var(--panel-solid);
+  border: 1px solid var(--line);
+}
+
+.game-actions .primary-action,
+.overlay-actions .primary-action {
+  color: white;
+  background: var(--violet);
+  border-color: transparent;
+}
+
+.memory-playfield {
+  position: relative;
+  min-height: 520px;
+  padding: 16px;
+}
+
+.memory-toast {
+  min-height: 28px;
+  margin-bottom: 12px;
+  color: var(--violet);
+  font-weight: 950;
+  text-align: center;
+}
+
+.memory-toast.is-changing {
+  animation: memory-pop 360ms ease;
+}
+
+.memory-board {
+  display: grid;
+  gap: 10px;
+  width: min(100%, 820px);
+  margin: 0 auto;
+}
+
+.memory-board[data-cols="4"] {
+  grid-template-columns: repeat(4, minmax(82px, 1fr));
+}
+
+.memory-board[data-cols="6"] {
+  grid-template-columns: repeat(6, minmax(70px, 1fr));
+}
+
+.memory-card {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1 / 1.08;
+  min-height: 76px;
+  padding: 10px;
+  border: 2px solid rgba(19, 32, 53, 0.16);
+  border-radius: 8px;
+  color: var(--ink);
+  background:
+    linear-gradient(135deg, rgba(127, 89, 232, 0.88), rgba(70, 199, 217, 0.88)),
+    var(--violet);
+  box-shadow: 0 10px 18px rgba(19, 32, 53, 0.16);
+  font-size: clamp(0.9rem, 2.5vw, 1.45rem);
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 1;
+  transform: translateY(0);
+  transition:
+    transform 150ms ease,
+    background 150ms ease,
+    border-color 150ms ease;
+}
+
+.memory-hidden-mark {
+  display: grid;
+  place-items: center;
+  width: min(60%, 56px);
+  aspect-ratio: 1;
+  border-radius: 8px;
+  color: #ffffff;
+  border: 4px solid rgba(255, 255, 255, 0.92);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 950;
+}
+
+.memory-symbol {
+  display: block;
+  width: min(82%, 82px);
+  aspect-ratio: 1;
+  filter: drop-shadow(0 4px 0 rgba(19, 32, 53, 0.08));
+}
+
+.memory-card:hover,
+.memory-card:focus-visible {
+  transform: translateY(-2px);
+}
+
+.memory-card.is-open,
+.memory-card.is-matched {
+  color: var(--ink);
+  background: #fff8dc;
+  border-color: rgba(255, 138, 61, 0.48);
+}
+
+.memory-card.is-matched {
+  background: #daf7e7;
+  border-color: rgba(47, 179, 109, 0.58);
+}
+
+.memory-card.is-focus {
+  outline: 4px solid rgba(255, 211, 90, 0.78);
+  outline-offset: 2px;
+}
+
+.memory-side {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 14px;
+}
+
+.memory-side h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.memory-side p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: none;
+  place-items: center;
+  padding: 18px;
+  background: rgba(19, 32, 53, 0.22);
+}
+
+.game-overlay.is-visible {
+  display: grid;
+}
+
+.game-overlay-panel {
+  width: min(470px, 100%);
+  padding: 22px;
+}
+
+.game-overlay-panel h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.game-overlay-panel p {
+  color: var(--muted);
+}
+
+.overlay-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@keyframes memory-pop {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1080px) {
+  .memory-shell {
+    grid-template-columns: 1fr;
+  }
+}

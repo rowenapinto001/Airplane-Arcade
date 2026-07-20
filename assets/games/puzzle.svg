@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-label="Cargo Puzzle coming soon">
+  <rect width="360" height="220" rx="18" fill="#fff1cf"/>
+  <rect x="58" y="44" width="84" height="84" rx="12" fill="#46c7d9"/>
+  <rect x="142" y="44" width="84" height="84" rx="12" fill="#ffd35a"/>
+  <rect x="226" y="44" width="84" height="84" rx="12" fill="#ef5b63"/>
+  <rect x="100" y="128" width="84" height="58" rx="12" fill="#2fb36d"/>
+  <rect x="184" y="128" width="84" height="58" rx="12" fill="#7f59e8"/>
+  <path d="M78 84h212M128 68v102M232 70v92" stroke="#132035" stroke-width="6" opacity="0.18"/>
+</svg>

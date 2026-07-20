@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-label="Cloud Hopper coming soon">
+  <rect width="360" height="220" rx="18" fill="#dff8ff"/>
+  <ellipse cx="92" cy="152" rx="60" ry="20" fill="#fffdf8"/>
+  <ellipse cx="200" cy="108" rx="64" ry="22" fill="#fffdf8"/>
+  <ellipse cx="290" cy="164" rx="56" ry="20" fill="#fffdf8"/>
+  <g transform="translate(190 76)">
+    <circle cy="-20" r="20" fill="#ffe3ba"/>
+    <rect x="-20" y="-4" width="40" height="50" rx="10" fill="#7f59e8"/>
+    <path d="m-28-30 56-4-12-18z" fill="#ffd35a"/>
+  </g>
+  <path d="M36 58c36-24 70-24 102 0M222 48c38-24 72-24 104 0" stroke="#46c7d9" stroke-width="9" stroke-linecap="round" opacity="0.52"/>
+</svg>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Airplane Arcade</title>
+    <link rel="icon" href="../assets/games/logo.svg" />
+    <link rel="stylesheet" href="popup.css" />
+    <script type="module" src="popup.js"></script>
+  </head>
+  <body>
+    <main class="popup-shell">
+      <header class="brand-row">
+        <img src="../assets/games/logo.svg" alt="" class="brand-mark" />
+        <div>
+          <h1>Airplane Arcade</h1>
+          <p>Offline Arcade</p>
+        </div>
+      </header>
+
+      <section class="quick-panel">
+        <div>
+          <span class="tiny-label">Recently played</span>
+          <strong id="recentGame">No games yet</strong>
+        </div>
+        <div>
+          <span class="tiny-label">Total wins</span>
+          <strong id="totalWins">0</strong>
+        </div>
+      </section>
+
+      <button class="continue-button" id="continueBtn" type="button">Continue last game</button>
+
+      <section class="game-list" id="gameList" aria-label="Game launcher"></section>
+
+      <footer class="popup-actions">
+        <button id="openArcadeBtn" type="button">Open Arcade</button>
+        <button id="soundBtn" type="button" aria-pressed="true">Sound On</button>
+        <button id="helpBtn" type="button">Help</button>
+      </footer>
+    </main>
+  </body>
+</html>
