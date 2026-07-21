@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 96" role="img" aria-label="Sky Crown">
+  <path d="M17 70 31 23l24 29 9-39 9 39 24-29 14 47Z" fill="#ffd35a" stroke="#b86f1e" stroke-width="7" stroke-linejoin="round"/>
+  <rect x="23" y="68" width="82" height="14" rx="7" fill="#f2bf4a" stroke="#b86f1e" stroke-width="5"/>
+  <circle cx="64" cy="54" r="10" fill="#fff7c5"/>
+</svg>

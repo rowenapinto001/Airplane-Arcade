@@ -4,6 +4,8 @@ const KEY_LABELS = {
   Space: "Space",
   Enter: "Enter",
   Escape: "Esc",
+  ShiftLeft: "Shift",
+  ShiftRight: "Shift",
   ArrowUp: "Up",
   ArrowDown: "Down",
   ArrowLeft: "Left",
@@ -18,7 +20,7 @@ export function keyLabel(code) {
 }
 
 export function labelsFor(codes) {
-  return codes.map(keyLabel).join(" / ");
+  return [...new Set(codes.map(keyLabel))].join(" / ");
 }
 
 export function getControls(settings, gameId) {
@@ -96,6 +98,15 @@ export function describeGameControls(settings, gameId) {
       `Aim: ${labelsFor([controls.left[0], controls.right[0]])}`,
       `Launch: ${labelsFor(controls.launch)}`,
       `Abilities: ${labelsFor(controls.ability1)}, ${labelsFor(controls.ability2)}, ${labelsFor(controls.ability3)}`,
+      `Pause: ${labelsFor(controls.pause)}`,
+    ];
+  }
+  if (gameId === "runway-rumble") {
+    return [
+      `Move: ${labelsFor([controls.up[0], controls.left[0], controls.down[0], controls.right[0]])}`,
+      `Jump: ${labelsFor(controls.jump)}`,
+      `Dive or slide: ${labelsFor(controls.dive)}`,
+      `Camera: ${labelsFor([controls.cameraLeft[0], controls.cameraRight[0], controls.cameraReset[0]])}`,
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }

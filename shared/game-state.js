@@ -170,15 +170,39 @@ export const GAME_CATALOG = [
       solo: ["Mouse: aim and hold to launch", "Keyboard: A/D or Arrow keys aim, Space launches", "Abilities: 1, 2, 3", "Pause: Escape"],
     },
   },
+  {
+    id: "runway-rumble",
+    name: "Runway Rumble",
+    shortName: "Runway",
+    description: "Race through floating airport obstacle courses and outlast 15 computer-controlled contestants.",
+    longDescription:
+      "A solo knockout obstacle-course race with 16 rounded airport dummies, three qualifying rounds, checkpoints, bouncy hazards, and a final Sky Crown chase.",
+    image: "../assets/games/runway-rumble.svg",
+    accent: "#2fb8a2",
+    modes: ["solo"],
+    difficulties: ["easy", "normal", "hard"],
+    badges: ["Obstacle Race", "Computer Opponents"],
+    defaultDifficulty: "normal",
+    hasPlayerSetup: false,
+    instructions: [
+      "Race through floating airport courses with 15 local computer-controlled contestants.",
+      "Round 1 qualifies 10 racers, Round 2 qualifies 6 racers, and the final round crowns one champion.",
+      "Use checkpoints to recover from falls, then time jumps, dives, conveyors, gates, wind, and moving platforms.",
+      "Earn Boarding Stars from qualifications, challenges, tutorials, and final wins to unlock cosmetic items.",
+    ],
+    controls: {
+      solo: [
+        "Move: W/A/S/D or Arrow keys",
+        "Jump: Space",
+        "Dive or slide: Shift",
+        "Camera: Q/E rotate, R resets",
+        "Pause: Escape",
+      ],
+    },
+  },
 ];
 
 export const COMING_SOON = [
-  {
-    id: "racing",
-    name: "Runway Rally",
-    description: "A tiny racing lane challenge planned for a future update.",
-    image: "../assets/games/racing.svg",
-  },
   {
     id: "puzzle",
     name: "Cargo Puzzle",
@@ -243,6 +267,11 @@ export const DIFFICULTY_DETAILS = {
     easy: "Slower rival decisions, less frequent abilities, gentler routes, and more time to learn crowd control.",
     normal: "Balanced rival route choices, fair ability use, useful upgrades, and steady mission pressure.",
     hard: "Sharper route switching, better defense timing, smarter station pressure, and fully visible fair upgrades.",
+  },
+  "runway-rumble": {
+    easy: "Slower opponents, longer obstacle waits, more frequent AI stumbles, and extra room to qualify.",
+    normal: "Balanced contestant speed, believable AI mistakes, sensible route choices, and steady knockout pressure.",
+    hard: "Efficient fair opponents, quicker recovery, cleaner routes, and rare but still human-like mistakes.",
   },
 };
 

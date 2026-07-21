@@ -45,6 +45,17 @@ const SOUND_FILES = {
   cloudHub: "cloud-crew-clash/hub.wav",
   cloudVictory: "cloud-crew-clash/victory.wav",
   cloudDefeat: "cloud-crew-clash/defeat.wav",
+  runwayCountdown: "runway-rumble/countdown.wav",
+  runwayStart: "runway-rumble/start.wav",
+  runwayRun: "runway-rumble/run.wav",
+  runwayJump: "runway-rumble/jump.wav",
+  runwayDive: "runway-rumble/dive.wav",
+  runwayBump: "runway-rumble/bump.wav",
+  runwayFall: "runway-rumble/fall.wav",
+  runwayCheckpoint: "runway-rumble/checkpoint.wav",
+  runwayQualify: "runway-rumble/qualify.wav",
+  runwayEliminate: "runway-rumble/eliminate.wav",
+  runwayVictory: "runway-rumble/victory.wav",
 };
 
 function assetUrl(path) {

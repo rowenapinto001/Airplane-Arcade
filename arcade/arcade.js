@@ -26,6 +26,7 @@ import { createSumoGame } from "../games/sumo/sumo.js";
 import { createArcheryGame } from "../games/archery/archery.js";
 import { createCakeMakerGame } from "../games/cake-maker/cake-maker.js";
 import { createCloudCrewClashGame } from "../games/cloud-crew-clash/cloud-crew-clash.js";
+import { createRunwayRumbleGame } from "../games/runway-rumble/runway-rumble.js";
 
 const app = document.querySelector("#arcadeApp");
 const view = document.querySelector("#arcadeView");
@@ -41,6 +42,7 @@ const GAME_FACTORIES = {
   archery: createArcheryGame,
   "cake-maker": createCakeMakerGame,
   "cloud-crew-clash": createCloudCrewClashGame,
+  "runway-rumble": createRunwayRumbleGame,
 };
 
 let data;
@@ -108,7 +110,7 @@ function renderLibrary(filter = libraryFilter) {
   const copy = createElement(
     "p",
     "",
-    "A small offline arcade for laptops: seven original games, solo and local two-player modes, saved progress, and no internet needed after install.",
+    "A small offline arcade for laptops: eight original games, solo and local two-player modes, saved progress, and no internet needed after install.",
   );
   heroCopy.append(title, copy);
 
@@ -188,10 +190,11 @@ function gameCard(game) {
 
   const playRow = createElement("div", "play-row");
   const recent = getRecentResult(data, game.id);
-  playRow.append(
-    createElement("span", "card-meta", recent ? "Recent result saved" : "Ready offline"),
-    button("Play", "primary-button", () => renderGameSetup(game.id)),
-  );
+  playRow.append(createElement("span", "card-meta", recent ? "Recent result saved" : "Ready offline"));
+  if (game.id === "runway-rumble" && data.progress.runwayRumbleRecords.pausedCompetition) {
+    playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueCompetition: true })));
+  }
+  playRow.append(button("Play", "primary-button", () => renderGameSetup(game.id)));
 
   body.append(badges, playRow);
   card.append(art, body);
@@ -380,7 +383,7 @@ function startBox(game) {
   return box;
 }
 
-async function launchGame(gameId) {
+async function launchGame(gameId, launchOptions = {}) {
   destroyActiveGame();
   const factory = GAME_FACTORIES[gameId];
   const game = getGame(gameId);
@@ -393,11 +396,12 @@ async function launchGame(gameId) {
   setRibbon(`${game.name} is running. Pause, restart, or return to the library from inside the game.`);
   clearNode(view);
 
-  if (gameId === "sumo" || gameId === "archery" || gameId === "cloud-crew-clash") {
+  if (gameId === "sumo" || gameId === "archery" || gameId === "cloud-crew-clash" || gameId === "runway-rumble") {
     data = await updateData((draft) => {
       if (gameId === "sumo") draft.progress.sumoRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "archery") draft.progress.archeryRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "cloud-crew-clash") draft.progress.cloudCrewRecords.selectedDifficulty = setup.difficulty;
+      if (gameId === "runway-rumble") draft.progress.runwayRumbleRecords.selectedDifficulty = setup.difficulty;
       return draft;
     });
   }
@@ -411,6 +415,7 @@ async function launchGame(gameId) {
       player1: setup.player1 || "Player 1",
       player2: setup.mode === "solo" ? "Computer" : setup.player2 || "Player 2",
       controls: data.settings.controls[gameId],
+      continueCompetition: Boolean(launchOptions.continueCompetition),
     },
     onExit: async () => {
       data = await getData();
@@ -466,6 +471,11 @@ function renderStats() {
       `Level ${data.progress.cloudCrewRecords.highestUnlockedLevel}`,
       `${Object.values(data.progress.cloudCrewRecords.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0)} stars. ${data.progress.cloudCrewRecords.totalVictories} victories.`,
     ),
+    resultCard(
+      "Runway Rumble",
+      data.progress.runwayRumbleRecords.bestPlacement ? `Best ${ordinal(data.progress.runwayRumbleRecords.bestPlacement)}` : "No final yet",
+      `${data.progress.runwayRumbleRecords.totalCompetitions} competitions. ${data.progress.runwayRumbleRecords.totalQualifications} qualifications. ${data.progress.runwayRumbleRecords.finalVictories} victories.`,
+    ),
   );
   panel.append(grid, recentResultsList());
   view.append(panel);
@@ -476,6 +486,12 @@ function resultCard(title, value, detail) {
   const card = createElement("article", "result-card");
   card.append(createElement("span", "card-meta", title), createElement("h2", "", value), createElement("p", "", detail));
   return card;
+}
+
+function ordinal(value) {
+  const number = Number(value);
+  const suffix = number % 10 === 1 && number % 100 !== 11 ? "st" : number % 10 === 2 && number % 100 !== 12 ? "nd" : number % 10 === 3 && number % 100 !== 13 ? "rd" : "th";
+  return `${number}${suffix}`;
 }
 
 function recentResultsList() {
@@ -516,6 +532,7 @@ function renderSettings() {
     controlsSettings("archery"),
     controlsSettings("cake-maker"),
     controlsSettings("cloud-crew-clash"),
+    controlsSettings("runway-rumble"),
   );
   panel.append(grid);
   view.append(panel);
@@ -597,7 +614,7 @@ function accessibilitySettings() {
     });
     renderSettings();
   });
-  card.append(motion, createElement("p", "settings-note", "Cake Maker uses this to calm confetti, balloons, and candle animation."));
+  card.append(motion, createElement("p", "settings-note", "Cake Maker and Runway Rumble use this to calm celebration, particle, and background motion."));
   return card;
 }
 

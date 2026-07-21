@@ -57,6 +57,18 @@ export const DEFAULT_CONTROLS = {
     ability3: ["Digit3"],
     pause: ["Escape"],
   },
+  "runway-rumble": {
+    up: ["KeyW", "ArrowUp"],
+    down: ["KeyS", "ArrowDown"],
+    left: ["KeyA", "ArrowLeft"],
+    right: ["KeyD", "ArrowRight"],
+    jump: ["Space"],
+    dive: ["ShiftLeft", "ShiftRight"],
+    cameraLeft: ["KeyQ"],
+    cameraRight: ["KeyE"],
+    cameraReset: ["KeyR"],
+    pause: ["Escape"],
+  },
 };
 
 export const DEFAULT_DATA = {
@@ -84,6 +96,7 @@ export const DEFAULT_DATA = {
       archery: 0,
       "cake-maker": 0,
       "cloud-crew-clash": 0,
+      "runway-rumble": 0,
     },
     footballWins: {
       solo: 0,
@@ -157,6 +170,38 @@ export const DEFAULT_DATA = {
       tutorialComplete: false,
       completedLevels: [],
       recentLevel: 1,
+    },
+    runwayRumbleRecords: {
+      tutorialComplete: false,
+      tutorialReminders: true,
+      selectedDifficulty: "normal",
+      selectedCharacter: {
+        bodyColor: "sky",
+        face: "smile",
+        scarf: "red",
+        hat: "none",
+        accessory: "wing",
+        trail: "spark",
+        victory: "wave",
+      },
+      unlockedCosmetics: ["body-sky", "face-smile", "scarf-red", "hat-none", "accessory-wing", "trail-spark", "victory-wave"],
+      boardingStars: 0,
+      bestPlacement: null,
+      totalCompetitions: 0,
+      totalRaces: 0,
+      totalQualifications: 0,
+      round1Qualifications: 0,
+      round2Qualifications: 0,
+      finalAppearances: 0,
+      finalVictories: 0,
+      falls: 0,
+      checkpointsUsed: 0,
+      completedChallenges: [],
+      courseChallengeProgress: {},
+      pausedCompetition: null,
+      selectedCourseOrder: [],
+      recentSummary: null,
+      cameraSensitivity: 0.65,
     },
     recentResults: [],
   },
@@ -271,7 +316,19 @@ export function getGameProgress(data, gameId) {
     const stars = Object.values(record.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0);
     return `Level ${record.highestUnlockedLevel} | ${stars} stars | ${record.selectedDifficulty}`;
   }
+  if (gameId === "runway-rumble") {
+    const record = progress.runwayRumbleRecords;
+    if (record.pausedCompetition) return `Continue Round ${record.pausedCompetition.round} | ${record.selectedDifficulty}`;
+    const best = record.bestPlacement ? `Best ${ordinal(record.bestPlacement)}` : "No final yet";
+    return `${best} | ${record.totalCompetitions} played`;
+  }
   return "Ready offline";
+}
+
+function ordinal(value) {
+  const number = Number(value);
+  const suffix = number % 10 === 1 && number % 100 !== 11 ? "st" : number % 10 === 2 && number % 100 !== 12 ? "nd" : number % 10 === 3 && number % 100 !== 13 ? "rd" : "th";
+  return `${number}${suffix}`;
 }
 
 export function getTotalWins(data) {
@@ -393,6 +450,49 @@ export async function recordGameResult(result) {
         record.flightBadges += stamped.flightBadges || 0;
       }
       if (stamped.winner === "computer") record.totalDefeats += 1;
+    }
+
+    if (stamped.gameId === "runway-rumble") {
+      const record = progress.runwayRumbleRecords;
+      record.selectedDifficulty = stamped.difficulty || record.selectedDifficulty;
+      record.selectedCharacter = stamped.character || record.selectedCharacter;
+      record.cameraSensitivity = stamped.cameraSensitivity ?? record.cameraSensitivity;
+      record.recentSummary = stamped.summary || record.recentSummary;
+      record.falls += stamped.falls || 0;
+      record.checkpointsUsed += stamped.checkpointsUsed || 0;
+      if (stamped.tutorialComplete) {
+        record.tutorialComplete = true;
+        record.tutorialReminders = false;
+      }
+      if (Array.isArray(stamped.selectedCourseOrder)) record.selectedCourseOrder = [...stamped.selectedCourseOrder];
+      if (stamped.round1Qualified) {
+        record.round1Qualifications += 1;
+        record.totalQualifications += 1;
+      }
+      if (stamped.round2Qualified) {
+        record.round2Qualifications += 1;
+        record.totalQualifications += 1;
+      }
+      if (stamped.finalAppearance) record.finalAppearances += 1;
+      if (stamped.competitionEnded) {
+        record.totalCompetitions += 1;
+        record.pausedCompetition = null;
+      }
+      record.totalRaces += stamped.roundsPlayed || stamped.roundNumber || 0;
+      if (stamped.finalPlacement) {
+        record.bestPlacement =
+          record.bestPlacement === null
+            ? stamped.finalPlacement
+            : Math.min(record.bestPlacement, stamped.finalPlacement);
+      }
+      if (stamped.winner === "solo") record.finalVictories += 1;
+      record.boardingStars += stamped.boardingStars || 0;
+      for (const challenge of stamped.completedChallenges || []) {
+        if (!record.completedChallenges.includes(challenge)) record.completedChallenges.push(challenge);
+      }
+      for (const cosmetic of stamped.unlockedCosmetics || []) {
+        if (!record.unlockedCosmetics.includes(cosmetic)) record.unlockedCosmetics.push(cosmetic);
+      }
     }
 
     return data;
