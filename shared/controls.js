@@ -90,6 +90,15 @@ export function describeGameControls(settings, gameId) {
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }
+  if (gameId === "cloud-crew-clash") {
+    return [
+      "Mouse: move to aim, hold to launch",
+      `Aim: ${labelsFor([controls.left[0], controls.right[0]])}`,
+      `Launch: ${labelsFor(controls.launch)}`,
+      `Abilities: ${labelsFor(controls.ability1)}, ${labelsFor(controls.ability2)}, ${labelsFor(controls.ability3)}`,
+      `Pause: ${labelsFor(controls.pause)}`,
+    ];
+  }
   return [
     `Player 1: ${labelsFor(controls.p1Action)}`,
     `Player 2: ${labelsFor(controls.p2Action)}`,

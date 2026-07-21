@@ -25,6 +25,7 @@ import { createMemoryGame } from "../games/memory/memory.js";
 import { createSumoGame } from "../games/sumo/sumo.js";
 import { createArcheryGame } from "../games/archery/archery.js";
 import { createCakeMakerGame } from "../games/cake-maker/cake-maker.js";
+import { createCloudCrewClashGame } from "../games/cloud-crew-clash/cloud-crew-clash.js";
 
 const app = document.querySelector("#arcadeApp");
 const view = document.querySelector("#arcadeView");
@@ -39,6 +40,7 @@ const GAME_FACTORIES = {
   sumo: createSumoGame,
   archery: createArcheryGame,
   "cake-maker": createCakeMakerGame,
+  "cloud-crew-clash": createCloudCrewClashGame,
 };
 
 let data;
@@ -106,7 +108,7 @@ function renderLibrary(filter = libraryFilter) {
   const copy = createElement(
     "p",
     "",
-    "A small offline arcade for laptops: six original games, solo and local two-player modes, saved progress, and no internet needed after install.",
+    "A small offline arcade for laptops: seven original games, solo and local two-player modes, saved progress, and no internet needed after install.",
   );
   heroCopy.append(title, copy);
 
@@ -391,10 +393,11 @@ async function launchGame(gameId) {
   setRibbon(`${game.name} is running. Pause, restart, or return to the library from inside the game.`);
   clearNode(view);
 
-  if (gameId === "sumo" || gameId === "archery") {
+  if (gameId === "sumo" || gameId === "archery" || gameId === "cloud-crew-clash") {
     data = await updateData((draft) => {
       if (gameId === "sumo") draft.progress.sumoRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "archery") draft.progress.archeryRecords.selectedDifficulty = setup.difficulty;
+      if (gameId === "cloud-crew-clash") draft.progress.cloudCrewRecords.selectedDifficulty = setup.difficulty;
       return draft;
     });
   }
@@ -458,6 +461,11 @@ function renderStats() {
       data.progress.cakeMakerRecords.recentCakeName || "No cake",
       `${data.progress.cakeMakerRecords.savedCakes.length} saved. ${data.progress.cakeMakerRecords.partyStarts} parties started.`,
     ),
+    resultCard(
+      "Cloud Crew Clash",
+      `Level ${data.progress.cloudCrewRecords.highestUnlockedLevel}`,
+      `${Object.values(data.progress.cloudCrewRecords.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0)} stars. ${data.progress.cloudCrewRecords.totalVictories} victories.`,
+    ),
   );
   panel.append(grid, recentResultsList());
   view.append(panel);
@@ -507,6 +515,7 @@ function renderSettings() {
     controlsSettings("sumo"),
     controlsSettings("archery"),
     controlsSettings("cake-maker"),
+    controlsSettings("cloud-crew-clash"),
   );
   panel.append(grid);
   view.append(panel);

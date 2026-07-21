@@ -48,6 +48,15 @@ export const DEFAULT_CONTROLS = {
     party: ["KeyB"],
     pause: ["Escape"],
   },
+  "cloud-crew-clash": {
+    left: ["KeyA", "ArrowLeft"],
+    right: ["KeyD", "ArrowRight"],
+    launch: ["Space"],
+    ability1: ["Digit1"],
+    ability2: ["Digit2"],
+    ability3: ["Digit3"],
+    pause: ["Escape"],
+  },
 };
 
 export const DEFAULT_DATA = {
@@ -74,6 +83,7 @@ export const DEFAULT_DATA = {
       sumo: 0,
       archery: 0,
       "cake-maker": 0,
+      "cloud-crew-clash": 0,
     },
     footballWins: {
       solo: 0,
@@ -125,6 +135,28 @@ export const DEFAULT_DATA = {
       recentlyCreatedCake: null,
       recentCakeName: null,
       savedCakes: [],
+    },
+    cloudCrewRecords: {
+      highestUnlockedLevel: 1,
+      stars: {},
+      selectedDifficulty: "normal",
+      selectedCrewType: "basic",
+      flightBadges: 0,
+      permanentUpgrades: {
+        launchRate: 0,
+        hubStrength: 0,
+        rallyDuration: 0,
+        shieldDuration: 0,
+        energyCollection: 0,
+      },
+      totalVictories: 0,
+      totalDefeats: 0,
+      missionsCompleted: 0,
+      stationsCaptured: 0,
+      energyCollected: 0,
+      tutorialComplete: false,
+      completedLevels: [],
+      recentLevel: 1,
     },
     recentResults: [],
   },
@@ -234,6 +266,11 @@ export function getGameProgress(data, gameId) {
       ? `${saved} saved cake${saved === 1 ? "" : "s"} | Recent: ${recent}`
       : `${saved} saved cake${saved === 1 ? "" : "s"}`;
   }
+  if (gameId === "cloud-crew-clash") {
+    const record = progress.cloudCrewRecords;
+    const stars = Object.values(record.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0);
+    return `Level ${record.highestUnlockedLevel} | ${stars} stars | ${record.selectedDifficulty}`;
+  }
   return "Ready offline";
 }
 
@@ -336,6 +373,26 @@ export async function recordGameResult(result) {
         if (stamped.winner === "player2") record.player2Wins += 1;
         if (stamped.winner === "draw") record.sharedTieWins += 1;
       }
+    }
+
+    if (stamped.gameId === "cloud-crew-clash") {
+      const record = progress.cloudCrewRecords;
+      record.selectedDifficulty = stamped.difficulty || record.selectedDifficulty;
+      record.selectedCrewType = stamped.crewType || record.selectedCrewType;
+      record.recentLevel = stamped.level || record.recentLevel || 1;
+      record.stationsCaptured += stamped.stationsCaptured || 0;
+      record.energyCollected += stamped.energyCollected || 0;
+      if (stamped.tutorialComplete) record.tutorialComplete = true;
+      if (stamped.winner === "solo") {
+        record.totalVictories += 1;
+        record.missionsCompleted += 1;
+        const levelKey = String(stamped.level || 1);
+        record.stars[levelKey] = Math.max(record.stars[levelKey] || 0, stamped.stars || 1);
+        record.highestUnlockedLevel = Math.max(record.highestUnlockedLevel, Math.min(10, (stamped.level || 1) + 1));
+        if (!record.completedLevels.includes(stamped.level)) record.completedLevels.push(stamped.level);
+        record.flightBadges += stamped.flightBadges || 0;
+      }
+      if (stamped.winner === "computer") record.totalDefeats += 1;
     }
 
     return data;

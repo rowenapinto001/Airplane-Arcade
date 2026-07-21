@@ -35,6 +35,16 @@ const SOUND_FILES = {
   cakeConfetti: "cake-maker/confetti.wav",
   cakeWish: "cake-maker/wish.wav",
   cakeParty: "cake-maker/party.wav",
+  cloudLaunch: "cloud-crew-clash/launch.wav",
+  cloudPortal: "cloud-crew-clash/portal.wav",
+  cloudMove: "cloud-crew-clash/move.wav",
+  cloudImpact: "cloud-crew-clash/impact.wav",
+  cloudEnergy: "cloud-crew-clash/energy.wav",
+  cloudStation: "cloud-crew-clash/station.wav",
+  cloudAbility: "cloud-crew-clash/ability.wav",
+  cloudHub: "cloud-crew-clash/hub.wav",
+  cloudVictory: "cloud-crew-clash/victory.wav",
+  cloudDefeat: "cloud-crew-clash/defeat.wav",
 };
 
 function assetUrl(path) {

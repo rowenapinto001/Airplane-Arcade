@@ -146,6 +146,30 @@ export const GAME_CATALOG = [
       solo: ["Mouse: choose tools and drag decorations", "Keyboard: Tab through controls, Z to undo", "Pause: Escape"],
     },
   },
+  {
+    id: "cloud-crew-clash",
+    name: "Cloud Crew Clash",
+    shortName: "Cloud Crew",
+    description: "Launch your crew, choose strategic sky routes, capture stations, and defeat the computer rival.",
+    longDescription:
+      "A solo sky-terminal crowd strategy game with a rotating Crew Launcher, route choices, boost portals, missions, crew types, and a fair computer rival.",
+    image: "../assets/games/cloud-crew-clash.svg",
+    accent: "#2aa7c9",
+    modes: ["solo"],
+    difficulties: ["easy", "normal", "hard"],
+    badges: ["Strategy", "Campaign"],
+    defaultDifficulty: "normal",
+    hasPlayerSetup: false,
+    instructions: [
+      "Aim the Crew Launcher toward a route, then hold launch to send tiny crew across the sky terminal.",
+      "Capture stations, collect Sky Energy, and use portals to shift the size, speed, or protection of your crew.",
+      "Use Rally Beacon, Cloud Shield, and Turbo Launch to redirect, protect, and surge at the right moment.",
+      "Complete campaign missions to earn stars, Flight Badges, crew types, and permanent upgrades.",
+    ],
+    controls: {
+      solo: ["Mouse: aim and hold to launch", "Keyboard: A/D or Arrow keys aim, Space launches", "Abilities: 1, 2, 3", "Pause: Escape"],
+    },
+  },
 ];
 
 export const COMING_SOON = [
@@ -214,6 +238,11 @@ export const DIFFICULTY_DETAILS = {
   },
   "cake-maker": {
     normal: "Creative sandbox mode with no timer, score, winner, or loser.",
+  },
+  "cloud-crew-clash": {
+    easy: "Slower rival decisions, less frequent abilities, gentler routes, and more time to learn crowd control.",
+    normal: "Balanced rival route choices, fair ability use, useful upgrades, and steady mission pressure.",
+    hard: "Sharper route switching, better defense timing, smarter station pressure, and fully visible fair upgrades.",
   },
 };
 

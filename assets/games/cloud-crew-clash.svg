@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="Cloud Crew Clash floating sky terminal battlefield">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#dff7ff"/>
+      <stop offset="0.55" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#fff1d6"/>
+    </linearGradient>
+    <linearGradient id="bridge" x1="0" x2="1">
+      <stop offset="0" stop-color="#b8eefa"/>
+      <stop offset="1" stop-color="#ffe2ba"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" rx="44" fill="url(#sky)"/>
+  <g fill="#fff" opacity="0.78">
+    <ellipse cx="115" cy="86" rx="78" ry="24"/>
+    <ellipse cx="505" cy="74" rx="92" ry="27"/>
+    <ellipse cx="530" cy="342" rx="102" ry="28"/>
+    <ellipse cx="129" cy="350" rx="96" ry="26"/>
+  </g>
+  <path d="M102 218c103-74 184-77 286-6 51 36 90 41 150 20" fill="none" stroke="url(#bridge)" stroke-width="48" stroke-linecap="round"/>
+  <path d="M104 218c101-73 185-76 286-6 53 37 91 42 150 20" fill="none" stroke="#2aa7c9" stroke-width="9" stroke-linecap="round" opacity="0.72"/>
+  <path d="M103 218c103 84 197 92 301 19 50-35 88-39 135-12" fill="none" stroke="#2fb36d" stroke-width="40" stroke-linecap="round" opacity="0.25"/>
+  <g>
+    <rect x="56" y="160" width="112" height="102" rx="24" fill="#d7f7ff" stroke="#17657f" stroke-width="7"/>
+    <path d="M85 211l55-20-14 22 14 22z" fill="#2aa7c9"/>
+    <text x="112" y="282" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="900" fill="#132035">Departure</text>
+  </g>
+  <g>
+    <rect x="472" y="160" width="112" height="102" rx="24" fill="#fff0df" stroke="#9a5126" stroke-width="7"/>
+    <circle cx="528" cy="211" r="30" fill="#ff944d"/>
+    <path d="M528 174l10 27 28 10-28 10-10 27-10-27-28-10 28-10z" fill="#fff0df"/>
+    <text x="528" y="282" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="900" fill="#132035">Rival</text>
+  </g>
+  <g stroke-width="7" fill="#fff" stroke-linejoin="round">
+    <circle cx="320" cy="212" r="37" stroke="#657184"/>
+    <circle cx="243" cy="158" r="26" stroke="#2aa7c9"/>
+    <circle cx="252" cy="281" r="26" stroke="#2fb36d"/>
+    <circle cx="397" cy="189" r="25" stroke="#ff944d"/>
+  </g>
+  <g fill="#132035" font-family="Arial, sans-serif" font-weight="900" font-size="15" text-anchor="middle">
+    <text x="320" y="218">CORE</text>
+    <text x="243" y="164">STA</text>
+    <text x="252" y="287">ENG</text>
+  </g>
+  <g fill="none" stroke-width="8">
+    <ellipse cx="388" cy="115" rx="22" ry="34" stroke="#7f59e8"/>
+    <ellipse cx="390" cy="304" rx="23" ry="35" stroke="#ffd35a"/>
+    <ellipse cx="292" cy="236" rx="22" ry="34" stroke="#2fb36d"/>
+  </g>
+  <g>
+    <circle cx="204" cy="218" r="11" fill="#d7f7ff" stroke="#17657f" stroke-width="4"/>
+    <circle cx="229" cy="205" r="11" fill="#d7f7ff" stroke="#17657f" stroke-width="4"/>
+    <circle cx="257" cy="222" r="11" fill="#d7f7ff" stroke="#17657f" stroke-width="4"/>
+    <circle cx="435" cy="218" r="11" fill="#fff0df" stroke="#9a5126" stroke-width="4"/>
+    <circle cx="462" cy="203" r="11" fill="#fff0df" stroke="#9a5126" stroke-width="4"/>
+    <circle cx="484" cy="226" r="11" fill="#fff0df" stroke="#9a5126" stroke-width="4"/>
+  </g>
+  <text x="320" y="374" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" font-weight="900" fill="#132035">Cloud Crew Clash</text>
+</svg>

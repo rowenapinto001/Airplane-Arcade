@@ -1,6 +1,6 @@
 # Airplane Arcade
 
-Airplane Arcade is a Manifest V3 Chrome extension containing a small offline mini-game arcade. It includes a compact popup launcher and a full arcade page with six playable games:
+Airplane Arcade is a Manifest V3 Chrome extension containing a small offline mini-game arcade. It includes a compact popup launcher and a full arcade page with seven playable games:
 
 - Simple Football
 - Basket & Ball
@@ -8,6 +8,7 @@ Airplane Arcade is a Manifest V3 Chrome extension containing a small offline min
 - Sumo
 - Archery
 - Cake Maker
+- Cloud Crew Clash
 
 The extension uses vanilla HTML, CSS, JavaScript, Canvas, local SVG art, local PNG icons, local WAV sounds, and `chrome.storage.local`.
 
@@ -30,6 +31,7 @@ The extension uses vanilla HTML, CSS, JavaScript, Canvas, local SVG art, local P
   /sumo/
   /archery/
   /cake-maker/
+  /cloud-crew-clash/
 /shared/
   audio.js
   controls.js
@@ -90,11 +92,18 @@ Cake Maker:
 - Party Mode: `B`
 - Pause: `Escape`
 
+Cloud Crew Clash:
+- Mouse: aim and hold to launch crew
+- Keyboard aim: `A` / `D` or Left / Right
+- Launch: `Space`
+- Abilities: `1`, `2`, `3`
+- Pause: `Escape`
+
 Controls can be changed from **Settings**.
 
 ## Difficulty Levels
 
-Simple Football, Basket & Ball, Memory Match, Sumo, and Archery support **Easy**, **Normal**, and **Hard** from the game setup screen. Cake Maker is a creative sandbox with no timer, score, winner, or loser.
+Simple Football, Basket & Ball, Memory Match, Sumo, Archery, and Cloud Crew Clash support **Easy**, **Normal**, and **Hard** from the game setup screen. Cake Maker is a creative sandbox with no timer, score, winner, or loser.
 
 - Easy uses more forgiving rules, such as smaller Memory boards, wider basketball rims, longer timers, bigger football goals, larger Sumo rings, larger Archery targets, and slower AI.
 - Normal is the balanced default.
@@ -102,7 +111,7 @@ Simple Football, Basket & Ball, Memory Match, Sumo, and Archery support **Easy**
 
 ## Offline Operation
 
-All code, artwork, icons, Cake Maker assets, party music, and sounds are local files inside the extension. There are no APIs, CDNs, external fonts, accounts, analytics, ads, iframes, or internet-loaded assets. Progress, settings, and saved cakes are saved with `chrome.storage.local`, so no sign-in is required.
+All code, artwork, icons, Cake Maker assets, Cloud Crew Clash assets, party music, and sounds are local files inside the extension. There are no APIs, CDNs, external fonts, accounts, analytics, ads, iframes, or internet-loaded assets. Progress, settings, saved cakes, and campaign progress are saved with `chrome.storage.local`, so no sign-in is required.
 
 ## Add Another Game
 

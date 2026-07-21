@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" role="img" aria-label="Crew Growth portal">
+  <rect width="140" height="140" rx="28" fill="#f8fbff"/>
+  <ellipse cx="70" cy="70" rx="34" ry="48" fill="none" stroke="#2fb36d" stroke-width="10"/>
+  <ellipse cx="70" cy="70" rx="20" ry="31" fill="none" stroke="#d7f7ff" stroke-width="6"/>
+  <path d="M70 46v48M46 70h48" stroke="#132035" stroke-width="10" stroke-linecap="round"/>
+</svg>
