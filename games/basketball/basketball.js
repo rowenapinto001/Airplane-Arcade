@@ -306,7 +306,7 @@ export function createBasketballGame(context) {
     ball.trail.push({ x: ball.x, y: ball.y });
     if (ball.trail.length > 18) ball.trail.shift();
     ball.vx += wind() * dt;
-    ball.vy += config.gravity * dt;
+    ball.vy += config.gravity * gravityScale() * dt;
     ball.x += ball.vx * dt;
     ball.y += ball.vy * dt;
 
@@ -360,12 +360,13 @@ export function createBasketballGame(context) {
     const player = state.currentPlayer;
     state.throws[player] += 1;
     const angle = (state.angle * Math.PI) / 180;
-    const speed = config.launchBase + state.power * config.launchPower;
+    const speed = (config.launchBase + state.power * config.launchPower) * courtScale();
+    const launch = launchPoint();
     state.ball = {
       ...createRestingBall(),
       active: true,
-      x: 132,
-      y: 380,
+      x: launch.x,
+      y: launch.y,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       trail: [],
@@ -465,14 +466,29 @@ export function createBasketballGame(context) {
   }
 
   function resizeCanvas() {
-    const rect = canvas.parentElement.getBoundingClientRect();
+    const parent = canvas.parentElement;
+    const rect = parent.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    state.width = Math.max(720, rect.width);
-    state.height = 540;
+    const oldWidth = state.width;
+    const oldHeight = state.height;
+    state.width = Math.max(720, Math.floor(parent.clientWidth || rect.width || 720));
+    state.height = Math.max(560, Math.floor(parent.clientHeight || rect.height || 560));
     canvas.width = Math.round(state.width * dpr);
     canvas.height = Math.round(state.height * dpr);
     canvas.style.height = `${state.height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (state.ball.active) {
+      const xScale = state.width / oldWidth;
+      const yScale = state.height / oldHeight;
+      state.ball.x *= xScale;
+      state.ball.y *= yScale;
+      state.ball.trail = state.ball.trail.map((point) => ({
+        x: point.x * xScale,
+        y: point.y * yScale,
+      }));
+    } else {
+      Object.assign(state.ball, launchPoint());
+    }
     draw();
   }
 
@@ -513,8 +529,9 @@ export function createBasketballGame(context) {
   }
 
   function drawPlayer() {
+    const launch = launchPoint();
     ctx.save();
-    ctx.translate(120, 390);
+    ctx.translate(launch.x - 12, launch.y + 10);
     ctx.fillStyle = "#ff8a3d";
     ctx.beginPath();
     ctx.arc(0, -48, 22, 0, Math.PI * 2);
@@ -557,8 +574,7 @@ export function createBasketballGame(context) {
 
   function drawAim() {
     if (state.ball.active) return;
-    const startX = 132;
-    const startY = 380;
+    const { x: startX, y: startY } = launchPoint();
     const angle = (state.angle * Math.PI) / 180;
     const length = 86 + state.power * 62;
     ctx.strokeStyle = "#7f59e8";
@@ -602,8 +618,23 @@ export function createBasketballGame(context) {
   function basketPosition() {
     return {
       x: state.width - 150,
-      y: 198 + Math.sin(state.basketPhase * config.basketSpeed) * config.basketMove,
+      y: state.height * 0.37 + Math.sin(state.basketPhase * config.basketSpeed) * config.basketMove,
     };
+  }
+
+  function launchPoint() {
+    return {
+      x: Math.max(132, state.width * 0.1),
+      y: Math.max(380, state.height - 150),
+    };
+  }
+
+  function courtScale() {
+    return Math.min(1.65, Math.max(1, state.width / 900));
+  }
+
+  function gravityScale() {
+    return Math.min(1.35, Math.max(1, state.height / 540));
   }
 
   function wind() {

@@ -13,6 +13,7 @@
   --red: #ef5b63;
   --yellow: #ffd35a;
   --shadow: 0 18px 44px rgba(19, 32, 53, 0.16);
+  --arcade-page-width: 100%;
   font-family:
     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -105,7 +106,8 @@ select:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  max-width: 1240px;
+  width: var(--arcade-page-width);
+  max-width: none;
   margin: 0 auto 12px;
 }
 
@@ -159,7 +161,8 @@ select:focus-visible {
 }
 
 .status-ribbon {
-  max-width: 1240px;
+  width: var(--arcade-page-width);
+  max-width: none;
   min-height: 24px;
   margin: 0 auto 8px;
   color: var(--muted);
@@ -167,7 +170,8 @@ select:focus-visible {
 }
 
 .arcade-view {
-  max-width: 1240px;
+  width: var(--arcade-page-width);
+  max-width: none;
   min-height: calc(100vh - 126px);
   margin: 0 auto;
 }
@@ -278,7 +282,7 @@ select:focus-visible {
 
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 14px;
 }
 

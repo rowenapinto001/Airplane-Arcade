@@ -5,6 +5,13 @@
   --runway-coral: #ef5b63;
 }
 
+.runway-rumble-game.is-playing {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-content: stretch;
+  min-height: calc(100vh - 126px);
+}
+
 .runway-game-bar {
   margin-bottom: 12px;
 }
@@ -278,6 +285,7 @@
 .runway-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 250px;
+  align-items: stretch;
   gap: 12px;
   padding: 12px;
   border: 1px solid var(--line);
@@ -287,7 +295,7 @@
 
 .runway-play-shell {
   position: relative;
-  min-height: 560px;
+  min-height: clamp(580px, 66vh, 720px);
   border: 1px solid var(--line);
   border-radius: 8px;
   overflow: hidden;
@@ -297,12 +305,12 @@
 #runwayRumbleCanvas {
   display: block;
   width: 100%;
-  height: min(64vh, 650px);
-  min-height: 540px;
+  height: 100%;
+  min-height: clamp(580px, 66vh, 720px);
 }
 
 .runway-qualified-list {
-  min-height: 560px;
+  min-height: clamp(580px, 66vh, 720px);
   padding: 14px;
   border: 1px solid var(--line);
   border-radius: 8px;

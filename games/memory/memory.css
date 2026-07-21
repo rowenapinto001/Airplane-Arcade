@@ -1,5 +1,7 @@
 .memory-game {
   display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  align-content: stretch;
   gap: 12px;
   min-height: calc(100vh - 126px);
 }
@@ -85,7 +87,7 @@
 
 .memory-playfield {
   position: relative;
-  min-height: 520px;
+  min-height: clamp(560px, 66vh, 720px);
   padding: 16px;
 }
 
@@ -104,7 +106,7 @@
 .memory-board {
   display: grid;
   gap: 10px;
-  width: min(100%, 820px);
+  width: min(100%, 1080px);
   margin: 0 auto;
 }
 
@@ -119,7 +121,7 @@
 .memory-card {
   display: grid;
   place-items: center;
-  aspect-ratio: 1 / 1.08;
+  aspect-ratio: 1 / 0.78;
   min-height: 76px;
   padding: 10px;
   border: 2px solid rgba(19, 32, 53, 0.16);

@@ -433,12 +433,13 @@ export function createFootballGame(context) {
   }
 
   function resizeCanvas() {
-    const rect = canvas.parentElement.getBoundingClientRect();
+    const parent = canvas.parentElement;
+    const rect = parent.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const oldWidth = state.width;
     const oldHeight = state.height;
-    state.width = Math.max(720, rect.width);
-    state.height = 540;
+    state.width = Math.max(720, Math.floor(parent.clientWidth || rect.width || 720));
+    state.height = Math.max(560, Math.floor(parent.clientHeight || rect.height || 560));
     canvas.width = Math.round(state.width * dpr);
     canvas.height = Math.round(state.height * dpr);
     canvas.style.height = `${state.height}px`;
