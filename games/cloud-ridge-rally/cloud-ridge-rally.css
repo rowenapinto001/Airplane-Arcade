@@ -1,0 +1,358 @@
+.cloud-ridge-rally-game {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  align-content: stretch;
+  gap: 12px;
+  min-height: calc(100vh - 126px);
+}
+
+.cloud-ridge-rally-game.is-playing {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.rally-game-bar,
+.rally-menu-panel,
+.rally-garage-panel,
+.rally-upgrade-panel,
+.rally-canvas-wrap,
+.rally-bottom-controls {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.rally-game-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+
+.rally-mini-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.rally-mini-stats span {
+  display: grid;
+  min-width: 76px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.rally-mini-stats small,
+.rally-facts dt,
+.rally-choice-row .field-label,
+.rally-vehicle-strip .field-label {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.rally-menu-panel,
+.rally-garage-panel,
+.rally-upgrade-panel {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+
+.rally-menu-panel h2,
+.rally-garage-panel h2,
+.rally-upgrade-panel h2,
+.rally-info-card h3,
+.rally-upgrade-card h3 {
+  margin: 0;
+}
+
+.rally-menu-panel p,
+.rally-info-card p,
+.rally-level-card p,
+.rally-vehicle-card p,
+.rally-note {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.rally-info-grid,
+.rally-level-grid,
+.rally-env-grid,
+.rally-garage-grid,
+.rally-upgrade-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.rally-info-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.rally-level-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.rally-env-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.rally-garage-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.rally-upgrade-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.rally-info-card,
+.rally-level-card,
+.rally-env-card,
+.rally-vehicle-card,
+.rally-upgrade-card,
+.rally-vehicle-strip,
+.rally-settings-inline {
+  display: grid;
+  gap: 9px;
+  min-height: 112px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.64);
+  text-align: left;
+}
+
+.rally-level-card,
+.rally-env-card {
+  align-content: start;
+}
+
+.rally-level-card.is-locked,
+.rally-info-card.is-muted,
+.rally-vehicle-card.is-locked {
+  opacity: 0.6;
+}
+
+.rally-env-card::before {
+  content: "";
+  display: block;
+  height: 42px;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 15% 40%, rgba(255,255,255,0.75), transparent 22%),
+    linear-gradient(135deg, var(--env), rgba(255,255,255,0.58));
+}
+
+.rally-level-card.is-selected,
+.rally-env-card.is-selected,
+.rally-vehicle-card.is-selected,
+.rally-settings-inline button.is-selected,
+.rally-choice-row button.is-selected {
+  color: #fff;
+  background: var(--ink);
+  border-color: transparent;
+}
+
+.rally-stars,
+.rally-big-stars {
+  color: #ffb82e;
+  font-size: 1.15rem;
+  font-weight: 950;
+}
+
+.rally-big-stars {
+  font-size: 2rem;
+  letter-spacing: 0;
+}
+
+.rally-menu-actions,
+.rally-card-actions,
+.rally-section-header,
+.rally-choice-row,
+.rally-bottom-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.rally-section-header {
+  justify-content: space-between;
+}
+
+.cloud-ridge-rally-game button {
+  min-height: 40px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid var(--line);
+}
+
+.cloud-ridge-rally-game .primary-action,
+.rally-menu-actions .primary-action,
+.rally-card-actions .primary-action,
+.rally-bottom-controls .primary-action {
+  color: #fff;
+  background: linear-gradient(135deg, #2fb36d, #38aee2);
+  border-color: transparent;
+}
+
+.rally-vehicle-badge {
+  --vehicle: #46c7d9;
+  --trim: #ffd35a;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rally-vehicle-badge i {
+  position: relative;
+  display: inline-block;
+  width: 82px;
+  height: 44px;
+}
+
+.rally-vehicle-badge i::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  width: 68px;
+  height: 28px;
+  border-radius: 10px;
+  background: var(--vehicle);
+  box-shadow: inset 18px -10px 0 var(--trim);
+}
+
+.rally-vehicle-badge i::after {
+  content: "";
+  position: absolute;
+  left: 11px;
+  bottom: 1px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #132035;
+  box-shadow: 42px 0 0 #132035;
+}
+
+.rally-stat-bars {
+  display: grid;
+  gap: 6px;
+}
+
+.rally-stat-row {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.rally-stat-row b {
+  display: block;
+  overflow: hidden;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(19, 32, 53, 0.12);
+}
+
+.rally-stat-row i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2fb36d, #ffd35a);
+}
+
+.rally-facts,
+.rally-result-grid {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 8px 12px;
+  margin: 0;
+}
+
+.rally-facts dd,
+.rally-result-grid dd {
+  margin: 0;
+  font-weight: 850;
+}
+
+.rally-canvas-wrap {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(580px, 70vh, 760px);
+  background: #e7fbff;
+}
+
+.rally-canvas-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: clamp(580px, 70vh, 760px);
+  touch-action: none;
+}
+
+.rally-bottom-controls {
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.rally-mini-overlay {
+  max-width: 420px;
+}
+
+.rally-result-card {
+  width: min(520px, 100%);
+}
+
+.rally-screen-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+[data-theme="dark"] .rally-info-card,
+[data-theme="dark"] .rally-level-card,
+[data-theme="dark"] .rally-env-card,
+[data-theme="dark"] .rally-vehicle-card,
+[data-theme="dark"] .rally-upgrade-card,
+[data-theme="dark"] .rally-vehicle-strip,
+[data-theme="dark"] .rally-settings-inline,
+[data-theme="dark"] .cloud-ridge-rally-game button,
+[data-theme="dark"] .rally-mini-stats span {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+@media (max-width: 1180px) {
+  .rally-game-bar,
+  .rally-info-grid,
+  .rally-level-grid,
+  .rally-env-grid,
+  .rally-garage-grid,
+  .rally-upgrade-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .rally-game-bar,
+  .rally-info-grid,
+  .rally-level-grid,
+  .rally-env-grid,
+  .rally-garage-grid,
+  .rally-upgrade-grid,
+  .rally-facts,
+  .rally-result-grid {
+    grid-template-columns: 1fr;
+  }
+}

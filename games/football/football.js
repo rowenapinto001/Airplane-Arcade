@@ -50,6 +50,26 @@ const FOOTBALL_DIFFICULTY = {
   },
 };
 
+const PENALTY_ROUNDS = 3;
+
+const PENALTY_KEEPER = {
+  easy: {
+    speed: 1.25,
+    coverage: 0.27,
+    computerScoreChance: 0.42,
+  },
+  normal: {
+    speed: 1.55,
+    coverage: 0.32,
+    computerScoreChance: 0.62,
+  },
+  hard: {
+    speed: 1.9,
+    coverage: 0.38,
+    computerScoreChance: 0.78,
+  },
+};
+
 export function createFootballGame(context) {
   const { root, audio, options, onExit, onSetup, onResult } = context;
   const controls = options.controls;
@@ -69,9 +89,11 @@ export function createFootballGame(context) {
       height: 540,
       paused: false,
       over: false,
+      phase: "match",
       countdown: 3.2,
       timeLeft: matchSeconds,
       score: { 1: 0, 2: 0 },
+      penalty: null,
       goalPause: 0,
       feedback: "Tap fast when the countdown ends",
       crowdPulse: 0,
@@ -82,6 +104,29 @@ export function createFootballGame(context) {
         2: createPlayer(2),
       },
       ball: createBall(),
+    };
+  }
+
+  function createPenaltyState() {
+    return {
+      shooter: 1,
+      scores: { 1: 0, 2: 0 },
+      shots: { 1: 0, 2: 0 },
+      shotPhase: "aim",
+      aimY: state.height / 2,
+      aimDirection: 1,
+      goalkeeperY: state.height / 2,
+      goalkeeperPhase: Math.random() * Math.PI * 2,
+      resultTimer: 0,
+      targetY: state.height / 2,
+      saveY: state.height / 2,
+      ballProgress: 0,
+      ballStart: { x: state.width / 2, y: state.height / 2 },
+      ballTarget: { x: state.width / 2, y: state.height / 2 },
+      scored: false,
+      aiWait: 0,
+      suddenDeath: false,
+      message: "Penalty shootout",
     };
   }
 
@@ -167,6 +212,7 @@ export function createFootballGame(context) {
       textLine(difficultyLine()),
       textLine("Tap repeatedly to chase the ball. Tap near the ball to kick it toward the goal."),
       textLine("The dummy auto-lines up vertically so one-button play stays comfortable."),
+      textLine("If full time ends level, penalties begin. Time your shot away from the moving goalkeeper."),
       actionButton("Tap Player 1", "tap-button", () => tapPlayer(1)),
       options.mode === "two" ? actionButton("Tap Player 2", "tap-button", () => tapPlayer(2)) : textLine("In solo, the second dummy is computer-controlled."),
       actionButton("Back to setup", "", () => {
@@ -242,6 +288,11 @@ export function createFootballGame(context) {
   }
 
   function update(dt) {
+    if (state.phase === "penalty") {
+      updatePenalty(dt);
+      return;
+    }
+
     if (state.countdown > 0) {
       const previous = Math.ceil(state.countdown);
       state.countdown -= dt;
@@ -267,6 +318,67 @@ export function createFootballGame(context) {
     updateHud();
 
     if (state.timeLeft <= 0) finishGame();
+  }
+
+  function updatePenalty(dt) {
+    const penalty = state.penalty;
+    if (!penalty) return;
+    state.crowdPulse = Math.max(0, state.crowdPulse - dt * 2.2);
+    updatePenaltyGoalkeeper(dt);
+
+    if (penalty.shotPhase === "aim") {
+      updatePenaltyAim(dt);
+      if (options.mode === "solo" && penalty.shooter === 2) {
+        penalty.aiWait -= dt;
+        if (penalty.aiWait <= 0) shootPenalty(2, true);
+      }
+    } else if (penalty.shotPhase === "flying") {
+      updatePenaltyBall(dt);
+    } else if (penalty.shotPhase === "result") {
+      penalty.resultTimer -= dt;
+      if (penalty.resultTimer <= 0) advancePenaltyShootout();
+    }
+
+    updateHud();
+  }
+
+  function updatePenaltyAim(dt) {
+    const penalty = state.penalty;
+    const layout = penaltyLayout(penalty.shooter);
+    const margin = 24;
+    const speed = Math.max(190, layout.goalHeight * 0.82);
+    penalty.aimY += penalty.aimDirection * speed * dt;
+    if (penalty.aimY < layout.goalTop + margin) {
+      penalty.aimY = layout.goalTop + margin;
+      penalty.aimDirection = 1;
+    }
+    if (penalty.aimY > layout.goalBottom - margin) {
+      penalty.aimY = layout.goalBottom - margin;
+      penalty.aimDirection = -1;
+    }
+  }
+
+  function updatePenaltyGoalkeeper(dt) {
+    const penalty = state.penalty;
+    const layout = penaltyLayout(penalty.shooter);
+    const keeper = keeperSettings();
+    if (penalty.shotPhase === "flying") {
+      penalty.goalkeeperY += (penalty.saveY - penalty.goalkeeperY) * Math.min(1, dt * 9);
+      return;
+    }
+    penalty.goalkeeperPhase += dt * keeper.speed;
+    const range = Math.max(20, layout.goalHeight / 2 - goalkeeperHeight(layout) / 2 - 8);
+    penalty.goalkeeperY = state.height / 2 + Math.sin(penalty.goalkeeperPhase) * range;
+  }
+
+  function updatePenaltyBall(dt) {
+    const penalty = state.penalty;
+    penalty.ballProgress = Math.min(1, penalty.ballProgress + dt / 0.48);
+    const t = easeOutCubic(penalty.ballProgress);
+    state.ball.x = penalty.ballStart.x + (penalty.ballTarget.x - penalty.ballStart.x) * t;
+    state.ball.y = penalty.ballStart.y + (penalty.ballTarget.y - penalty.ballStart.y) * t;
+    state.ball.spin += (penalty.shooter === 1 ? 1 : -1) * dt * 18;
+    if (penalty.ballProgress >= 1) finishPenaltyShot();
   }
 
   function updateAi(dt) {
@@ -363,7 +475,12 @@ export function createFootballGame(context) {
   }
 
   function tapPlayer(playerId, aiTap = false) {
-    if (state.paused || state.over || state.countdown > 0 || state.goalPause > 0) return;
+    if (state.paused || state.over) return;
+    if (state.phase === "penalty") {
+      shootPenalty(playerId, aiTap);
+      return;
+    }
+    if (state.countdown > 0 || state.goalPause > 0) return;
     const player = state.players[playerId];
     const ball = state.ball;
     const dx = ball.x - player.x;
@@ -385,6 +502,181 @@ export function createFootballGame(context) {
     }
   }
 
+  function startPenaltyShootout() {
+    state.phase = "penalty";
+    state.countdown = 0;
+    state.goalPause = 0;
+    state.timeLeft = 0;
+    state.penalty = createPenaltyState();
+    setupPenaltyShot("Draw at full time. Penalties decide it!");
+    audio.play("draw");
+    updateHud();
+  }
+
+  function setupPenaltyShot(message = "") {
+    const penalty = state.penalty;
+    const layout = penaltyLayout(penalty.shooter);
+    penalty.shotPhase = "aim";
+    penalty.aimY = state.height / 2;
+    penalty.aimDirection = Math.random() > 0.5 ? 1 : -1;
+    penalty.goalkeeperY = state.height / 2;
+    penalty.goalkeeperPhase = Math.random() * Math.PI * 2;
+    penalty.resultTimer = 0;
+    penalty.targetY = state.height / 2;
+    penalty.saveY = state.height / 2;
+    penalty.ballProgress = 0;
+    penalty.ballStart = { x: layout.spotX, y: layout.spotY };
+    penalty.ballTarget = { x: layout.goalX, y: state.height / 2 };
+    penalty.scored = false;
+    penalty.aiWait = options.mode === "solo" && penalty.shooter === 2 ? 0.95 : 0;
+    penalty.suddenDeath = penalty.shots[1] >= PENALTY_ROUNDS && penalty.shots[2] >= PENALTY_ROUNDS;
+    penalty.message = message || `${playerName(penalty.shooter)} lines up the penalty`;
+    state.ball = { ...createBall(), x: layout.spotX, y: layout.spotY };
+    state.feedback = penalty.message;
+  }
+
+  function shootPenalty(playerId, aiShot = false) {
+    const penalty = state.penalty;
+    if (!penalty || state.phase !== "penalty" || penalty.shotPhase !== "aim") return;
+    if (playerId !== penalty.shooter) return;
+    const layout = penaltyLayout(penalty.shooter);
+    const targetY = aiShot ? computerPenaltyTarget(layout) : penalty.aimY;
+    const outcome = resolvePenaltyOutcome(targetY, aiShot, layout);
+    penalty.targetY = targetY;
+    penalty.saveY = outcome.saveY;
+    penalty.scored = outcome.scored;
+    penalty.shotPhase = "flying";
+    penalty.ballProgress = 0;
+    penalty.ballStart = { x: state.ball.x, y: state.ball.y };
+    penalty.ballTarget = {
+      x: layout.goalX + layout.direction * 34,
+      y: targetY,
+    };
+    state.feedback = `${playerName(penalty.shooter)} shoots!`;
+    audio.play("kick");
+  }
+
+  function finishPenaltyShot() {
+    const penalty = state.penalty;
+    if (!penalty || penalty.shotPhase !== "flying") return;
+    penalty.shots[penalty.shooter] += 1;
+    if (penalty.scored) {
+      penalty.scores[penalty.shooter] += 1;
+      state.feedback = "Penalty scored!";
+      penalty.message = `${playerName(penalty.shooter)} scores the penalty!`;
+      state.crowdPulse = 1;
+      audio.play("goal");
+    } else {
+      state.feedback = "Saved by the goalkeeper!";
+      penalty.message = `Goalkeeper saves ${playerName(penalty.shooter)}'s penalty!`;
+      audio.play("draw");
+    }
+    penalty.shotPhase = "result";
+    penalty.resultTimer = 1.45;
+  }
+
+  function advancePenaltyShootout() {
+    if (isPenaltyShootoutComplete()) {
+      finishPenaltyShootout();
+      return;
+    }
+    state.penalty.shooter = state.penalty.shooter === 1 ? 2 : 1;
+    setupPenaltyShot();
+  }
+
+  function isPenaltyShootoutComplete() {
+    const penalty = state.penalty;
+    if (penalty.shots[1] < PENALTY_ROUNDS || penalty.shots[2] < PENALTY_ROUNDS) return false;
+    if (penalty.shots[1] !== penalty.shots[2]) return false;
+    return penalty.scores[1] !== penalty.scores[2];
+  }
+
+  async function finishPenaltyShootout() {
+    if (state.over) return;
+    state.over = true;
+    cancelAnimationFrame(raf);
+    const penalty = state.penalty;
+    const playerOneWon = penalty.scores[1] > penalty.scores[2];
+    const winner = playerOneWon ? (options.mode === "solo" ? "solo" : "player1") : options.mode === "solo" ? "computer" : "player2";
+    const winnerName = playerOneWon ? options.player1 : playerName(2);
+    const summary = `${state.score[1]}-${state.score[2]}, ${winnerName} wins ${penalty.scores[1]}-${penalty.scores[2]} on penalties`;
+    const result = {
+      gameId: "football",
+      mode: options.mode,
+      difficulty: options.difficulty,
+      winner,
+      score: state.score[1],
+      player1Score: state.score[1],
+      player2Score: state.score[2],
+      penaltyScore: { ...penalty.scores },
+      penaltyShots: { ...penalty.shots },
+      time: matchSeconds,
+      summary,
+    };
+    await saveResult(result);
+    audio.play("win");
+    showOverlay(`${winnerName} wins on penalties`, summary, true);
+  }
+
+  function resolvePenaltyOutcome(targetY, aiShot, layout) {
+    const keeper = keeperSettings();
+    const coverage = goalkeeperHeight(layout) * keeper.coverage;
+    if (aiShot) {
+      const scored = Math.random() < keeper.computerScoreChance;
+      const missSide = Math.random() > 0.5 ? 1 : -1;
+      const saveY = scored
+        ? clamp(targetY + missSide * (coverage + 46), layout.goalTop + 28, layout.goalBottom - 28)
+        : targetY;
+      return { scored, saveY };
+    }
+    const distance = Math.abs(targetY - state.penalty.goalkeeperY);
+    const scored = distance > coverage + state.ball.radius * 0.72;
+    const saveY = scored
+      ? clamp(state.penalty.goalkeeperY + Math.sign(targetY - state.penalty.goalkeeperY || 1) * coverage, layout.goalTop + 28, layout.goalBottom - 28)
+      : targetY;
+    return { scored, saveY };
+  }
+
+  function computerPenaltyTarget(layout) {
+    const margin = 32;
+    return layout.goalTop + margin + Math.random() * Math.max(1, layout.goalHeight - margin * 2);
+  }
+
+  function penaltyLayout(shooter) {
+    const direction = shooter === 1 ? 1 : -1;
+    const goalHeight = Math.min(state.height - 150, Math.max(config.goalHeight + 56, state.height * 0.42));
+    const goalTop = state.height / 2 - goalHeight / 2;
+    const goalBottom = state.height / 2 + goalHeight / 2;
+    const goalX = shooter === 1 ? state.width - 18 : 18;
+    return {
+      direction,
+      goalX,
+      keeperX: shooter === 1 ? state.width - 58 : 58,
+      spotX: shooter === 1 ? state.width * 0.34 : state.width * 0.66,
+      spotY: state.height / 2,
+      kickerX: shooter === 1 ? state.width * 0.27 : state.width * 0.73,
+      goalTop,
+      goalBottom,
+      goalHeight,
+    };
+  }
+
+  function keeperSettings() {
+    return PENALTY_KEEPER[options.difficulty] || PENALTY_KEEPER.normal;
+  }
+
+  function goalkeeperHeight(layout) {
+    return Math.min(150, Math.max(104, layout.goalHeight * 0.36));
+  }
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function easeOutCubic(value) {
+    return 1 - Math.pow(1 - value, 3);
+  }
+
   function playerName(player) {
     if (options.mode === "solo" && player === 2) return "Computer";
     return player === 1 ? options.player1 : options.player2;
@@ -404,6 +696,11 @@ export function createFootballGame(context) {
 
   function handlePointerDown(event) {
     event.preventDefault();
+    if (state.phase === "penalty" && state.penalty) {
+      if (options.mode === "solo" && state.penalty.shooter === 2) return;
+      shootPenalty(state.penalty.shooter);
+      return;
+    }
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     if (options.mode === "two" && x > rect.width / 2) tapPlayer(2);
@@ -413,6 +710,18 @@ export function createFootballGame(context) {
   function updateHud() {
     const hud = root.querySelector("#footballHud");
     if (!hud) return;
+    if (state.phase === "penalty" && state.penalty) {
+      const penalty = state.penalty;
+      const label = penalty.suddenDeath ? "Sudden death" : `Penalties ${Math.min(penalty.shots[1], penalty.shots[2]) + 1}/${PENALTY_ROUNDS}`;
+      hud.replaceChildren(
+        pill(label),
+        pill(`${options.player1}: ${state.score[1]} (${penalty.scores[1]})`),
+        pill(`${playerName(2)}: ${state.score[2]} (${penalty.scores[2]})`),
+        pill(`Shooter: ${playerName(penalty.shooter)}`),
+        pill(state.feedback),
+      );
+      return;
+    }
     const timer =
       state.countdown > 0
         ? `Kickoff: ${Math.ceil(state.countdown)}`
@@ -452,6 +761,25 @@ export function createFootballGame(context) {
     }
     state.ball.x *= xScale;
     state.ball.y *= yScale;
+    if (state.penalty) {
+      const penalty = state.penalty;
+      penalty.aimY *= yScale;
+      penalty.goalkeeperY *= yScale;
+      penalty.targetY *= yScale;
+      penalty.saveY *= yScale;
+      penalty.ballStart = { x: penalty.ballStart.x * xScale, y: penalty.ballStart.y * yScale };
+      penalty.ballTarget = { x: penalty.ballTarget.x * xScale, y: penalty.ballTarget.y * yScale };
+      const layout = penaltyLayout(penalty.shooter);
+      penalty.aimY = clamp(penalty.aimY, layout.goalTop + 24, layout.goalBottom - 24);
+      penalty.goalkeeperY = clamp(penalty.goalkeeperY, layout.goalTop + 24, layout.goalBottom - 24);
+      penalty.targetY = clamp(penalty.targetY, layout.goalTop + 24, layout.goalBottom - 24);
+      penalty.saveY = clamp(penalty.saveY, layout.goalTop + 24, layout.goalBottom - 24);
+      if (state.phase === "penalty" && penalty.shotPhase !== "flying") {
+        state.ball.x = layout.spotX;
+        state.ball.y = layout.spotY;
+        penalty.ballStart = { x: layout.spotX, y: layout.spotY };
+      }
+    }
     draw();
   }
 
@@ -460,9 +788,13 @@ export function createFootballGame(context) {
     ctx.clearRect(0, 0, state.width, state.height);
     drawField();
     drawCrowd();
-    drawGoals();
-    drawPlayer(state.players[1], "#46c7d9", "#ffd35a");
-    drawPlayer(state.players[2], "#ef5b63", "#7f59e8");
+    if (state.phase === "penalty" && state.penalty) {
+      drawPenaltyScene();
+    } else {
+      drawGoals();
+      drawPlayer(state.players[1], "#46c7d9", "#ffd35a");
+      drawPlayer(state.players[2], "#ef5b63", "#7f59e8");
+    }
     drawBall();
     drawOverlayText();
   }
@@ -517,6 +849,141 @@ export function createFootballGame(context) {
       ctx.lineTo(state.width, y);
       ctx.stroke();
     }
+  }
+
+  function drawPenaltyScene() {
+    const penalty = state.penalty;
+    const layout = penaltyLayout(penalty.shooter);
+    drawMutedGoal(layout.direction === 1 ? 18 : state.width - 18, layout.goalTop, layout.goalHeight, -layout.direction);
+    drawPenaltyGoal(layout);
+    drawPenaltySpot(layout);
+    drawPenaltyKicker(layout);
+    drawGoalkeeper(layout);
+    drawPenaltyAim(layout);
+  }
+
+  function drawMutedGoal(goalX, top, height, direction) {
+    ctx.save();
+    ctx.globalAlpha = 0.28;
+    ctx.fillStyle = "rgba(255,255,255,0.54)";
+    ctx.fillRect(direction === 1 ? goalX - 28 : goalX, top, 28, height);
+    ctx.restore();
+  }
+
+  function drawPenaltyGoal(layout) {
+    const postX = layout.direction === 1 ? state.width - 36 : 8;
+    ctx.save();
+    ctx.fillStyle = "rgba(255,255,255,0.78)";
+    ctx.fillRect(postX, layout.goalTop, 28, layout.goalHeight);
+    ctx.strokeStyle = "rgba(19,32,53,0.42)";
+    ctx.lineWidth = 4;
+    ctx.strokeRect(postX, layout.goalTop, 28, layout.goalHeight);
+    ctx.strokeStyle = "rgba(19,32,53,0.22)";
+    ctx.lineWidth = 2;
+    for (let y = layout.goalTop + 20; y < layout.goalBottom; y += 20) {
+      ctx.beginPath();
+      ctx.moveTo(postX, y);
+      ctx.lineTo(postX + 28, y);
+      ctx.stroke();
+    }
+    ctx.fillStyle = "rgba(255,255,255,0.36)";
+    ctx.fillRect(
+      layout.direction === 1 ? state.width - 170 : 36,
+      layout.goalTop - 26,
+      134,
+      layout.goalHeight + 52,
+    );
+    ctx.restore();
+  }
+
+  function drawPenaltySpot(layout) {
+    ctx.save();
+    ctx.fillStyle = "rgba(255,255,255,0.62)";
+    ctx.beginPath();
+    ctx.arc(layout.spotX, layout.spotY, 36, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(19,32,53,0.16)";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(layout.spotX, layout.spotY, 68, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawPenaltyKicker(layout) {
+    const player = {
+      id: state.penalty.shooter,
+      x: layout.kickerX,
+      y: layout.spotY,
+      tapGlow: state.penalty.shotPhase === "flying" ? 1 : 0,
+    };
+    const body = state.penalty.shooter === 1 ? "#46c7d9" : "#ef5b63";
+    const hat = state.penalty.shooter === 1 ? "#ffd35a" : "#7f59e8";
+    drawPlayer(player, body, hat);
+  }
+
+  function drawGoalkeeper(layout) {
+    const height = goalkeeperHeight(layout);
+    const reach = height * 0.58;
+    const saveLean = state.penalty.shotPhase === "flying" ? Math.sign(state.penalty.saveY - state.penalty.goalkeeperY) * 10 : 0;
+    ctx.save();
+    ctx.translate(layout.keeperX, state.penalty.goalkeeperY);
+    ctx.fillStyle = "rgba(19,32,53,0.2)";
+    ctx.beginPath();
+    ctx.ellipse(0, height / 2 + 10, 40, 11, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.rotate((layout.direction === 1 ? -1 : 1) * saveLean * 0.012);
+    ctx.strokeStyle = "#173c52";
+    ctx.lineWidth = 13;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(0, -height * 0.2);
+    ctx.lineTo(layout.direction * -24, -reach);
+    ctx.moveTo(0, -height * 0.18);
+    ctx.lineTo(layout.direction * -24, reach * 0.8);
+    ctx.stroke();
+    ctx.fillStyle = "#2fb36d";
+    ctx.beginPath();
+    ctx.roundRect(-22, -height * 0.32, 44, height * 0.66, 12);
+    ctx.fill();
+    ctx.fillStyle = "#ffe3ba";
+    ctx.beginPath();
+    ctx.arc(0, -height * 0.48, 22, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#ffd35a";
+    ctx.beginPath();
+    ctx.arc(layout.direction * -28, -reach, 10, 0, Math.PI * 2);
+    ctx.arc(layout.direction * -28, reach * 0.8, 10, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#132035";
+    ctx.beginPath();
+    ctx.arc(-7, -height * 0.5, 3, 0, Math.PI * 2);
+    ctx.arc(8, -height * 0.5, 3, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawPenaltyAim(layout) {
+    const penalty = state.penalty;
+    if (penalty.shotPhase === "result") return;
+    const y = penalty.shotPhase === "aim" ? penalty.aimY : penalty.targetY;
+    ctx.save();
+    ctx.strokeStyle = penalty.shotPhase === "aim" ? "#ffd35a" : "rgba(255,255,255,0.72)";
+    ctx.lineWidth = 4;
+    ctx.setLineDash([12, 10]);
+    ctx.beginPath();
+    ctx.moveTo(state.ball.x, state.ball.y);
+    ctx.lineTo(layout.goalX, y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = penalty.shotPhase === "aim" ? "#ff8a3d" : "#ffffff";
+    ctx.strokeStyle = "#132035";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(layout.goalX - layout.direction * 18, y, 13, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.restore();
   }
 
   function drawPlayer(player, body, hat) {
@@ -580,6 +1047,20 @@ export function createFootballGame(context) {
   }
 
   function drawOverlayText() {
+    if (state.phase === "penalty" && state.penalty) {
+      if (state.penalty.shotPhase === "result") {
+        centerText(state.penalty.scored ? "GOAL!" : "SAVED!", 70);
+      }
+      ctx.fillStyle = "rgba(19,32,53,0.7)";
+      ctx.font = "900 18px system-ui";
+      const control =
+        options.mode === "solo" && state.penalty.shooter === 2
+          ? "Computer shot"
+          : `${playerName(state.penalty.shooter)}: ${labelsFor(state.penalty.shooter === 1 ? controls.p1Action : controls.p2Action)}`;
+      ctx.fillText(control, 64, state.height - 58);
+      ctx.fillText("Aim away from the goalkeeper", state.width - 330, state.height - 58);
+      return;
+    }
     if (state.countdown > 0) {
       centerText(String(Math.ceil(state.countdown)), 96);
     } else if (state.goalPause > 0) {
@@ -607,6 +1088,10 @@ export function createFootballGame(context) {
 
   async function finishGame() {
     if (state.over) return;
+    if (state.phase !== "penalty" && state.score[1] === state.score[2]) {
+      startPenaltyShootout();
+      return;
+    }
     state.over = true;
     cancelAnimationFrame(raf);
     let winner = "draw";

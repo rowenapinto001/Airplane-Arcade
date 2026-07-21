@@ -5,7 +5,7 @@ export const GAME_CATALOG = [
     shortName: "Football",
     description: "Tap to sprint, bump the ball, and score first in a funny one-button match.",
     longDescription:
-      "A fast tap-based football match with dummy players, simple collisions, countdowns, goal celebrations, and a fair solo opponent.",
+      "A fast tap-based football match with dummy players, simple collisions, countdowns, goal celebrations, penalties for tied matches, and a fair solo opponent.",
     image: "../assets/games/football.svg",
     accent: "#2fb36d",
     modes: ["solo", "two"],
@@ -17,6 +17,7 @@ export const GAME_CATALOG = [
       "Tap your action key repeatedly to chase the ball.",
       "Tap near the ball to kick it toward the other goal.",
       "First to 3 goals wins. The match timer changes with difficulty.",
+      "If full time ends level, a penalty shootout begins with a moving goalkeeper.",
       "Solo mode adds a computer dummy whose reaction speed follows the difficulty.",
     ],
     controls: {
@@ -200,6 +201,38 @@ export const GAME_CATALOG = [
       ],
     },
   },
+  {
+    id: "cloud-ridge-rally",
+    name: "Cloud Ridge Rally",
+    shortName: "Rally",
+    description: "Drive across wild sky roads, manage fuel, perform stunts, and climb as far as possible.",
+    longDescription:
+      "An original solo physics driving game with uneven cloud roads, fuel management, Flight Coins, checkpoints, campaign levels, endless journeys, vehicle upgrades, and locally saved progress.",
+    image: "../assets/games/cloud-ridge-rally.svg",
+    accent: "#38aee2",
+    modes: ["solo"],
+    difficulties: ["easy", "normal", "hard"],
+    badges: ["Driving", "Physics"],
+    defaultDifficulty: "normal",
+    hasPlayerSetup: false,
+    instructions: [
+      "Drive from left to right across hills, valleys, bridges, ramps, rocks, and cloud roads.",
+      "Manage fuel by collecting energy pickups and coasting when possible.",
+      "Collect Flight Coins, Boarding Stars, Lost Luggage Tokens, and Golden Propellers.",
+      "Upgrade vehicles in the garage and unlock campaign levels sequentially.",
+      "Use Space for the selected special ability and R to restart a run.",
+    ],
+    controls: {
+      solo: [
+        "Accelerate: D or Right Arrow",
+        "Brake / reverse: A or Left Arrow",
+        "Air balance: W/S or Up/Down Arrow",
+        "Ability: Space",
+        "Restart: R",
+        "Pause: Escape",
+      ],
+    },
+  },
 ];
 
 export const COMING_SOON = [
@@ -272,6 +305,11 @@ export const DIFFICULTY_DETAILS = {
     easy: "Slower opponents, longer obstacle waits, more frequent AI stumbles, and extra room to qualify.",
     normal: "Balanced contestant speed, believable AI mistakes, sensible route choices, and steady knockout pressure.",
     hard: "Efficient fair opponents, quicker recovery, cleaner routes, and rare but still human-like mistakes.",
+  },
+  "cloud-ridge-rally": {
+    easy: "Gentler hills, more fuel, slower hazards, and forgiving crash checks.",
+    normal: "Balanced terrain, fuel pickups, stunts, upgrades, and campaign progression.",
+    hard: "Steeper sky roads, tighter fuel, stronger obstacle pressure, and higher coin rewards.",
   },
 };
 

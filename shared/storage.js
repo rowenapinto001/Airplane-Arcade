@@ -69,6 +69,15 @@ export const DEFAULT_CONTROLS = {
     cameraReset: ["KeyR"],
     pause: ["Escape"],
   },
+  "cloud-ridge-rally": {
+    accelerate: ["KeyD", "ArrowRight"],
+    brake: ["KeyA", "ArrowLeft"],
+    tiltBack: ["KeyW", "ArrowUp"],
+    tiltForward: ["KeyS", "ArrowDown"],
+    ability: ["Space"],
+    restart: ["KeyR"],
+    pause: ["Escape"],
+  },
 };
 
 export const DEFAULT_DATA = {
@@ -97,6 +106,7 @@ export const DEFAULT_DATA = {
       "cake-maker": 0,
       "cloud-crew-clash": 0,
       "runway-rumble": 0,
+      "cloud-ridge-rally": 0,
     },
     footballWins: {
       solo: 0,
@@ -202,6 +212,43 @@ export const DEFAULT_DATA = {
       selectedCourseOrder: [],
       recentSummary: null,
       cameraSensitivity: 0.65,
+    },
+    cloudRidgeRallyRecords: {
+      highestUnlockedLevel: 1,
+      stars: {},
+      bestEndless: {},
+      bestCampaignDistance: 0,
+      unlockedVehicles: ["baggage-buggy"],
+      selectedVehicle: "baggage-buggy",
+      selectedEnvironment: "runway",
+      selectedDifficulty: "normal",
+      recentMode: "campaign",
+      recentLevel: 1,
+      vehicleSkins: {},
+      flightCoins: 0,
+      boardingStars: 0,
+      lostLuggageTokens: 0,
+      goldenPropellers: 0,
+      bestStuntCombo: 0,
+      longestJump: 0,
+      longestWheelie: 0,
+      totalDistance: 0,
+      totalFuelCollected: 0,
+      tutorialComplete: false,
+      cameraShake: true,
+      simpleControls: false,
+      completedLevels: [],
+      selectedControlStyle: "standard",
+      upgrades: {
+        "baggage-buggy": { engine: 0, grip: 0, suspension: 0, fuelTank: 0, stability: 0, airControl: 0, brake: 0 },
+        "cloud-rover": { engine: 0, grip: 0, suspension: 0, fuelTank: 0, stability: 0, airControl: 0, brake: 0 },
+        "runway-jeep": { engine: 0, grip: 0, suspension: 0, fuelTank: 0, stability: 0, airControl: 0, brake: 0 },
+        "cargo-truck": { engine: 0, grip: 0, suspension: 0, fuelTank: 0, stability: 0, airControl: 0, brake: 0 },
+        "jet-kart": { engine: 0, grip: 0, suspension: 0, fuelTank: 0, stability: 0, airControl: 0, brake: 0 },
+        "moon-hopper": { engine: 0, grip: 0, suspension: 0, fuelTank: 0, stability: 0, airControl: 0, brake: 0 },
+        "rescue-tractor": { engine: 0, grip: 0, suspension: 0, fuelTank: 0, stability: 0, airControl: 0, brake: 0 },
+        "propeller-buggy": { engine: 0, grip: 0, suspension: 0, fuelTank: 0, stability: 0, airControl: 0, brake: 0 },
+      },
     },
     recentResults: [],
   },
@@ -321,6 +368,12 @@ export function getGameProgress(data, gameId) {
     if (record.pausedCompetition) return `Continue Round ${record.pausedCompetition.round} | ${record.selectedDifficulty}`;
     const best = record.bestPlacement ? `Best ${ordinal(record.bestPlacement)}` : "No final yet";
     return `${best} | ${record.totalCompetitions} played`;
+  }
+  if (gameId === "cloud-ridge-rally") {
+    const record = progress.cloudRidgeRallyRecords;
+    const stars = Object.values(record.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0);
+    const best = Math.max(record.bestCampaignDistance || 0, ...Object.values(record.bestEndless || {}).map(Number));
+    return `Best ${Math.floor(best)}m | Level ${record.highestUnlockedLevel} | ${stars} stars`;
   }
   return "Ready offline";
 }
@@ -492,6 +545,53 @@ export async function recordGameResult(result) {
       }
       for (const cosmetic of stamped.unlockedCosmetics || []) {
         if (!record.unlockedCosmetics.includes(cosmetic)) record.unlockedCosmetics.push(cosmetic);
+      }
+    }
+
+    if (stamped.gameId === "cloud-ridge-rally") {
+      const record = progress.cloudRidgeRallyRecords;
+      record.selectedDifficulty = stamped.difficulty || record.selectedDifficulty;
+      record.selectedVehicle = stamped.vehicle || record.selectedVehicle;
+      record.selectedEnvironment = stamped.environment || record.selectedEnvironment;
+      record.recentMode = stamped.rallyMode || record.recentMode;
+      record.recentLevel = stamped.level || record.recentLevel || 1;
+      record.flightCoins += Math.max(0, Math.floor(stamped.coins || 0));
+      record.boardingStars += stamped.rare?.boardingStars || 0;
+      record.lostLuggageTokens += stamped.rare?.luggageTokens || 0;
+      record.goldenPropellers += stamped.rare?.goldenPropellers || 0;
+      record.bestStuntCombo = Math.max(record.bestStuntCombo || 0, stamped.combo || 0);
+      record.longestJump = Math.max(record.longestJump || 0, stamped.longestJump || 0);
+      record.longestWheelie = Math.max(record.longestWheelie || 0, stamped.longestWheelie || 0);
+      record.totalDistance += stamped.distance || 0;
+      record.totalFuelCollected += stamped.rare?.fuelCollected || 0;
+      record.bestCampaignDistance = Math.max(record.bestCampaignDistance || 0, stamped.distance || 0);
+      if (stamped.rallyMode === "endless") {
+        record.bestEndless[stamped.environment || "runway"] = Math.max(
+          record.bestEndless[stamped.environment || "runway"] || 0,
+          stamped.distance || 0,
+        );
+      }
+      if (stamped.completed && stamped.level) {
+        const key = String(stamped.level);
+        record.stars[key] = Math.max(record.stars[key] || 0, stamped.stars || 1);
+        record.highestUnlockedLevel = Math.max(record.highestUnlockedLevel || 1, Math.min(12, stamped.level + 1));
+        if (!record.completedLevels.includes(stamped.level)) record.completedLevels.push(stamped.level);
+      }
+      for (const vehicleId of [
+        "cloud-rover",
+        "runway-jeep",
+        "cargo-truck",
+        "jet-kart",
+        "moon-hopper",
+        "rescue-tractor",
+        "propeller-buggy",
+      ]) {
+        const unlockByLevel = { "cloud-rover": 3, "cargo-truck": 5, "moon-hopper": 9 }[vehicleId];
+        const unlockByStars = vehicleId === "rescue-tractor" && Object.values(record.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0) >= 18;
+        const unlockByPropellers = vehicleId === "propeller-buggy" && record.goldenPropellers >= 3;
+        if ((unlockByLevel && record.highestUnlockedLevel >= unlockByLevel) || unlockByStars || unlockByPropellers) {
+          if (!record.unlockedVehicles.includes(vehicleId)) record.unlockedVehicles.push(vehicleId);
+        }
       }
     }
 

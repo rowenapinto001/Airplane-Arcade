@@ -110,6 +110,16 @@ export function describeGameControls(settings, gameId) {
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }
+  if (gameId === "cloud-ridge-rally") {
+    return [
+      `Accelerate: ${labelsFor(controls.accelerate)}`,
+      `Brake / reverse: ${labelsFor(controls.brake)}`,
+      `Air balance: ${labelsFor([controls.tiltBack[0], controls.tiltForward[0]])}`,
+      `Ability: ${labelsFor(controls.ability)}`,
+      `Restart: ${labelsFor(controls.restart)}`,
+      `Pause: ${labelsFor(controls.pause)}`,
+    ];
+  }
   return [
     `Player 1: ${labelsFor(controls.p1Action)}`,
     `Player 2: ${labelsFor(controls.p2Action)}`,

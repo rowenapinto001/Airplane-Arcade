@@ -27,6 +27,7 @@ import { createArcheryGame } from "../games/archery/archery.js";
 import { createCakeMakerGame } from "../games/cake-maker/cake-maker.js";
 import { createCloudCrewClashGame } from "../games/cloud-crew-clash/cloud-crew-clash.js";
 import { createRunwayRumbleGame } from "../games/runway-rumble/runway-rumble.js";
+import { createCloudRidgeRallyGame } from "../games/cloud-ridge-rally/cloud-ridge-rally.js";
 
 const app = document.querySelector("#arcadeApp");
 const view = document.querySelector("#arcadeView");
@@ -43,6 +44,7 @@ const GAME_FACTORIES = {
   "cake-maker": createCakeMakerGame,
   "cloud-crew-clash": createCloudCrewClashGame,
   "runway-rumble": createRunwayRumbleGame,
+  "cloud-ridge-rally": createCloudRidgeRallyGame,
 };
 
 let data;
@@ -396,12 +398,13 @@ async function launchGame(gameId, launchOptions = {}) {
   setRibbon(`${game.name} is running. Pause, restart, or return to the library from inside the game.`);
   clearNode(view);
 
-  if (gameId === "sumo" || gameId === "archery" || gameId === "cloud-crew-clash" || gameId === "runway-rumble") {
+  if (gameId === "sumo" || gameId === "archery" || gameId === "cloud-crew-clash" || gameId === "runway-rumble" || gameId === "cloud-ridge-rally") {
     data = await updateData((draft) => {
       if (gameId === "sumo") draft.progress.sumoRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "archery") draft.progress.archeryRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "cloud-crew-clash") draft.progress.cloudCrewRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "runway-rumble") draft.progress.runwayRumbleRecords.selectedDifficulty = setup.difficulty;
+      if (gameId === "cloud-ridge-rally") draft.progress.cloudRidgeRallyRecords.selectedDifficulty = setup.difficulty;
       return draft;
     });
   }
@@ -476,6 +479,11 @@ function renderStats() {
       data.progress.runwayRumbleRecords.bestPlacement ? `Best ${ordinal(data.progress.runwayRumbleRecords.bestPlacement)}` : "No final yet",
       `${data.progress.runwayRumbleRecords.totalCompetitions} competitions. ${data.progress.runwayRumbleRecords.totalQualifications} qualifications. ${data.progress.runwayRumbleRecords.finalVictories} victories.`,
     ),
+    resultCard(
+      "Cloud Ridge Rally",
+      `Best ${Math.floor(Math.max(data.progress.cloudRidgeRallyRecords.bestCampaignDistance || 0, ...Object.values(data.progress.cloudRidgeRallyRecords.bestEndless || {}).map(Number)))}m`,
+      `Level ${data.progress.cloudRidgeRallyRecords.highestUnlockedLevel}. ${data.progress.cloudRidgeRallyRecords.flightCoins} Flight Coins. ${Object.values(data.progress.cloudRidgeRallyRecords.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0)} stars.`,
+    ),
   );
   panel.append(grid, recentResultsList());
   view.append(panel);
@@ -533,6 +541,7 @@ function renderSettings() {
     controlsSettings("cake-maker"),
     controlsSettings("cloud-crew-clash"),
     controlsSettings("runway-rumble"),
+    controlsSettings("cloud-ridge-rally"),
   );
   panel.append(grid);
   view.append(panel);

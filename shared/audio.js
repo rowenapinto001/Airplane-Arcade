@@ -56,6 +56,21 @@ const SOUND_FILES = {
   runwayQualify: "runway-rumble/qualify.wav",
   runwayEliminate: "runway-rumble/eliminate.wav",
   runwayVictory: "runway-rumble/victory.wav",
+  rallyEngine: "cloud-ridge-rally/engine.wav",
+  rallyAccelerate: "cloud-ridge-rally/accelerate.wav",
+  rallyBrake: "cloud-ridge-rally/brake.wav",
+  rallySuspension: "cloud-ridge-rally/suspension.wav",
+  rallyCoin: "cloud-ridge-rally/coin.wav",
+  rallyFuel: "cloud-ridge-rally/fuel.wav",
+  rallyJump: "cloud-ridge-rally/jump.wav",
+  rallyLanding: "cloud-ridge-rally/landing.wav",
+  rallyHardLanding: "cloud-ridge-rally/hard-landing.wav",
+  rallyStunt: "cloud-ridge-rally/stunt.wav",
+  rallyCheckpoint: "cloud-ridge-rally/checkpoint.wav",
+  rallyCrash: "cloud-ridge-rally/crash.wav",
+  rallyComplete: "cloud-ridge-rally/complete.wav",
+  rallyUnlock: "cloud-ridge-rally/unlock.wav",
+  rallyUpgrade: "cloud-ridge-rally/upgrade.wav",
 };
 
 function assetUrl(path) {

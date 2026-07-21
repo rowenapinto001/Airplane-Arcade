@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-labelledby="title desc">
+  <title id="title">Cloud Ridge Rally</title>
+  <desc id="desc">A cartoon airport rally buggy driving over cloud hills with coins and fuel.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#8ee8ff"/>
+      <stop offset="1" stop-color="#fff4cf"/>
+    </linearGradient>
+    <linearGradient id="hill" x1="0" x2="1">
+      <stop offset="0" stop-color="#2fb36d"/>
+      <stop offset="1" stop-color="#46c7d9"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="220" rx="28" fill="url(#sky)"/>
+  <g fill="#fff" opacity=".78">
+    <ellipse cx="55" cy="58" rx="36" ry="15"/>
+    <ellipse cx="82" cy="52" rx="24" ry="18"/>
+    <ellipse cx="242" cy="46" rx="42" ry="16"/>
+    <ellipse cx="270" cy="39" rx="24" ry="20"/>
+  </g>
+  <path d="M0 158c42-42 82-42 119 0s78 41 123-10c29-33 53-42 78-28v100H0z" fill="url(#hill)"/>
+  <path d="M0 176c48-23 86-19 116 10 38 36 78 32 124-15 29-30 56-37 80-19v68H0z" fill="#1d8c56" opacity=".7"/>
+  <g transform="translate(96 121) rotate(-11)">
+    <path d="M14 35h102c12 0 22-9 25-21l6-23H96L75-34H37L20-10H3z" fill="#46c7d9" stroke="#132035" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M47-27h30l17 19H34z" fill="#eaffff" stroke="#132035" stroke-width="5"/>
+    <path d="M101-23h23l-10 20h-31z" fill="#ffd35a"/>
+    <circle cx="35" cy="38" r="21" fill="#132035"/>
+    <circle cx="35" cy="38" r="9" fill="#fff"/>
+    <circle cx="113" cy="38" r="21" fill="#132035"/>
+    <circle cx="113" cy="38" r="9" fill="#fff"/>
+  </g>
+  <g transform="translate(238 94)">
+    <circle r="16" fill="#ffd35a" stroke="#ff8a3d" stroke-width="5"/>
+    <rect x="-3" y="-9" width="6" height="18" fill="#fff8b7"/>
+  </g>
+  <g transform="translate(50 118)">
+    <rect x="-13" y="-18" width="26" height="36" rx="7" fill="#7f59e8"/>
+    <rect x="-6" y="-24" width="12" height="8" fill="#e9ddff"/>
+    <path d="m-2-7 9 0-8 20-8 0z" fill="#ffd35a"/>
+  </g>
+  <path d="m266 122 7 17 18 2-14 11 5 18-16-10-16 10 5-18-14-11 18-2z" fill="#ffd35a" stroke="#ff8a3d" stroke-width="4" stroke-linejoin="round"/>
+</svg>
