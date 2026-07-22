@@ -8,9 +8,9 @@ import { createRallyRenderer } from "./rally-renderer.js";
 import { garageSummary, garageVehicleCards, upgradeRows } from "./rally-garage.js";
 
 const DIFFICULTY = {
-  easy: { fuel: 1.18, coins: 1, damage: 0.78, label: "Gentle hills, more fuel, and forgiving crashes." },
-  normal: { fuel: 1, coins: 1, damage: 1, label: "Balanced slopes, fuel, stunts, and progression." },
-  hard: { fuel: 0.86, coins: 1.18, damage: 1.2, label: "Steeper ridges, tighter fuel, and higher rewards." },
+  easy: { fuel: 1.24, terrain: 0.9, coins: 1, damage: 0.78, endlessDistance: 3200, label: "Longer routes with gentler hills, more fuel, and forgiving crashes." },
+  normal: { fuel: 0.96, terrain: 1.1, coins: 1, damage: 1, endlessDistance: 3800, label: "Long-distance routes with tougher fuel, stunts, and progression." },
+  hard: { fuel: 0.82, terrain: 1.3, coins: 1.18, damage: 1.2, endlessDistance: 4500, label: "Very long routes, steeper ridges, tighter fuel, and higher rewards." },
 };
 
 function clone(value) {
@@ -127,12 +127,12 @@ export function createCloudRidgeRallyGame(context) {
     const panel = el("section", "rally-menu-panel");
     panel.append(
       el("h2", "", "Drive the sky roads"),
-      el("p", "", "Climb steep cloud ridges, manage fuel, collect Flight Coins, perform stunts, and unlock vehicles across original airport-inspired routes."),
+      el("p", "", "Travel long cloud-road distances, manage fuel, collect Flight Coins, perform stunts, and unlock vehicles across original airport-inspired routes."),
     );
     const grid = el("div", "rally-info-grid");
     [
-      ["Campaign", "12 designed levels with checkpoints, star goals, and unlocks."],
-      ["Endless Journey", "Drive as far as possible through one environment."],
+      ["Campaign", "12 longer-distance levels with checkpoints, star goals, and unlocks."],
+      ["Endless Journey", "Drive a longer open route through one environment."],
       ["Garage", "Upgrade engine, grip, suspension, fuel tank, stability, air control, and brakes."],
       ["Offline", "Progress and controls stay in local browser storage."],
     ].forEach(([title, copy]) => {
@@ -159,7 +159,8 @@ export function createCloudRidgeRallyGame(context) {
     [
       ["Accelerate", `${labelsFor(controls.accelerate)} pushes the vehicle forward and uses fuel.`],
       ["Brake / Reverse", `${labelsFor(controls.brake)} slows down, then reverses.`],
-      ["Air Balance", `${labelsFor(controls.tiltBack)} tilts backward. ${labelsFor(controls.tiltForward)} tilts forward.`],
+      ["Jump", `${labelsFor(controls.jump)} pops the vehicle upward from the ground.`],
+      ["Air Balance", `${labelsFor(controls.tiltBack)} tilts backward in the air. ${labelsFor(controls.tiltForward)} tilts forward.`],
       ["Ability", `${labelsFor(controls.ability)} activates the selected vehicle ability.`],
       ["Crash Rules", "A long upside-down slide, cabin hit, falling away, or empty fuel ends the run."],
       ["Stunts", "Jumps, flips, wheelies, perfect landings, and near-crash recoveries build combos."],
@@ -452,7 +453,7 @@ export function createCloudRidgeRallyGame(context) {
     const stats = upgradedStats(vehicle, records.upgrades?.[vehicle.id] || {});
     const difficulty = DIFFICULTY[state.difficulty] || DIFFICULTY.normal;
     stats.fuelCapacity = Math.round(stats.fuelCapacity * difficulty.fuel);
-    const terrain = generateTerrain({ mode, levelId, environmentId, distance: 2200 });
+    const terrain = generateTerrain({ mode, levelId, environmentId, distance: difficulty.endlessDistance, difficultyScale: difficulty.terrain });
     const vehicleState = createVehicleState(vehicle, stats, 120);
     vehicleState.maxFuel = stats.fuelCapacity;
     vehicleState.fuel = stats.fuelCapacity;
@@ -486,7 +487,7 @@ export function createCloudRidgeRallyGame(context) {
   }
 
   function createInputState() {
-    return { accelerate: false, brake: false, tiltBack: false, tiltForward: false, ability: false };
+    return { accelerate: false, brake: false, jump: false, tiltBack: false, tiltForward: false, ability: false };
   }
 
   function renderGameplay() {
@@ -504,6 +505,7 @@ export function createCloudRidgeRallyGame(context) {
     controlsPanel.append(
       actionButton("Pause", "", pauseGame),
       actionButton("Restart", "", () => renderRestartConfirm()),
+      actionButton("Jump", "", () => triggerJump()),
       actionButton("Ability", "primary-action", () => triggerAbility()),
       actionButton("Garage", "", () => renderConfirm("Return to Garage?", "This ends the current run and keeps earned progress.", renderGarage)),
       actionButton("Arcade", "", () => renderConfirm("Return to Arcade?", "This ends the current run and returns to the library.", exitToArcade)),
@@ -560,6 +562,7 @@ export function createCloudRidgeRallyGame(context) {
     const input = state.run.input;
     input.accelerate = hasKey(controls.accelerate) || keys.has("ArrowRight");
     input.brake = hasKey(controls.brake) || keys.has("ArrowLeft");
+    input.jump = hasKey(controls.jump);
     const simple = state.settings.simpleControls;
     input.tiltBack = hasKey(controls.tiltBack) || keys.has("ArrowUp") || (simple && input.accelerate && !state.run.vehicleState.grounded);
     input.tiltForward = hasKey(controls.tiltForward) || keys.has("ArrowDown") || (simple && input.brake && !state.run.vehicleState.grounded);
@@ -702,6 +705,23 @@ export function createCloudRidgeRallyGame(context) {
       addMessage(ability.name, 0);
       audio.play("rallyAccelerate");
     }
+  }
+
+  function triggerJump() {
+    if (!state.run || state.run.phase !== "playing") return;
+    const vehicle = state.run.vehicleState;
+    if (!vehicle.grounded || vehicle.jumpCooldown > 0 || vehicle.crashed) return;
+    const direction = vehicle.vx < -10 ? -1 : 1;
+    const lift = 430 + state.run.stats.suspension * 80;
+    vehicle.vy -= lift;
+    vehicle.vx += direction * Math.max(45, Math.abs(vehicle.vx) * 0.04);
+    vehicle.angularVelocity -= direction * 0.45;
+    vehicle.grounded = false;
+    vehicle.frontContact = false;
+    vehicle.rearContact = false;
+    vehicle.jumpCooldown = 0.55;
+    addMessage("Jump", 0);
+    audio.play("rallyJump");
   }
 
   function endRun(reason, message = "") {
@@ -941,6 +961,10 @@ export function createCloudRidgeRallyGame(context) {
       event.preventDefault();
       renderRestartConfirm();
     }
+    if (matchesControl(event, controls.jump) && !event.repeat) {
+      event.preventDefault();
+      triggerJump();
+    }
     if (matchesControl(event, controls.ability) && !event.repeat) {
       event.preventDefault();
       triggerAbility();
@@ -1001,6 +1025,7 @@ export function createCloudRidgeRallyGame(context) {
     updateVehiclePhysics,
     collectFuel: handleCollections,
     collectCoin: handleCollections,
+    jump: triggerJump,
     activateAbility: triggerAbility,
     detectStunt: detectStunts,
     reachCheckpoint: checkCheckpoints,

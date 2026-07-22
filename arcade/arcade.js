@@ -28,6 +28,7 @@ import { createCakeMakerGame } from "../games/cake-maker/cake-maker.js";
 import { createCloudCrewClashGame } from "../games/cloud-crew-clash/cloud-crew-clash.js";
 import { createRunwayRumbleGame } from "../games/runway-rumble/runway-rumble.js";
 import { createCloudRidgeRallyGame } from "../games/cloud-ridge-rally/cloud-ridge-rally.js";
+import { createRedEyeRunGame } from "../games/red-eye-run/red-eye-run.js";
 
 const app = document.querySelector("#arcadeApp");
 const view = document.querySelector("#arcadeView");
@@ -45,6 +46,7 @@ const GAME_FACTORIES = {
   "cloud-crew-clash": createCloudCrewClashGame,
   "runway-rumble": createRunwayRumbleGame,
   "cloud-ridge-rally": createCloudRidgeRallyGame,
+  "red-eye-run": createRedEyeRunGame,
 };
 
 let data;
@@ -112,7 +114,7 @@ function renderLibrary(filter = libraryFilter) {
   const copy = createElement(
     "p",
     "",
-    "A small offline arcade for laptops: eight original games, solo and local two-player modes, saved progress, and no internet needed after install.",
+    "A small offline arcade for laptops: ten original games, solo and local two-player modes, saved progress, and no internet needed after install.",
   );
   heroCopy.append(title, copy);
 
@@ -398,13 +400,14 @@ async function launchGame(gameId, launchOptions = {}) {
   setRibbon(`${game.name} is running. Pause, restart, or return to the library from inside the game.`);
   clearNode(view);
 
-  if (gameId === "sumo" || gameId === "archery" || gameId === "cloud-crew-clash" || gameId === "runway-rumble" || gameId === "cloud-ridge-rally") {
+  if (gameId === "sumo" || gameId === "archery" || gameId === "cloud-crew-clash" || gameId === "runway-rumble" || gameId === "cloud-ridge-rally" || gameId === "red-eye-run") {
     data = await updateData((draft) => {
       if (gameId === "sumo") draft.progress.sumoRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "archery") draft.progress.archeryRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "cloud-crew-clash") draft.progress.cloudCrewRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "runway-rumble") draft.progress.runwayRumbleRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "cloud-ridge-rally") draft.progress.cloudRidgeRallyRecords.selectedDifficulty = setup.difficulty;
+      if (gameId === "red-eye-run") draft.progress.redEyeRunRecords.selectedDifficulty = setup.difficulty;
       return draft;
     });
   }
@@ -484,6 +487,11 @@ function renderStats() {
       `Best ${Math.floor(Math.max(data.progress.cloudRidgeRallyRecords.bestCampaignDistance || 0, ...Object.values(data.progress.cloudRidgeRallyRecords.bestEndless || {}).map(Number)))}m`,
       `Level ${data.progress.cloudRidgeRallyRecords.highestUnlockedLevel}. ${data.progress.cloudRidgeRallyRecords.flightCoins} Flight Coins. ${Object.values(data.progress.cloudRidgeRallyRecords.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0)} stars.`,
     ),
+    resultCard(
+      "Red-Eye Run",
+      data.progress.redEyeRunRecords.bestPlacement ? `Best ${ordinal(data.progress.redEyeRunRecords.bestPlacement)}` : "No qualification yet",
+      `${data.progress.redEyeRunRecords.totalMatches} matches. ${data.progress.redEyeRunRecords.totalQualifications} qualifications. ${data.progress.redEyeRunRecords.firstPlaceVictories} wins.`,
+    ),
   );
   panel.append(grid, recentResultsList());
   view.append(panel);
@@ -542,6 +550,7 @@ function renderSettings() {
     controlsSettings("cloud-crew-clash"),
     controlsSettings("runway-rumble"),
     controlsSettings("cloud-ridge-rally"),
+    controlsSettings("red-eye-run"),
   );
   panel.append(grid);
   view.append(panel);

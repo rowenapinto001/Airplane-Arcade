@@ -114,9 +114,18 @@ export function describeGameControls(settings, gameId) {
     return [
       `Accelerate: ${labelsFor(controls.accelerate)}`,
       `Brake / reverse: ${labelsFor(controls.brake)}`,
+      `Jump: ${labelsFor(controls.jump)}`,
       `Air balance: ${labelsFor([controls.tiltBack[0], controls.tiltForward[0]])}`,
       `Ability: ${labelsFor(controls.ability)}`,
       `Restart: ${labelsFor(controls.restart)}`,
+      `Pause: ${labelsFor(controls.pause)}`,
+    ];
+  }
+  if (gameId === "red-eye-run") {
+    return [
+      `Move: ${labelsFor([controls.up[0], controls.left[0], controls.down[0], controls.right[0]])}`,
+      `Sprint: ${labelsFor(controls.sprint)}`,
+      `Dive and freeze: ${labelsFor(controls.dive)}`,
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }

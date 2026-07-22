@@ -1,0 +1,275 @@
+.red-eye-run-game {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  align-content: stretch;
+  gap: 12px;
+  min-height: calc(100vh - 126px);
+}
+
+.red-eye-run-game.is-playing {
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+.red-eye-game-bar,
+.red-eye-menu-panel,
+.red-eye-result-panel,
+.red-eye-canvas-wrap,
+.red-eye-bottom-controls {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.red-eye-game-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+
+.red-eye-mini-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.red-eye-mini-stats span,
+.red-eye-pill {
+  display: grid;
+  min-width: 82px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.red-eye-mini-stats small,
+.red-eye-pill small,
+.red-eye-facts dt {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.red-eye-menu-panel,
+.red-eye-result-panel {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+
+.red-eye-menu-panel h2,
+.red-eye-result-panel h2,
+.red-eye-info-card h3 {
+  margin: 0;
+}
+
+.red-eye-menu-panel p,
+.red-eye-info-card p,
+.red-eye-choice-card span {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.red-eye-info-grid,
+.red-eye-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.red-eye-choice-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.red-eye-info-card,
+.red-eye-choice-card {
+  display: grid;
+  gap: 9px;
+  min-height: 112px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.66);
+  text-align: left;
+}
+
+.red-eye-info-card.is-locked {
+  opacity: 0.55;
+}
+
+.red-eye-choice-card.is-selected,
+.red-eye-run-game button.is-selected {
+  color: #fff;
+  background: var(--ink);
+  border-color: transparent;
+}
+
+.red-eye-menu-actions,
+.red-eye-choice-row,
+.red-eye-bottom-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.red-eye-run-game button {
+  min-height: 40px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--line);
+}
+
+.red-eye-run-game .primary-action,
+.red-eye-bottom-controls .primary-action {
+  color: #fff;
+  background: linear-gradient(135deg, #2fb8a2, #ef5b63);
+  border-color: transparent;
+}
+
+.red-eye-run-game .danger-action {
+  color: #fff;
+  background: #ef3f55;
+  border-color: transparent;
+}
+
+.red-eye-canvas-wrap {
+  position: relative;
+  overflow: hidden;
+  height: clamp(580px, 70vh, 760px);
+  background: #dff8ff;
+}
+
+.red-eye-canvas-wrap canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+.red-eye-bottom-controls {
+  justify-content: center;
+  padding: 10px;
+}
+
+.red-eye-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0;
+}
+
+.red-eye-facts dt,
+.red-eye-facts dd {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.red-eye-facts dt {
+  border-radius: 8px 8px 0 0;
+  border-bottom: 0;
+}
+
+.red-eye-facts dd {
+  min-height: 44px;
+  border-radius: 0 0 8px 8px;
+  font-weight: 900;
+}
+
+.red-eye-character-preview {
+  --body: #38aee2;
+  --accent: #ffd35a;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 128px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(70, 199, 217, 0.18), rgba(255, 211, 90, 0.18));
+}
+
+.red-eye-character-preview i {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 86px;
+  border: 5px solid var(--accent);
+  border-radius: 50% 50% 44% 44%;
+  background: var(--body);
+}
+
+.red-eye-character-preview i::before,
+.red-eye-character-preview i::after {
+  content: "";
+  position: absolute;
+  top: 24px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.red-eye-character-preview i::before {
+  left: 20px;
+}
+
+.red-eye-character-preview i::after {
+  right: 20px;
+}
+
+.red-eye-swatch {
+  width: 42px;
+  min-height: 42px;
+  border-radius: 50%;
+  background: var(--swatch);
+}
+
+.red-eye-swatch.is-selected {
+  outline: 4px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.red-eye-result-panel.qualified {
+  border-color: rgba(47, 179, 109, 0.35);
+}
+
+.red-eye-result-panel.eliminated {
+  border-color: rgba(239, 63, 85, 0.38);
+}
+
+.red-eye-result-panel.champion {
+  border-color: rgba(255, 211, 90, 0.62);
+}
+
+@media (max-width: 980px) {
+  .red-eye-game-bar,
+  .red-eye-info-grid,
+  .red-eye-choice-grid,
+  .red-eye-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .red-eye-canvas-wrap {
+    height: clamp(520px, 72vh, 680px);
+  }
+}
+
+[data-theme="dark"] .red-eye-run-game button,
+[data-theme="dark"] .red-eye-info-card,
+[data-theme="dark"] .red-eye-choice-card,
+[data-theme="dark"] .red-eye-pill,
+[data-theme="dark"] .red-eye-mini-stats span,
+[data-theme="dark"] .red-eye-facts dt,
+[data-theme="dark"] .red-eye-facts dd {
+  background: rgba(255, 255, 255, 0.08);
+}

@@ -14,6 +14,7 @@ export function createVehicleState(vehicle, stats, startX = 120) {
     maxFuel: stats.fuelCapacity,
     abilityCooldown: 0,
     abilityTimer: 0,
+    jumpCooldown: 0,
     cushionReady: false,
     crashed: false,
     crashReason: "",
@@ -42,6 +43,7 @@ export function updateVehiclePhysics(state, terrain, vehicle, stats, input, dt) 
 
   state.abilityCooldown = Math.max(0, state.abilityCooldown - dt);
   state.abilityTimer = Math.max(0, state.abilityTimer - dt);
+  state.jumpCooldown = Math.max(0, state.jumpCooldown - dt);
   state.hardLanding = false;
 
   const rear = wheelPoint(state, -36);

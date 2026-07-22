@@ -365,6 +365,9 @@ function drawHud(ctx, width, height, state) {
   ctx.fillStyle = "rgba(19,32,53,0.64)";
   ctx.font = "900 16px system-ui";
   ctx.fillText("Brake A / Left", 22, height - 26);
+  ctx.textAlign = "center";
+  ctx.fillText("Jump W / Up", width / 2, height - 26);
+  ctx.textAlign = "left";
   ctx.fillText("D / Right Accelerate", width - 182, height - 26);
 }
 

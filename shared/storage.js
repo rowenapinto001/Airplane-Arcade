@@ -72,10 +72,20 @@ export const DEFAULT_CONTROLS = {
   "cloud-ridge-rally": {
     accelerate: ["KeyD", "ArrowRight"],
     brake: ["KeyA", "ArrowLeft"],
+    jump: ["KeyW", "ArrowUp"],
     tiltBack: ["KeyW", "ArrowUp"],
     tiltForward: ["KeyS", "ArrowDown"],
     ability: ["Space"],
     restart: ["KeyR"],
+    pause: ["Escape"],
+  },
+  "red-eye-run": {
+    up: ["KeyW", "ArrowUp"],
+    down: ["KeyS", "ArrowDown"],
+    left: ["KeyA", "ArrowLeft"],
+    right: ["KeyD", "ArrowRight"],
+    sprint: ["ShiftLeft", "ShiftRight"],
+    dive: ["Space"],
     pause: ["Escape"],
   },
 };
@@ -107,6 +117,7 @@ export const DEFAULT_DATA = {
       "cloud-crew-clash": 0,
       "runway-rumble": 0,
       "cloud-ridge-rally": 0,
+      "red-eye-run": 0,
     },
     footballWins: {
       solo: 0,
@@ -250,6 +261,32 @@ export const DEFAULT_DATA = {
         "propeller-buggy": { engine: 0, grip: 0, suspension: 0, fuelTank: 0, stability: 0, airControl: 0, brake: 0 },
       },
     },
+    redEyeRunRecords: {
+      tutorialComplete: false,
+      selectedDifficulty: "normal",
+      selectedMode: "qualification",
+      countdownOn: true,
+      bestPlacement: null,
+      totalMatches: 0,
+      totalQualifications: 0,
+      totalEliminations: 0,
+      firstPlaceVictories: 0,
+      redPhasesSurvived: 0,
+      successfulFreezes: 0,
+      freezeStars: 0,
+      unlockedCosmetics: ["body-sky", "accessory-pilot-cap"],
+      selectedCharacter: {
+        bodyColor: "#38aee2",
+        accent: "#ffd35a",
+        accessory: "pilot cap",
+      },
+      cameraSensitivity: 0.65,
+      recentSummary: null,
+      totalDistance: 0,
+      bestDistance: 0,
+      noDiveQualifications: 0,
+      noPushQualifications: 0,
+    },
     recentResults: [],
   },
 };
@@ -374,6 +411,11 @@ export function getGameProgress(data, gameId) {
     const stars = Object.values(record.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0);
     const best = Math.max(record.bestCampaignDistance || 0, ...Object.values(record.bestEndless || {}).map(Number));
     return `Best ${Math.floor(best)}m | Level ${record.highestUnlockedLevel} | ${stars} stars`;
+  }
+  if (gameId === "red-eye-run") {
+    const record = progress.redEyeRunRecords;
+    const best = record.bestPlacement ? `Best ${ordinal(record.bestPlacement)}` : "No qualification";
+    return `${best} | ${record.totalQualifications} qualified | ${record.freezeStars} stars`;
   }
   return "Ready offline";
 }
@@ -592,6 +634,40 @@ export async function recordGameResult(result) {
         if ((unlockByLevel && record.highestUnlockedLevel >= unlockByLevel) || unlockByStars || unlockByPropellers) {
           if (!record.unlockedVehicles.includes(vehicleId)) record.unlockedVehicles.push(vehicleId);
         }
+      }
+    }
+
+    if (stamped.gameId === "red-eye-run") {
+      const record = progress.redEyeRunRecords;
+      record.selectedDifficulty = stamped.difficulty || record.selectedDifficulty;
+      record.selectedMode = stamped.redEyeMode || record.selectedMode;
+      record.countdownOn = stamped.countdownOn ?? record.countdownOn;
+      record.selectedCharacter = stamped.character || record.selectedCharacter;
+      record.recentSummary = stamped.summary || record.recentSummary;
+      record.totalMatches += 1;
+      record.totalDistance += stamped.distance || 0;
+      record.bestDistance = Math.max(record.bestDistance || 0, stamped.distance || 0);
+      record.redPhasesSurvived += stamped.redPhasesSurvived || 0;
+      record.successfulFreezes += stamped.successfulFreezes || 0;
+      record.freezeStars += stamped.freezeStars || 0;
+      if (stamped.qualified) record.totalQualifications += 1;
+      if (stamped.eliminated) record.totalEliminations += 1;
+      if (stamped.firstPlace) record.firstPlaceVictories += 1;
+      if (stamped.qualified && stamped.noDive) record.noDiveQualifications += 1;
+      if (stamped.qualified && stamped.noPush) record.noPushQualifications += 1;
+      if (stamped.placement) {
+        record.bestPlacement =
+          record.bestPlacement === null ? stamped.placement : Math.min(record.bestPlacement, stamped.placement);
+      }
+      if (stamped.tutorialComplete) record.tutorialComplete = true;
+      const unlocks = [
+        [5, "body-coral"],
+        [10, "scarf-gold"],
+        [18, "accessory-wing-badge"],
+        [28, "victory-spin"],
+      ];
+      for (const [cost, key] of unlocks) {
+        if (record.freezeStars >= cost && !record.unlockedCosmetics.includes(key)) record.unlockedCosmetics.push(key);
       }
     }
 

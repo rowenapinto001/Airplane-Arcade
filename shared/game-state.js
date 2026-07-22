@@ -220,15 +220,47 @@ export const GAME_CATALOG = [
       "Manage fuel by collecting energy pickups and coasting when possible.",
       "Collect Flight Coins, Boarding Stars, Lost Luggage Tokens, and Golden Propellers.",
       "Upgrade vehicles in the garage and unlock campaign levels sequentially.",
+      "Jump from the ground with W or Up Arrow, then balance in the air with W/S or Up/Down Arrow.",
       "Use Space for the selected special ability and R to restart a run.",
     ],
     controls: {
       solo: [
         "Accelerate: D or Right Arrow",
         "Brake / reverse: A or Left Arrow",
+        "Jump: W or Up Arrow",
         "Air balance: W/S or Up/Down Arrow",
         "Ability: Space",
         "Restart: R",
+        "Pause: Escape",
+      ],
+    },
+  },
+  {
+    id: "red-eye-run",
+    name: "Red-Eye Run",
+    shortName: "Red-Eye",
+    description: "Run while the watchkeeper looks away, freeze when its eyes turn red, and reach the finish safely.",
+    longDescription:
+      "An original solo stop-and-go survival race with 15 local dummy opponents, a friendly airport watchkeeper robot, momentum-based movement, fair red-light detection, qualification and first-place modes, and locally saved rewards.",
+    image: "../assets/games/red-eye-run.svg",
+    accent: "#ef5b63",
+    modes: ["solo"],
+    difficulties: ["easy", "normal", "hard"],
+    badges: ["Computer Opponents", "Stop-and-Go"],
+    defaultDifficulty: "normal",
+    hasPlayerSetup: false,
+    instructions: [
+      "Race 15 computer-controlled dummy contestants toward the boarding arch.",
+      "Run during green, slow down during warning, and freeze completely when the watchkeeper's eyes turn red.",
+      "Momentum matters: sprinting and diving are useful, but sliding during red can trigger detection.",
+      "Qualification Race accepts the first 8 finishers. First Place Challenge only rewards the first finisher.",
+      "Results, Freeze Stars, cosmetics, difficulty, countdown, and controls are saved locally.",
+    ],
+    controls: {
+      solo: [
+        "Move: W/A/S/D or Arrow keys",
+        "Sprint: Shift",
+        "Dive and freeze: Space",
         "Pause: Escape",
       ],
     },
@@ -310,6 +342,11 @@ export const DIFFICULTY_DETAILS = {
     easy: "Gentler hills, more fuel, slower hazards, and forgiving crash checks.",
     normal: "Balanced terrain, fuel pickups, stunts, upgrades, and campaign progression.",
     hard: "Steeper sky roads, tighter fuel, stronger obstacle pressure, and higher coin rewards.",
+  },
+  "red-eye-run": {
+    easy: "Longer green phases, slower watchkeeper turns, forgiving movement tolerance, and more dummy mistakes.",
+    normal: "Balanced green and red phases, fair momentum detection, and believable computer opponents.",
+    hard: "Less predictable green phases, faster turns, stricter fair detection, and skilled computer opponents.",
   },
 };
 

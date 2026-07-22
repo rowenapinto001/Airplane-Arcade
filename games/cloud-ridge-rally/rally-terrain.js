@@ -8,12 +8,13 @@ function seededNoise(seed) {
   };
 }
 
-export function generateTerrain({ mode, levelId = 1, environmentId = "runway", distance = 1800 }) {
+export function generateTerrain({ mode, levelId = 1, environmentId = "runway", distance = 1800, difficultyScale = 1 }) {
   const level = mode === "campaign" ? getLevel(levelId) : null;
   const environment = getEnvironment(level?.environment || environmentId);
   const length = mode === "campaign" ? level.distance : distance;
-  const difficulty = mode === "campaign" ? level.difficulty : Math.max(0.75, Math.min(1.9, distance / 2100));
-  const random = seededNoise((level?.id || 17) * 31 + environment.id.length * 7 + Math.floor(length / 100));
+  const baseDifficulty = mode === "campaign" ? level.difficulty : Math.max(0.75, Math.min(1.9, distance / 2100));
+  const difficulty = clamp(baseDifficulty * difficultyScale, 0.55, 2.2);
+  const random = seededNoise((level?.id || 17) * 31 + environment.id.length * 7 + Math.floor(length / 100) + Math.floor(difficultyScale * 100));
   const points = [];
   const step = 80;
   let y = 410;
@@ -45,6 +46,7 @@ export function generateTerrain({ mode, levelId = 1, environmentId = "runway", d
     environment,
     length,
     difficulty,
+    difficultyScale,
     points,
     pickups,
     obstacles,
@@ -59,7 +61,8 @@ export function extendEndlessTerrain(terrain, vehicleX) {
   const extra = generateTerrain({
     mode: "endless",
     environmentId: terrain.environment.id,
-    distance: terrain.length + 1200,
+    distance: terrain.length + 1600,
+    difficultyScale: terrain.difficultyScale || 1,
   });
   terrain.length = extra.length;
   terrain.points = extra.points;
@@ -125,7 +128,8 @@ function createPickups(length, points, random, difficulty, mode) {
       value: 1,
     });
   }
-  for (let x = 420; x < length - 120; x += 430 + random() * 130) {
+  const fuelSpacing = 430 + difficulty * 42;
+  for (let x = 420; x < length - 120; x += fuelSpacing + random() * 150) {
     const ground = samplePoints(points, x);
     const sizeRoll = random();
     const size = sizeRoll > 0.82 ? "large" : sizeRoll > 0.48 ? "medium" : "small";
@@ -140,7 +144,7 @@ function createPickups(length, points, random, difficulty, mode) {
     });
   }
   const rareTypes = ["boarding-star", "luggage-token", "golden-propeller"];
-  for (let i = 0; i < (mode === "campaign" ? 2 : 3); i += 1) {
+  for (let i = 0; i < 3; i += 1) {
     const x = length * (0.35 + i * 0.22) + (random() - 0.5) * 120;
     const ground = samplePoints(points, x);
     pickups.push({
@@ -157,7 +161,8 @@ function createPickups(length, points, random, difficulty, mode) {
 
 function createObstacles(length, points, random, difficulty, environmentId) {
   const obstacles = [];
-  const count = Math.floor(length / 460);
+  const obstacleSpacing = Math.max(300, 520 - difficulty * 72);
+  const count = Math.floor(length / obstacleSpacing);
   const names = {
     runway: ["rolling-luggage", "baggage-cart", "puddle"],
     canyon: ["cargo-crate", "broken-bridge", "loose-rock"],
@@ -170,7 +175,7 @@ function createObstacles(length, points, random, difficulty, environmentId) {
   };
   const pool = names[environmentId] || names.runway;
   for (let i = 0; i < count; i += 1) {
-    const x = 520 + i * 430 + random() * 130;
+    const x = 520 + i * obstacleSpacing + random() * 130;
     if (x > length - 160) continue;
     const kind = pool[i % pool.length];
     const ground = samplePoints(points, x);
@@ -186,6 +191,10 @@ function createObstacles(length, points, random, difficulty, environmentId) {
     });
   }
   return obstacles;
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
 }
 
 function createEndlessCheckpoints(length) {
