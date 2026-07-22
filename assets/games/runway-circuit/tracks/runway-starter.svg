@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 150" role="img" aria-label="Runway Starter circuit preview">
+  <rect width="220" height="150" rx="18" fill="#a8e8ff"/>
+  <path d="M40 102c-18-28-4-61 30-74 36-14 87-9 110 16 23 25 13 61-24 77-40 18-94 9-116-19Z" fill="none" stroke="#f8f8f2" stroke-width="31" stroke-linecap="round"/>
+  <path d="M40 102c-18-28-4-61 30-74 36-14 87-9 110 16 23 25 13 61-24 77-40 18-94 9-116-19Z" fill="none" stroke="#344258" stroke-width="20" stroke-linecap="round"/>
+  <path d="M40 102c-18-28-4-61 30-74 36-14 87-9 110 16 23 25 13 61-24 77-40 18-94 9-116-19Z" fill="none" stroke="#ffe27a" stroke-width="2" stroke-dasharray="10 9" stroke-linecap="round"/>
+  <rect x="102" y="26" width="4" height="22" fill="#35b877"/>
+  <path d="M106 27 131 36 106 45Z" fill="#fff4c8"/>
+</svg>

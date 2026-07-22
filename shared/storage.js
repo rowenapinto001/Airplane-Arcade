@@ -58,16 +58,14 @@ export const DEFAULT_CONTROLS = {
     resetCamera: ["KeyR"],
     pause: ["Escape"],
   },
-  "runway-rumble": {
+  "runway-circuit": {
     up: ["KeyW", "ArrowUp"],
     down: ["KeyS", "ArrowDown"],
     left: ["KeyA", "ArrowLeft"],
     right: ["KeyD", "ArrowRight"],
-    jump: ["Space"],
-    dive: ["ShiftLeft", "ShiftRight"],
-    cameraLeft: ["KeyQ"],
-    cameraRight: ["KeyE"],
-    cameraReset: ["KeyR"],
+    handbrake: ["Space"],
+    boost: ["ShiftLeft", "ShiftRight"],
+    reset: ["KeyR"],
     pause: ["Escape"],
   },
   "cloud-ridge-rally": {
@@ -116,7 +114,7 @@ export const DEFAULT_DATA = {
       archery: 0,
       "cake-maker": 0,
       "pyramid-smash": 0,
-      "runway-rumble": 0,
+      "runway-circuit": 0,
       "cloud-ridge-rally": 0,
       "red-eye-run": 0,
     },
@@ -196,37 +194,38 @@ export const DEFAULT_DATA = {
       player2Wins: 0,
       draws: 0,
     },
-    runwayRumbleRecords: {
+    runwayCircuitRecords: {
       tutorialComplete: false,
-      tutorialReminders: true,
       selectedDifficulty: "normal",
-      selectedCharacter: {
-        bodyColor: "sky",
-        face: "smile",
-        scarf: "red",
-        hat: "none",
-        accessory: "wing",
-        trail: "spark",
-        victory: "wave",
+      selectedLevel: 1,
+      selectedCar: "runway-rookie",
+      unlockedCars: ["runway-rookie", "cargo-cruiser", "sky-sprint", "curve-comet"],
+      carUpgrades: {
+        "runway-rookie": { engine: 0, acceleration: 0, grip: 0, brakes: 0, steering: 0, boost: 0, stability: 0 },
+        "cargo-cruiser": { engine: 0, acceleration: 0, grip: 0, brakes: 0, steering: 0, boost: 0, stability: 0 },
+        "sky-sprint": { engine: 0, acceleration: 0, grip: 0, brakes: 0, steering: 0, boost: 0, stability: 0 },
+        "curve-comet": { engine: 0, acceleration: 0, grip: 0, brakes: 0, steering: 0, boost: 0, stability: 0 },
+        "jetline-gt": { engine: 0, acceleration: 0, grip: 0, brakes: 0, steering: 0, boost: 0, stability: 0 },
       },
-      unlockedCosmetics: ["body-sky", "face-smile", "scarf-red", "hat-none", "accessory-wing", "trail-spark", "victory-wave"],
-      boardingStars: 0,
-      bestPlacement: null,
-      totalCompetitions: 0,
+      flightCoins: 0,
+      stars: {},
+      bestPositions: {},
+      bestLapTimes: {},
+      bestTotalTimes: {},
+      highestUnlockedLevel: 1,
       totalRaces: 0,
-      totalQualifications: 0,
-      round1Qualifications: 0,
-      round2Qualifications: 0,
-      finalAppearances: 0,
-      finalVictories: 0,
-      falls: 0,
-      checkpointsUsed: 0,
-      completedChallenges: [],
-      courseChallengeProgress: {},
-      pausedCompetition: null,
-      selectedCourseOrder: [],
+      totalWins: 0,
+      totalOvertakes: 0,
+      totalCollisions: 0,
+      totalResets: 0,
+      championBadge: false,
+      timeTrialUnlocked: false,
+      timeTrialBest: {},
+      ghostData: {},
       recentSummary: null,
-      cameraSensitivity: 0.65,
+      cameraDistance: 1,
+      cameraShake: true,
+      showGhost: true,
     },
     cloudRidgeRallyRecords: {
       highestUnlockedLevel: 1,
@@ -404,11 +403,11 @@ export function getGameProgress(data, gameId) {
     const stars = Object.values(record.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0);
     return `Level ${record.highestUnlockedLevel} | ${stars} stars | ${record.flightCoins} coins`;
   }
-  if (gameId === "runway-rumble") {
-    const record = progress.runwayRumbleRecords;
-    if (record.pausedCompetition) return `Continue Round ${record.pausedCompetition.round} | ${record.selectedDifficulty}`;
-    const best = record.bestPlacement ? `Best ${ordinal(record.bestPlacement)}` : "No final yet";
-    return `${best} | ${record.totalCompetitions} played`;
+  if (gameId === "runway-circuit") {
+    const record = progress.runwayCircuitRecords;
+    const selected = String(record.selectedLevel || 1);
+    const best = record.bestPositions?.[selected] ? `Best ${ordinal(record.bestPositions[selected])}` : "No finish yet";
+    return `${best} | Level ${record.highestUnlockedLevel || 1}/5 | ${record.flightCoins || 0} coins`;
   }
   if (gameId === "cloud-ridge-rally") {
     const record = progress.cloudRidgeRallyRecords;
@@ -570,46 +569,61 @@ export async function recordGameResult(result) {
       record.totalThreeStarLevels = Object.values(record.stars || {}).filter((value) => Number(value || 0) >= 3).length;
     }
 
-    if (stamped.gameId === "runway-rumble") {
-      const record = progress.runwayRumbleRecords;
+    if (stamped.gameId === "runway-circuit") {
+      const record = progress.runwayCircuitRecords;
+      const levelKey = String(stamped.level || record.selectedLevel || 1);
       record.selectedDifficulty = stamped.difficulty || record.selectedDifficulty;
-      record.selectedCharacter = stamped.character || record.selectedCharacter;
-      record.cameraSensitivity = stamped.cameraSensitivity ?? record.cameraSensitivity;
+      record.selectedCar = stamped.car || record.selectedCar;
+      record.selectedLevel = stamped.level || record.selectedLevel || 1;
+      record.cameraDistance = stamped.cameraDistance ?? record.cameraDistance;
+      record.cameraShake = stamped.cameraShake ?? record.cameraShake;
+      record.showGhost = stamped.showGhost ?? record.showGhost;
       record.recentSummary = stamped.summary || record.recentSummary;
-      record.falls += stamped.falls || 0;
-      record.checkpointsUsed += stamped.checkpointsUsed || 0;
-      if (stamped.tutorialComplete) {
-        record.tutorialComplete = true;
-        record.tutorialReminders = false;
+      record.totalRaces += 1;
+      record.totalOvertakes += stamped.overtakes || 0;
+      record.totalCollisions += stamped.collisions || 0;
+      record.totalResets += stamped.resets || 0;
+      record.flightCoins += Math.max(0, Math.floor(stamped.flightCoins || 0));
+      if (stamped.tutorialComplete) record.tutorialComplete = true;
+      if (stamped.completed) {
+        record.bestPositions[levelKey] =
+          record.bestPositions[levelKey] === undefined
+            ? stamped.finalPosition
+            : Math.min(record.bestPositions[levelKey], stamped.finalPosition);
+        if (Number.isFinite(stamped.bestLap)) {
+          record.bestLapTimes[levelKey] =
+            record.bestLapTimes[levelKey] === undefined
+              ? stamped.bestLap
+              : Math.min(record.bestLapTimes[levelKey], stamped.bestLap);
+        }
+        if (Number.isFinite(stamped.totalTime)) {
+          record.bestTotalTimes[levelKey] =
+            record.bestTotalTimes[levelKey] === undefined
+              ? stamped.totalTime
+              : Math.min(record.bestTotalTimes[levelKey], stamped.totalTime);
+        }
+        record.stars[levelKey] = Math.max(record.stars[levelKey] || 0, stamped.stars || 1);
+        if (stamped.unlocked) record.highestUnlockedLevel = Math.max(record.highestUnlockedLevel || 1, Math.min(5, (stamped.level || 1) + 1));
+        if (stamped.finalPosition === 1) record.totalWins += 1;
+        if (stamped.champion) {
+          record.championBadge = true;
+          record.timeTrialUnlocked = true;
+          if (!record.unlockedCars.includes("jetline-gt")) record.unlockedCars.push("jetline-gt");
+        }
       }
-      if (Array.isArray(stamped.selectedCourseOrder)) record.selectedCourseOrder = [...stamped.selectedCourseOrder];
-      if (stamped.round1Qualified) {
-        record.round1Qualifications += 1;
-        record.totalQualifications += 1;
-      }
-      if (stamped.round2Qualified) {
-        record.round2Qualifications += 1;
-        record.totalQualifications += 1;
-      }
-      if (stamped.finalAppearance) record.finalAppearances += 1;
-      if (stamped.competitionEnded) {
-        record.totalCompetitions += 1;
-        record.pausedCompetition = null;
-      }
-      record.totalRaces += stamped.roundsPlayed || stamped.roundNumber || 0;
-      if (stamped.finalPlacement) {
-        record.bestPlacement =
-          record.bestPlacement === null
-            ? stamped.finalPlacement
-            : Math.min(record.bestPlacement, stamped.finalPlacement);
-      }
-      if (stamped.winner === "solo") record.finalVictories += 1;
-      record.boardingStars += stamped.boardingStars || 0;
-      for (const challenge of stamped.completedChallenges || []) {
-        if (!record.completedChallenges.includes(challenge)) record.completedChallenges.push(challenge);
-      }
-      for (const cosmetic of stamped.unlockedCosmetics || []) {
-        if (!record.unlockedCosmetics.includes(cosmetic)) record.unlockedCosmetics.push(cosmetic);
+      if (stamped.circuitMode === "time-trial" && stamped.completed && Number.isFinite(stamped.totalTime)) {
+        const previous = record.timeTrialBest[levelKey];
+        if (!previous || stamped.totalTime < previous.totalTime) {
+          record.timeTrialBest[levelKey] = {
+            totalTime: stamped.totalTime,
+            bestLap: stamped.bestLap,
+            car: stamped.car,
+            playedAt: stamped.playedAt,
+          };
+          if (Array.isArray(stamped.ghost)) {
+            record.ghostData[levelKey] = stamped.ghost.slice(0, 600);
+          }
+        }
       }
     }
 

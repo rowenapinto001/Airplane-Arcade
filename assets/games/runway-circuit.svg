@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 220" role="img" aria-label="Runway Circuit airport racing illustration">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9fe9ff"/>
+      <stop offset="1" stop-color="#eaf8d7"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#46566f"/>
+      <stop offset="1" stop-color="#243348"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="220" rx="28" fill="url(#sky)"/>
+  <path d="M66 149c-24-39-8-83 38-104 47-22 119-15 151 22 32 37 17 90-34 115-55 27-128 13-155-33Z" fill="none" stroke="#fbfbfb" stroke-width="46" stroke-linecap="round"/>
+  <path d="M66 149c-24-39-8-83 38-104 47-22 119-15 151 22 32 37 17 90-34 115-55 27-128 13-155-33Z" fill="none" stroke="url(#road)" stroke-width="30" stroke-linecap="round"/>
+  <path d="M66 149c-24-39-8-83 38-104 47-22 119-15 151 22 32 37 17 90-34 115-55 27-128 13-155-33Z" fill="none" stroke="#ffe27a" stroke-width="3" stroke-dasharray="16 14" stroke-linecap="round"/>
+  <g transform="translate(104 121) rotate(-18)">
+    <rect x="-26" y="-13" width="52" height="26" rx="8" fill="#38aee2"/>
+    <rect x="-13" y="-20" width="25" height="12" rx="4" fill="#dff8ff"/>
+    <circle cx="-17" cy="16" r="8" fill="#101a2e"/>
+    <circle cx="17" cy="16" r="8" fill="#101a2e"/>
+    <circle cx="-17" cy="16" r="4" fill="#ffffff"/>
+    <circle cx="17" cy="16" r="4" fill="#ffffff"/>
+  </g>
+  <g transform="translate(218 77) rotate(31)">
+    <rect x="-23" y="-12" width="46" height="24" rx="8" fill="#ef5b63"/>
+    <rect x="-10" y="-19" width="22" height="11" rx="4" fill="#fff4c8"/>
+    <circle cx="-15" cy="15" r="7" fill="#101a2e"/>
+    <circle cx="15" cy="15" r="7" fill="#101a2e"/>
+    <circle cx="-15" cy="15" r="3.5" fill="#ffffff"/>
+    <circle cx="15" cy="15" r="3.5" fill="#ffffff"/>
+  </g>
+  <g fill="#ffffff" opacity=".78">
+    <ellipse cx="73" cy="54" rx="22" ry="12"/>
+    <ellipse cx="93" cy="50" rx="18" ry="10"/>
+    <ellipse cx="242" cy="149" rx="24" ry="13"/>
+    <ellipse cx="264" cy="145" rx="19" ry="11"/>
+  </g>
+  <rect x="153" y="42" width="7" height="34" fill="#35b877"/>
+  <path d="M160 44 198 57 160 71Z" fill="#fff4c8"/>
+  <text x="160" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="800" fill="#101a2e">RUNWAY CIRCUIT</text>
+</svg>

@@ -127,7 +127,7 @@ function createStructure(pattern, materials, platforms, id) {
   const objects = [];
   const add = (type, x, y, options = {}) => objects.push(box(type, x, y, options));
   const main = platforms[Math.min(platforms.length - 1, Math.floor(platforms.length / 2))];
-  const topY = (platform) => platform.y - 24;
+  const topY = (platform) => platform.y - 21;
 
   if (pattern === "twin") {
     tower(objects, platforms[0], 585, 3, materials);
@@ -202,19 +202,22 @@ function createStructure(pattern, materials, platforms, id) {
 
 function pyramid(objects, platform, centerX, rows, materials) {
   const size = 42;
+  const step = size - 2;
   for (let row = 0; row < rows; row += 1) {
     const count = rows - row;
     for (let col = 0; col < count; col += 1) {
-      const x = centerX + (col - (count - 1) / 2) * (size + 4);
-      const y = platform.y - size / 2 - row * (size + 3);
+      const x = centerX + (col - (count - 1) / 2) * step;
+      const y = platform.y - size / 2 - row * step;
       objects.push(box(materials[(row + col) % materials.length], x, y));
     }
   }
 }
 
 function tower(objects, platform, x, height, materials) {
+  const size = 42;
+  const step = size - 2;
   for (let row = 0; row < height; row += 1) {
-    objects.push(box(materials[row % materials.length], x, platform.y - 21 - row * 45));
+    objects.push(box(materials[row % materials.length], x, platform.y - size / 2 - row * step));
   }
 }
 

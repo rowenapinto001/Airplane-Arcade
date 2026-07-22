@@ -102,12 +102,14 @@ export function describeGameControls(settings, gameId) {
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }
-  if (gameId === "runway-rumble") {
+  if (gameId === "runway-circuit") {
     return [
-      `Move: ${labelsFor([controls.up[0], controls.left[0], controls.down[0], controls.right[0]])}`,
-      `Jump: ${labelsFor(controls.jump)}`,
-      `Dive or slide: ${labelsFor(controls.dive)}`,
-      `Camera: ${labelsFor([controls.cameraLeft[0], controls.cameraRight[0], controls.cameraReset[0]])}`,
+      `Accelerate: ${labelsFor(controls.up)}`,
+      `Brake / reverse: ${labelsFor(controls.down)}`,
+      `Steer: ${labelsFor([controls.left[0], controls.right[0]])}`,
+      `Handbrake / drift: ${labelsFor(controls.handbrake)}`,
+      `Boost: ${labelsFor(controls.boost)}`,
+      `Reset to checkpoint: ${labelsFor(controls.reset)}`,
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }

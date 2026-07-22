@@ -26,7 +26,7 @@ import { createSumoGame } from "../games/sumo/sumo.js";
 import { createArcheryGame } from "../games/archery/archery.js";
 import { createCakeMakerGame } from "../games/cake-maker/cake-maker.js";
 import { createPyramidSmashGame } from "../games/pyramid-smash/pyramid-smash.js";
-import { createRunwayRumbleGame } from "../games/runway-rumble/runway-rumble.js";
+import { createRunwayCircuitGame } from "../games/runway-circuit/runway-circuit.js";
 import { createCloudRidgeRallyGame } from "../games/cloud-ridge-rally/cloud-ridge-rally.js";
 import { createRedEyeRunGame } from "../games/red-eye-run/red-eye-run.js";
 
@@ -44,7 +44,7 @@ const GAME_FACTORIES = {
   archery: createArcheryGame,
   "cake-maker": createCakeMakerGame,
   "pyramid-smash": createPyramidSmashGame,
-  "runway-rumble": createRunwayRumbleGame,
+  "runway-circuit": createRunwayCircuitGame,
   "cloud-ridge-rally": createCloudRidgeRallyGame,
   "red-eye-run": createRedEyeRunGame,
 };
@@ -195,10 +195,10 @@ function gameCard(game) {
   const playRow = createElement("div", "play-row");
   const recent = getRecentResult(data, game.id);
   playRow.append(createElement("span", "card-meta", recent ? "Recent result saved" : "Ready offline"));
-  if (game.id === "runway-rumble" && data.progress.runwayRumbleRecords.pausedCompetition) {
-    playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueCompetition: true })));
-  }
   if (game.id === "pyramid-smash" && data.progress.pyramidSmashRecords.highestUnlockedLevel > 1) {
+    playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueCampaign: true })));
+  }
+  if (game.id === "runway-circuit" && data.progress.runwayCircuitRecords.highestUnlockedLevel > 1) {
     playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueCampaign: true })));
   }
   playRow.append(button("Play", "primary-button", () => renderGameSetup(game.id)));
@@ -403,11 +403,11 @@ async function launchGame(gameId, launchOptions = {}) {
   setRibbon(`${game.name} is running. Pause, restart, or return to the library from inside the game.`);
   clearNode(view);
 
-  if (gameId === "sumo" || gameId === "archery" || gameId === "runway-rumble" || gameId === "cloud-ridge-rally" || gameId === "red-eye-run") {
+  if (gameId === "sumo" || gameId === "archery" || gameId === "runway-circuit" || gameId === "cloud-ridge-rally" || gameId === "red-eye-run") {
     data = await updateData((draft) => {
       if (gameId === "sumo") draft.progress.sumoRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "archery") draft.progress.archeryRecords.selectedDifficulty = setup.difficulty;
-      if (gameId === "runway-rumble") draft.progress.runwayRumbleRecords.selectedDifficulty = setup.difficulty;
+      if (gameId === "runway-circuit") draft.progress.runwayCircuitRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "cloud-ridge-rally") draft.progress.cloudRidgeRallyRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "red-eye-run") draft.progress.redEyeRunRecords.selectedDifficulty = setup.difficulty;
       return draft;
@@ -481,9 +481,11 @@ function renderStats() {
       `${Object.values(data.progress.pyramidSmashRecords.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0)} stars. ${data.progress.pyramidSmashRecords.flightCoins} coins. ${data.progress.pyramidSmashRecords.endlessBest || 0} endless.`,
     ),
     resultCard(
-      "Runway Rumble",
-      data.progress.runwayRumbleRecords.bestPlacement ? `Best ${ordinal(data.progress.runwayRumbleRecords.bestPlacement)}` : "No final yet",
-      `${data.progress.runwayRumbleRecords.totalCompetitions} competitions. ${data.progress.runwayRumbleRecords.totalQualifications} qualifications. ${data.progress.runwayRumbleRecords.finalVictories} victories.`,
+      "Runway Circuit",
+      data.progress.runwayCircuitRecords.bestPositions?.[String(data.progress.runwayCircuitRecords.selectedLevel || 1)]
+        ? `Best ${ordinal(data.progress.runwayCircuitRecords.bestPositions[String(data.progress.runwayCircuitRecords.selectedLevel || 1)])}`
+        : "No finish yet",
+      `Level ${data.progress.runwayCircuitRecords.highestUnlockedLevel}/5. ${data.progress.runwayCircuitRecords.totalRaces} races. ${data.progress.runwayCircuitRecords.totalWins} wins.`,
     ),
     resultCard(
       "Cloud Ridge Rally",
@@ -551,7 +553,7 @@ function renderSettings() {
     controlsSettings("archery"),
     controlsSettings("cake-maker"),
     controlsSettings("pyramid-smash"),
-    controlsSettings("runway-rumble"),
+    controlsSettings("runway-circuit"),
     controlsSettings("cloud-ridge-rally"),
     controlsSettings("red-eye-run"),
   );
@@ -635,7 +637,7 @@ function accessibilitySettings() {
     });
     renderSettings();
   });
-  card.append(motion, createElement("p", "settings-note", "Cake Maker and Runway Rumble use this to calm celebration, particle, and background motion."));
+  card.append(motion, createElement("p", "settings-note", "Cake Maker and Runway Circuit use this to calm celebration, particle, and background motion."));
   return card;
 }
 

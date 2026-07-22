@@ -7,6 +7,7 @@ export const WORLD_HEIGHT = 620;
 const MAX_DT = 1 / 24;
 const STEP = 1 / 120;
 const FLOOR_Y = WORLD_HEIGHT + 170;
+const SUPPORT_TOLERANCE = 6;
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
@@ -18,6 +19,10 @@ function typeConfig(type) {
 
 function bodySpeed(body) {
   return Math.hypot(body.vx || 0, body.vy || 0);
+}
+
+function slidingRetention(object) {
+  return Math.max(0.986, Math.min(0.996, 0.997 - object.friction * 0.006));
 }
 
 function isBoxOverlap(a, b) {
@@ -51,7 +56,7 @@ export function createWorld(level) {
       bounce: config.bounce,
       friction: config.friction,
       strength: config.strength,
-      health: config.breakable ? 0.8 : 1.4 + config.strength * 0.6,
+      health: config.breakable ? 0.8 : 1.15 + config.strength * 0.45,
       required: object.required ?? config.required ?? true,
       bonus: Boolean(config.bonus || object.type === "bonus"),
       removed: false,
@@ -112,8 +117,10 @@ export function updatePhysics(world, dt) {
 
 export function isWorldSettled(world) {
   const activeBall = world.balls.some((ball) => ball.active);
-  const movingObject = world.objects.some((object) => !object.removed && bodySpeed(object) > 18);
-  return !activeBall && !movingObject;
+  const unsettledObject = world.objects.some(
+    (object) => !object.removed && (bodySpeed(object) > 18 || (!isObjectSupported(world, object) && object.y < FLOOR_Y - 40)),
+  );
+  return !activeBall && !unsettledObject;
 }
 
 export function settleLowSpeed(world) {
@@ -195,7 +202,11 @@ function updateObjects(world, dt) {
     object.vx *= Math.pow(0.996, dt * 60);
     object.angularVelocity *= Math.pow(0.985, dt * 60);
     resolveObjectStatic(world, object);
-    if (bodySpeed(object) < 12) {
+    const supported = isObjectSupported(world, object);
+    if (!supported && Math.abs(object.vy) < 10) {
+      object.vy += world.gravity * dt * 0.7;
+      object.sleepTime = 0;
+    } else if (bodySpeed(object) < 12 && supported) {
       object.sleepTime += dt;
       if (object.sleepTime > 0.5) {
         object.vx = 0;
@@ -219,7 +230,7 @@ function resolveObjectStatic(world, object) {
     if (overlapX && overlapY && object.vy >= -80) {
       object.y = top - object.h / 2;
       object.vy = object.vy > 55 ? -object.vy * object.bounce * 0.25 : 0;
-      object.vx = object.vx * object.friction + platform.vx * 0.05;
+      object.vx = object.vx * slidingRetention(object) + platform.vx * 0.05;
       object.angularVelocity *= 0.78;
     }
   }
@@ -274,13 +285,14 @@ function resolveObjectPair(a, b) {
     const normal = Math.sign(dy || 1);
     a.y -= normal * py * (invA / totalInv);
     b.y += normal * py * (invB / totalInv);
+    transferSupportFriction(a, b);
     const relative = (b.vy - a.vy) * normal;
     if (relative < 0) {
       const impulse = -(1 + Math.min(a.bounce, b.bounce)) * relative / totalInv;
       a.vy -= normal * impulse * invA;
       b.vy += normal * impulse * invB;
-      a.vx *= a.friction;
-      b.vx *= b.friction;
+      a.vx *= slidingRetention(a);
+      b.vx *= slidingRetention(b);
     }
   }
 }
@@ -367,6 +379,7 @@ function resolveBallObject(world, ball, object) {
   object.vx -= nx * impact / Math.max(0.2, object.mass) * 0.32;
   object.vy -= ny * impact / Math.max(0.2, object.mass) * 0.32;
   object.angularVelocity += (ny * ball.vx - nx * ball.vy) * 0.004;
+  cascadeStackImpulse(world, object, -nx, impact);
   if (velocityAlongNormal < 0) {
     ball.vx -= (1 + ball.bounce) * velocityAlongNormal * nx;
     ball.vy -= (1 + ball.bounce) * velocityAlongNormal * ny;
@@ -390,6 +403,7 @@ function damageObject(world, object, impact, ball) {
   object.health -= (impact / (240 * object.strength)) * lockedPenalty;
   const strongHit = impact > 350 * object.strength;
   if (object.health <= 0 || object.config.breakable || (object.config.locked && strongHit)) {
+    cascadeStackImpulse(world, object, Math.sign(object.vx) || 1, impact * 0.9);
     object.removed = true;
     object.destroyed = true;
     addEffect(world, {
@@ -447,8 +461,67 @@ function removeFallenObjects(world) {
       return object.x > left && object.x < right && object.y < platform.y + 115;
     });
     if (belowWorld || fullyPastPlatform || object.x < -130 || object.x > WORLD_WIDTH + 130) {
+      cascadeStackImpulse(world, object, Math.sign(object.vx) || 1, 180);
       object.removed = true;
       addEffect(world, { kind: object.bonus ? "bonus" : "fall", x: object.x, y: Math.min(object.y, WORLD_HEIGHT - 24), color: object.config.color, life: 0.6 });
     }
   }
+}
+
+function transferSupportFriction(a, b) {
+  const upper = a.y < b.y ? a : b;
+  const lower = upper === a ? b : a;
+  const upperBottom = upper.y + upper.h / 2;
+  const lowerTop = lower.y - lower.h / 2;
+  const horizontal = overlapAmount(upper.x, upper.w, lower.x, lower.w);
+  if (Math.abs(upperBottom - lowerTop) > SUPPORT_TOLERANCE || horizontal < Math.min(upper.w, lower.w) * 0.18) return;
+  const drag = (lower.vx - upper.vx) * 0.24;
+  upper.vx += drag;
+  lower.vx -= drag * 0.08 * (upper.mass / Math.max(0.2, lower.mass));
+  upper.angularVelocity += drag * 0.006;
+  upper.sleepTime = 0;
+  lower.sleepTime = 0;
+}
+
+function cascadeStackImpulse(world, source, direction, impact) {
+  const pushDirection = direction || Math.sign(source.vx) || 1;
+  for (const target of world.objects) {
+    if (target === source || target.removed) continue;
+    const dx = target.x - source.x;
+    const dy = target.y - source.y;
+    const aboveSource = target.y < source.y + source.h * 0.15 && target.y > source.y - source.h * 3.3;
+    const sameRowNeighbor = Math.abs(dy) < source.h * 0.55 && Math.abs(dx) < source.w * 1.45;
+    const stackedNeighbor =
+      aboveSource &&
+      Math.abs(dx) < source.w * 1.35 &&
+      target.y + target.h / 2 <= source.y + source.h / 2 + SUPPORT_TOLERANCE;
+    if (!sameRowNeighbor && !stackedNeighbor) continue;
+    const distanceFalloff = 1 - Math.min(1, Math.hypot(dx, dy) / (source.w * 3.4));
+    const force = Math.max(24, impact * distanceFalloff * (stackedNeighbor ? 0.34 : 0.14));
+    target.vx += pushDirection * force / Math.max(0.4, target.mass);
+    if (stackedNeighbor) target.vy += Math.min(140, force * 0.38);
+    target.angularVelocity += pushDirection * force * 0.005;
+    target.sleepTime = 0;
+    target.hitFlash = Math.max(target.hitFlash || 0, 0.28);
+  }
+}
+
+function isObjectSupported(world, object) {
+  const bottom = object.y + object.h / 2;
+  for (const platform of world.platforms) {
+    const top = platform.y;
+    const overlap = overlapAmount(object.x, object.w, platform.x, platform.w);
+    if (Math.abs(bottom - top) <= SUPPORT_TOLERANCE && overlap > object.w * 0.28) return true;
+  }
+  for (const other of world.objects) {
+    if (other === object || other.removed) continue;
+    const otherTop = other.y - other.h / 2;
+    const overlap = overlapAmount(object.x, object.w, other.x, other.w);
+    if (Math.abs(bottom - otherTop) <= SUPPORT_TOLERANCE && overlap > Math.min(object.w, other.w) * 0.16) return true;
+  }
+  return false;
+}
+
+function overlapAmount(ax, aw, bx, bw) {
+  return Math.max(0, Math.min(ax + aw / 2, bx + bw / 2) - Math.max(ax - aw / 2, bx - bw / 2));
 }

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 96" role="img" aria-label="Runway Rookie blue racing car">
+  <rect x="22" y="28" width="116" height="42" rx="16" fill="#38aee2"/>
+  <rect x="55" y="16" width="50" height="24" rx="9" fill="#dff8ff"/>
+  <rect x="32" y="37" width="24" height="9" rx="4" fill="#ffffff"/>
+  <rect x="104" y="37" width="24" height="9" rx="4" fill="#ffffff"/>
+  <circle cx="47" cy="74" r="13" fill="#101a2e"/>
+  <circle cx="113" cy="74" r="13" fill="#101a2e"/>
+  <circle cx="47" cy="74" r="6" fill="#ffffff"/>
+  <circle cx="113" cy="74" r="6" fill="#ffffff"/>
+  <path d="M22 50 8 43v14Z" fill="#ffd35a"/>
+  <path d="M138 50l14-7v14Z" fill="#ffd35a"/>
+</svg>

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 90" role="img" aria-label="Runway checkpoint marker">
-  <rect x="10" y="28" width="140" height="34" rx="17" fill="#fff7c5" stroke="#ffd35a" stroke-width="6"/>
-  <path d="M31 45h98" stroke="#2fb8a2" stroke-width="8" stroke-linecap="round" stroke-dasharray="18 14"/>
-  <path d="M44 20v50M116 20v50" stroke="#132035" stroke-width="5" stroke-linecap="round"/>
-  <path d="M44 23h28l-8 10 8 10H44Z" fill="#ef5b63"/>
-  <path d="M116 23H88l8 10-8 10h28Z" fill="#38aee2"/>
-</svg>

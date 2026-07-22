@@ -1,0 +1,326 @@
+.runway-circuit-game {
+  --circuit-blue: #38aee2;
+  --circuit-gold: #ffd35a;
+  --circuit-orange: #ff8a3d;
+  --circuit-red: #ef5b63;
+  --circuit-green: #2fb36d;
+  --circuit-violet: #7f59e8;
+}
+
+.runway-circuit-game.is-playing {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: calc(100vh - 126px);
+}
+
+.circuit-game-bar {
+  margin-bottom: 12px;
+}
+
+.circuit-mini-stats,
+.circuit-live-stats {
+  min-width: 280px;
+}
+
+.circuit-screen-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.circuit-menu-panel,
+.circuit-map-panel,
+.circuit-preview-panel,
+.circuit-result-panel {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.circuit-menu-panel h2,
+.circuit-map-panel h2,
+.circuit-preview-panel h2,
+.circuit-result-panel h2 {
+  margin: 4px 0 10px;
+  font-size: 2rem;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.circuit-menu-panel p,
+.circuit-preview-panel p,
+.circuit-result-panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+  font-weight: 720;
+}
+
+.circuit-info-grid,
+.circuit-choice-grid,
+.circuit-car-grid,
+.circuit-upgrade-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.circuit-info-card,
+.circuit-choice-card,
+.circuit-level-node,
+.circuit-car-card,
+.circuit-upgrade-card {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+[data-theme="dark"] .circuit-info-card,
+[data-theme="dark"] .circuit-choice-card,
+[data-theme="dark"] .circuit-level-node,
+[data-theme="dark"] .circuit-car-card,
+[data-theme="dark"] .circuit-upgrade-card {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.circuit-info-card h3,
+.circuit-upgrade-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.02rem;
+}
+
+.circuit-info-card p,
+.circuit-choice-card span,
+.circuit-level-node span,
+.circuit-level-node small {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.circuit-choice-card,
+.circuit-level-node,
+.circuit-car-card {
+  display: grid;
+  gap: 8px;
+  min-height: 132px;
+  color: var(--ink);
+  text-align: left;
+}
+
+.circuit-choice-card strong,
+.circuit-level-node strong,
+.circuit-car-card strong {
+  font-size: 1.13rem;
+}
+
+.circuit-choice-card.is-selected,
+.circuit-level-node.is-selected,
+.circuit-car-card.is-selected {
+  color: white;
+  background: var(--circuit-blue);
+  border-color: transparent;
+}
+
+.circuit-choice-card.is-selected span,
+.circuit-level-node.is-selected span,
+.circuit-level-node.is-selected small,
+.circuit-car-card.is-selected p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.circuit-choice-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 4px;
+}
+
+.circuit-pill {
+  display: grid;
+  min-width: 136px;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.circuit-pill small {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.circuit-menu-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.circuit-menu-actions button,
+.circuit-pause-card button,
+.circuit-upgrade-card button {
+  min-height: 42px;
+  padding: 0 14px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--line);
+}
+
+.circuit-menu-actions .primary-action,
+.circuit-upgrade-card .primary-action,
+.circuit-pause-card .primary-action {
+  color: white;
+  background: var(--circuit-blue);
+  border-color: transparent;
+}
+
+.circuit-level-map {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.circuit-level-node {
+  min-height: 124px;
+}
+
+.circuit-level-node.is-locked,
+.circuit-car-card:disabled {
+  opacity: 0.58;
+}
+
+.circuit-car-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.circuit-car-swatch {
+  --car: #38aee2;
+  --accent: #ffffff;
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 38px;
+  border: 4px solid var(--accent);
+  border-radius: 18px 22px 16px 18px;
+  background: var(--car);
+  box-shadow: inset -8px -7px 0 rgba(19, 32, 53, 0.13);
+}
+
+.circuit-car-swatch::after {
+  content: "";
+  position: absolute;
+  inset: 8px 18px 8px 30px;
+  border-radius: 8px;
+  background: var(--accent);
+}
+
+.circuit-stat-bars,
+.circuit-upgrade-card {
+  display: grid;
+  gap: 8px;
+}
+
+.circuit-stat-bars span {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.circuit-stat-bars small,
+.circuit-upgrade-card p {
+  color: var(--muted);
+  font-weight: 780;
+}
+
+.circuit-meter {
+  display: block;
+  height: 9px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: rgba(19, 32, 53, 0.13);
+}
+
+.circuit-meter b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--circuit-green), var(--circuit-gold), var(--circuit-orange));
+}
+
+.circuit-stage {
+  position: relative;
+  min-height: 660px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #a8e8ff;
+  box-shadow: var(--shadow);
+}
+
+.circuit-canvas {
+  display: block;
+  width: 100%;
+  height: min(76vh, 780px);
+  min-height: 660px;
+}
+
+.runway-circuit-game .game-overlay.is-visible {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(19, 32, 53, 0.28);
+  backdrop-filter: blur(3px);
+}
+
+.circuit-pause-card {
+  display: grid;
+  width: min(540px, calc(100% - 32px));
+  gap: 10px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-solid);
+  box-shadow: var(--shadow);
+}
+
+.circuit-pause-card h2,
+.circuit-pause-card p {
+  margin: 0;
+}
+
+.circuit-result-panel.is-win {
+  border-color: rgba(47, 179, 109, 0.42);
+}
+
+[data-theme="contrast"] .circuit-menu-actions .primary-action,
+[data-theme="contrast"] .circuit-choice-card.is-selected,
+[data-theme="contrast"] .circuit-level-node.is-selected,
+[data-theme="contrast"] .circuit-car-card.is-selected {
+  background: #050a12;
+}
+
+@media (max-width: 1180px) {
+  .circuit-info-grid,
+  .circuit-choice-grid,
+  .circuit-upgrade-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .circuit-car-grid,
+  .circuit-level-map {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
