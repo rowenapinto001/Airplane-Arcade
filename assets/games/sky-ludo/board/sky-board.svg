@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="Original Sky Ludo board artwork">
+  <rect width="180" height="180" rx="18" fill="#fff"/>
+  <rect x="12" y="12" width="50" height="50" rx="10" fill="#dff8ff" stroke="#38aee2" stroke-width="5"/>
+  <rect x="118" y="12" width="50" height="50" rx="10" fill="#fff4c8" stroke="#ffd35a" stroke-width="5"/>
+  <rect x="12" y="118" width="50" height="50" rx="10" fill="#e8fbf3" stroke="#2fb36d" stroke-width="5"/>
+  <rect x="118" y="118" width="50" height="50" rx="10" fill="#fce7ee" stroke="#ef5b63" stroke-width="5"/>
+  <path d="M90 64 116 90 90 116 64 90Z" fill="#fff" stroke="#132035" stroke-opacity=".34" stroke-width="3"/>
+  <path d="M78 18v70M102 92v70M18 78h70M92 102h70" stroke="#6f7d88" stroke-width="12" stroke-linecap="round"/>
+  <path d="M90 75v-48M90 105v48M75 90H27M105 90h48" stroke="#ffd35a" stroke-width="3" stroke-dasharray="8 7"/>
+</svg>

@@ -66,12 +66,11 @@ export function describeGameControls(settings, gameId) {
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }
-  if (gameId === "sumo") {
+  if (gameId === "sky-ludo") {
     return [
-      `Player 1 move: ${labelsFor([controls.p1Up[0], controls.p1Left[0], controls.p1Down[0], controls.p1Right[0]])}`,
-      `Player 1 push: ${labelsFor(controls.p1Push)}`,
-      `Player 2 move: ${labelsFor([controls.p2Up[0], controls.p2Left[0], controls.p2Down[0], controls.p2Right[0]])}`,
-      `Player 2 push: ${labelsFor(controls.p2Push)}`,
+      `Roll dice: ${labelsFor(controls.roll)}`,
+      `Move token selection: ${labelsFor([controls.up[0], controls.left[0], controls.down[0], controls.right[0]])}`,
+      `Select token: ${labelsFor(controls.select)}`,
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }

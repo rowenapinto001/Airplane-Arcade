@@ -21,18 +21,14 @@ export const DEFAULT_CONTROLS = {
     right: ["ArrowRight"],
     pause: ["KeyP", "Escape"],
   },
-  sumo: {
-    p1Up: ["KeyW"],
-    p1Left: ["KeyA"],
-    p1Down: ["KeyS"],
-    p1Right: ["KeyD"],
-    p1Push: ["Space"],
-    p2Up: ["ArrowUp"],
-    p2Left: ["ArrowLeft"],
-    p2Down: ["ArrowDown"],
-    p2Right: ["ArrowRight"],
-    p2Push: ["Enter"],
-    pause: ["KeyP", "Escape"],
+  "sky-ludo": {
+    roll: ["Space", "Enter"],
+    select: ["Enter"],
+    up: ["ArrowUp"],
+    down: ["ArrowDown"],
+    left: ["ArrowLeft"],
+    right: ["ArrowRight"],
+    pause: ["Escape"],
   },
   archery: {
     up: ["ArrowUp"],
@@ -110,7 +106,7 @@ export const DEFAULT_DATA = {
       football: 0,
       basketball: 0,
       memory: 0,
-      sumo: 0,
+      "sky-ludo": 0,
       archery: 0,
       "cake-maker": 0,
       "pyramid-smash": 0,
@@ -140,15 +136,38 @@ export const DEFAULT_DATA = {
       player2Wins: 0,
       draws: 0,
     },
-    sumoRecords: {
-      matchesPlayed: 0,
-      soloWins: 0,
-      soloLosses: 0,
+    skyLudoRecords: {
+      totalGamesPlayed: 0,
+      soloDuelWins: 0,
+      soloClassicWins: 0,
       player1Wins: 0,
       player2Wins: 0,
-      draws: 0,
-      recentFinalScore: null,
+      easyWins: 0,
+      normalWins: 0,
+      hardWins: 0,
+      totalDiceRolls: 0,
+      totalSixes: 0,
+      totalCaptures: 0,
+      totalTokensHome: 0,
+      fastestWin: null,
+      longestGame: 0,
+      currentWinStreak: 0,
+      bestWinStreak: 0,
+      flightCoins: 0,
+      savedGameState: null,
+      selectedMode: "solo-duel",
       selectedDifficulty: "normal",
+      recentSummary: null,
+      preferredRules: {
+        quickMode: false,
+        fastStart: false,
+        blocksEnabled: true,
+        threeSixesPenalty: true,
+        homeBonus: true,
+        continueRanking: false,
+        fasterAi: false,
+        fasterAnimations: false,
+      },
     },
     archeryRecords: {
       bestSoloTotal: 0,
@@ -379,12 +398,11 @@ export function getGameProgress(data, gameId) {
     const best = progress.memoryRecords.normal.bestMoves;
     return best ? `Best ${best} moves` : "No record yet";
   }
-  if (gameId === "sumo") {
-    const wins =
-      progress.sumoRecords.soloWins +
-      progress.sumoRecords.player1Wins +
-      progress.sumoRecords.player2Wins;
-    return `${wins} Sumo wins`;
+  if (gameId === "sky-ludo") {
+    const record = progress.skyLudoRecords;
+    const wins = (record.soloDuelWins || 0) + (record.soloClassicWins || 0) + (record.player1Wins || 0) + (record.player2Wins || 0);
+    const saved = record.savedGameState ? "Continue saved" : "No saved match";
+    return `${saved} | ${wins} wins | ${modeLabel(record.selectedMode)}`;
   }
   if (gameId === "archery") {
     const record = progress.archeryRecords;
@@ -427,6 +445,13 @@ function ordinal(value) {
   const number = Number(value);
   const suffix = number % 10 === 1 && number % 100 !== 11 ? "st" : number % 10 === 2 && number % 100 !== 12 ? "nd" : number % 10 === 3 && number % 100 !== 13 ? "rd" : "th";
   return `${number}${suffix}`;
+}
+
+function modeLabel(mode) {
+  if (mode === "solo-duel") return "Solo Duel";
+  if (mode === "solo-classic") return "Solo Classic";
+  if (mode === "two") return "Two Players";
+  return "Ready";
 }
 
 export function getTotalWins(data) {
@@ -501,15 +526,36 @@ export async function recordGameResult(result) {
       if (stamped.winner === "draw") progress.memoryRecords.draws += 1;
     }
 
-    if (stamped.gameId === "sumo") {
-      progress.sumoRecords.matchesPlayed += 1;
-      progress.sumoRecords.selectedDifficulty = stamped.difficulty || progress.sumoRecords.selectedDifficulty;
-      progress.sumoRecords.recentFinalScore = `${stamped.player1Score}-${stamped.player2Score}`;
-      if (stamped.winner === "solo") progress.sumoRecords.soloWins += 1;
-      if (stamped.winner === "computer") progress.sumoRecords.soloLosses += 1;
-      if (stamped.winner === "player1") progress.sumoRecords.player1Wins += 1;
-      if (stamped.winner === "player2") progress.sumoRecords.player2Wins += 1;
-      if (stamped.winner === "draw") progress.sumoRecords.draws += 1;
+    if (stamped.gameId === "sky-ludo") {
+      const record = progress.skyLudoRecords;
+      record.totalGamesPlayed += 1;
+      record.selectedMode = stamped.mode || record.selectedMode;
+      record.selectedDifficulty = stamped.difficulty || record.selectedDifficulty;
+      record.recentSummary = stamped.summary || record.recentSummary;
+      record.totalDiceRolls += stamped.diceRolls || 0;
+      record.totalSixes += stamped.sixes || 0;
+      record.totalCaptures += stamped.captures || 0;
+      record.totalTokensHome += stamped.tokensHome || 0;
+      record.flightCoins += Math.max(0, Math.floor(stamped.flightCoins || 0));
+      record.longestGame = Math.max(record.longestGame || 0, stamped.duration || 0);
+      if (stamped.winner === "solo") {
+        if (stamped.mode === "solo-classic") record.soloClassicWins += 1;
+        else record.soloDuelWins += 1;
+        record.currentWinStreak += 1;
+        record.bestWinStreak = Math.max(record.bestWinStreak || 0, record.currentWinStreak);
+        record.fastestWin =
+          record.fastestWin === null || (stamped.duration || 0) < record.fastestWin
+            ? stamped.duration || 0
+            : record.fastestWin;
+        if (stamped.difficulty === "easy") record.easyWins += 1;
+        if (stamped.difficulty === "normal") record.normalWins += 1;
+        if (stamped.difficulty === "hard") record.hardWins += 1;
+      } else {
+        record.currentWinStreak = 0;
+      }
+      if (stamped.winner === "player1") record.player1Wins += 1;
+      if (stamped.winner === "player2") record.player2Wins += 1;
+      if (stamped.completed) record.savedGameState = null;
     }
 
     if (stamped.gameId === "archery") {

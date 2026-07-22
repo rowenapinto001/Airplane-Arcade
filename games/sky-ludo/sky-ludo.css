@@ -1,0 +1,361 @@
+.sky-ludo-game {
+  --ludo-blue: #38aee2;
+  --ludo-yellow: #ffd35a;
+  --ludo-green: #2fb36d;
+  --ludo-coral: #ef5b63;
+  --ludo-ink: #132035;
+}
+
+.sky-ludo-game.is-playing {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: calc(100vh - 126px);
+}
+
+.sky-ludo-bar {
+  margin-bottom: 12px;
+}
+
+.sky-ludo-mini-stats,
+.sky-ludo-live-stats {
+  min-width: 280px;
+}
+
+.sky-ludo-screen-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.sky-ludo-menu-panel,
+.sky-ludo-result-panel {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.sky-ludo-menu-panel h2,
+.sky-ludo-result-panel h2 {
+  margin: 4px 0 10px;
+  font-size: 2rem;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.sky-ludo-menu-panel p,
+.sky-ludo-result-panel p,
+.sky-ludo-note {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+  font-weight: 720;
+}
+
+.sky-ludo-info-grid,
+.sky-ludo-choice-grid,
+.sky-ludo-setup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.sky-ludo-choice-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sky-ludo-info-card,
+.sky-ludo-choice-card {
+  display: grid;
+  gap: 10px;
+  min-height: 120px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--ink);
+  text-align: left;
+}
+
+[data-theme="dark"] .sky-ludo-info-card,
+[data-theme="dark"] .sky-ludo-choice-card {
+  background: rgba(11, 18, 32, 0.72);
+}
+
+.sky-ludo-choice-card {
+  cursor: pointer;
+}
+
+.sky-ludo-choice-card strong,
+.sky-ludo-info-card h3 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.sky-ludo-choice-card span,
+.sky-ludo-info-card small {
+  color: var(--muted);
+  font-weight: 760;
+  line-height: 1.35;
+}
+
+.sky-ludo-choice-card.is-selected,
+.sky-ludo-segmented .is-selected,
+.sky-ludo-toggle-row .is-selected,
+.sky-ludo-actions .primary-action,
+.sky-ludo-dice-card .primary-action {
+  background: var(--ludo-blue);
+  color: #fff;
+  border-color: transparent;
+}
+
+.sky-ludo-segmented,
+.sky-ludo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.sky-ludo-segmented {
+  margin-top: 0;
+}
+
+.sky-ludo-segmented button,
+.sky-ludo-actions button,
+.sky-ludo-toggle-row button,
+.sky-ludo-dice-card button,
+.sky-ludo-pause-card button {
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.sky-ludo-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.sky-ludo-toggle-row:first-of-type {
+  border-top: 0;
+}
+
+.sky-ludo-toggle-row span {
+  display: grid;
+  gap: 2px;
+}
+
+.sky-ludo-shell {
+  display: grid;
+  grid-template-columns: minmax(620px, 1fr) minmax(280px, 360px);
+  gap: 14px;
+  min-height: 0;
+}
+
+.sky-ludo-board-wrap {
+  position: relative;
+  min-height: 720px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #a8e8ff;
+  box-shadow: var(--shadow);
+}
+
+.sky-ludo-canvas {
+  display: block;
+  width: 100%;
+  height: min(78vh, 820px);
+  min-height: 720px;
+}
+
+.sky-ludo-side {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.sky-ludo-dice-card,
+.sky-ludo-player-list,
+.sky-ludo-history,
+.sky-ludo-rule-summary,
+.sky-ludo-pause-card {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.sky-ludo-dice-card {
+  display: grid;
+  gap: 10px;
+}
+
+.sky-ludo-dice-card h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.sky-ludo-dice {
+  display: grid;
+  place-items: center;
+  width: 82px;
+  height: 82px;
+  border: 3px solid var(--ludo-ink);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ludo-ink);
+  font-size: 2.4rem;
+  font-weight: 950;
+  box-shadow: 0 10px 20px rgba(19, 32, 53, 0.14);
+}
+
+.sky-ludo-dice.is-rolling {
+  animation: sky-ludo-bounce 0.28s ease-in-out infinite alternate;
+}
+
+@keyframes sky-ludo-bounce {
+  from {
+    transform: translateY(0) rotate(-4deg);
+  }
+  to {
+    transform: translateY(-7px) rotate(5deg);
+  }
+}
+
+.sky-ludo-message {
+  min-height: 40px;
+}
+
+.sky-ludo-player-list {
+  display: grid;
+  gap: 8px;
+}
+
+.sky-ludo-player-card {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 7px solid var(--ludo-blue);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.sky-ludo-player-card[data-player="yellow"] {
+  border-left-color: var(--ludo-yellow);
+}
+
+.sky-ludo-player-card[data-player="green"] {
+  border-left-color: var(--ludo-green);
+}
+
+.sky-ludo-player-card[data-player="coral"] {
+  border-left-color: var(--ludo-coral);
+}
+
+.sky-ludo-player-card.is-active {
+  outline: 3px solid rgba(56, 174, 226, 0.32);
+  background: #fff;
+}
+
+.sky-ludo-player-card p,
+.sky-ludo-player-card span,
+.sky-ludo-rule-summary span,
+.sky-ludo-history li {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 760;
+}
+
+.sky-ludo-history ul {
+  margin: 10px 0 0;
+  padding-left: 18px;
+}
+
+.sky-ludo-rule-summary {
+  display: grid;
+  gap: 6px;
+}
+
+.sky-ludo-rule-summary h3 {
+  margin: 0;
+}
+
+.sky-ludo-game .game-overlay.is-visible {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(19, 32, 53, 0.3);
+  backdrop-filter: blur(3px);
+}
+
+.sky-ludo-pause-card {
+  display: grid;
+  width: min(560px, calc(100% - 32px));
+  gap: 10px;
+  background: var(--panel-solid);
+}
+
+.sky-ludo-ranking {
+  margin: 10px 0 0;
+  padding-left: 24px;
+  font-weight: 840;
+}
+
+.sky-ludo-result-panel.is-win {
+  border-color: rgba(47, 179, 109, 0.42);
+}
+
+[data-theme="contrast"] .sky-ludo-choice-card.is-selected,
+[data-theme="contrast"] .sky-ludo-segmented .is-selected,
+[data-theme="contrast"] .sky-ludo-toggle-row .is-selected,
+[data-theme="contrast"] .sky-ludo-actions .primary-action,
+[data-theme="contrast"] .sky-ludo-dice-card .primary-action {
+  background: #050a12;
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-ludo-dice.is-rolling {
+    animation-duration: 0.01s;
+  }
+}
+
+@media (max-width: 1180px) {
+  .sky-ludo-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sky-ludo-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .sky-ludo-info-grid,
+  .sky-ludo-choice-grid,
+  .sky-ludo-setup-grid,
+  .sky-ludo-side {
+    grid-template-columns: 1fr;
+  }
+
+  .sky-ludo-board-wrap,
+  .sky-ludo-canvas {
+    min-height: 560px;
+  }
+}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Sky Ludo six-sided dice">
+  <rect x="12" y="12" width="72" height="72" rx="14" fill="#fff" stroke="#132035" stroke-width="6"/>
+  <g fill="#132035">
+    <circle cx="32" cy="30" r="6"/>
+    <circle cx="64" cy="30" r="6"/>
+    <circle cx="32" cy="48" r="6"/>
+    <circle cx="64" cy="48" r="6"/>
+    <circle cx="32" cy="66" r="6"/>
+    <circle cx="64" cy="66" r="6"/>
+  </g>
+</svg>

@@ -5,7 +5,7 @@ Airplane Arcade is a Manifest V3 Chrome extension containing a small offline min
 - Simple Football
 - Basket & Ball
 - Memory Match
-- Sumo
+- Sky Ludo
 - Archery
 - Cake Maker
 - Pyramid Smash
@@ -31,7 +31,7 @@ The extension uses vanilla HTML, CSS, JavaScript, Canvas, local SVG art, local P
   /football/
   /basketball/
   /memory/
-  /sumo/
+  /sky-ludo/
   /archery/
   /cake-maker/
   /pyramid-smash/
@@ -79,11 +79,11 @@ Memory Match:
 - Reveal: `Enter` or `Space`
 - Pause: `P` or `Escape`
 
-Sumo:
-- Player 1: `W`, `A`, `S`, `D` to move; `Space` to push
-- Player 2: Arrow keys to move; `Enter` to push
-- Pause: `P` or `Escape`
-- Mouse: use the on-screen push buttons
+Sky Ludo:
+- Roll dice: `Space` or `Enter`
+- Select token: mouse, or Arrow keys then `Enter`
+- Pause: `Escape`
+- Solo modes use fair local computer opponents; Two Player mode shares one laptop
 
 Archery:
 - Mouse: move to aim and click to shoot
@@ -119,15 +119,15 @@ Controls can be changed from **Settings**.
 
 ## Difficulty Levels
 
-Simple Football, Basket & Ball, Memory Match, Sumo, Archery, Runway Circuit, Cloud Ridge Rally, and Red-Eye Run support **Easy**, **Normal**, and **Hard** from the game setup screen. Cake Maker is a creative sandbox with no timer, score, winner, or loser. Pyramid Smash uses one balanced offline physics ruleset with level-by-level challenge progression.
+Simple Football, Basket & Ball, Memory Match, Sky Ludo, Archery, Runway Circuit, Cloud Ridge Rally, and Red-Eye Run support **Easy**, **Normal**, and **Hard** from the game setup screen. Cake Maker is a creative sandbox with no timer, score, winner, or loser. Pyramid Smash uses one balanced offline physics ruleset with level-by-level challenge progression.
 
-- Easy uses more forgiving rules, such as smaller Memory boards, wider basketball rims, longer timers, bigger football goals, larger Sumo rings, larger Archery targets, slower Runway Circuit AI cars, easier Rally routes, and longer Red-Eye green phases.
+- Easy uses more forgiving rules, such as smaller Memory boards, wider basketball rims, longer timers, bigger football goals, simpler Sky Ludo AI, larger Archery targets, slower Runway Circuit AI cars, easier Rally routes, and longer Red-Eye green phases.
 - Normal is the balanced default.
-- Hard increases pressure with larger Memory boards, tighter basketball timing, wind, shorter timers, smaller football goals, tighter Sumo rings, smaller Archery targets, faster Runway Circuit rivals, tougher Rally routes, and stricter Red-Eye detection.
+- Hard increases pressure with larger Memory boards, tighter basketball timing, wind, shorter timers, smaller football goals, stronger Sky Ludo move evaluation, smaller Archery targets, faster Runway Circuit rivals, tougher Rally routes, and stricter Red-Eye detection.
 
 ## Offline Operation
 
-All code, artwork, icons, Cake Maker assets, Pyramid Smash assets, Rally assets, Runway Circuit assets, Red-Eye Run assets, party music, and sounds are local files inside the extension. There are no APIs, CDNs, external fonts, accounts, analytics, ads, iframes, or internet-loaded assets. Progress, settings, saved cakes, campaign progress, race records, and ghost data are saved with `chrome.storage.local`, so no sign-in is required.
+All code, artwork, icons, Cake Maker assets, Pyramid Smash assets, Sky Ludo assets, Rally assets, Runway Circuit assets, Red-Eye Run assets, party music, and sounds are local files inside the extension. There are no APIs, CDNs, external fonts, accounts, analytics, ads, iframes, or internet-loaded assets. Progress, settings, saved cakes, saved Ludo matches, campaign progress, race records, and ghost data are saved with `chrome.storage.local`, so no sign-in is required.
 
 ## Add Another Game
 

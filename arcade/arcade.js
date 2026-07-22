@@ -22,7 +22,7 @@ import { clearNode, createElement, formatDuration, setPressed } from "../shared/
 import { createFootballGame } from "../games/football/football.js";
 import { createBasketballGame } from "../games/basketball/basketball.js";
 import { createMemoryGame } from "../games/memory/memory.js";
-import { createSumoGame } from "../games/sumo/sumo.js";
+import { createSkyLudoGame } from "../games/sky-ludo/sky-ludo.js";
 import { createArcheryGame } from "../games/archery/archery.js";
 import { createCakeMakerGame } from "../games/cake-maker/cake-maker.js";
 import { createPyramidSmashGame } from "../games/pyramid-smash/pyramid-smash.js";
@@ -40,7 +40,7 @@ const GAME_FACTORIES = {
   football: createFootballGame,
   basketball: createBasketballGame,
   memory: createMemoryGame,
-  sumo: createSumoGame,
+  "sky-ludo": createSkyLudoGame,
   archery: createArcheryGame,
   "cake-maker": createCakeMakerGame,
   "pyramid-smash": createPyramidSmashGame,
@@ -201,6 +201,9 @@ function gameCard(game) {
   if (game.id === "runway-circuit" && data.progress.runwayCircuitRecords.highestUnlockedLevel > 1) {
     playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueCampaign: true })));
   }
+  if (game.id === "sky-ludo" && data.progress.skyLudoRecords.savedGameState) {
+    playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueGame: true })));
+  }
   playRow.append(button("Play", "primary-button", () => renderGameSetup(game.id)));
 
   body.append(badges, playRow);
@@ -338,7 +341,7 @@ function playerBox(game) {
   const box = createElement("div", "option-box");
   box.append(createElement("span", "field-label", "Players"));
   const grid = createElement("div", "name-grid");
-  const singlePlayerSolo = setup.mode === "solo" && !["football", "sumo"].includes(game.id);
+  const singlePlayerSolo = setup.mode === "solo" && !["football"].includes(game.id);
   grid.classList.toggle("is-single", singlePlayerSolo);
   const p1 = nameField(singlePlayerSolo ? "Player" : "Player 1", setup.player1, (value) => {
     setup.player1 = value || "Player 1";
@@ -403,9 +406,9 @@ async function launchGame(gameId, launchOptions = {}) {
   setRibbon(`${game.name} is running. Pause, restart, or return to the library from inside the game.`);
   clearNode(view);
 
-  if (gameId === "sumo" || gameId === "archery" || gameId === "runway-circuit" || gameId === "cloud-ridge-rally" || gameId === "red-eye-run") {
+  if (gameId === "sky-ludo" || gameId === "archery" || gameId === "runway-circuit" || gameId === "cloud-ridge-rally" || gameId === "red-eye-run") {
     data = await updateData((draft) => {
-      if (gameId === "sumo") draft.progress.sumoRecords.selectedDifficulty = setup.difficulty;
+      if (gameId === "sky-ludo") draft.progress.skyLudoRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "archery") draft.progress.archeryRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "runway-circuit") draft.progress.runwayCircuitRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "cloud-ridge-rally") draft.progress.cloudRidgeRallyRecords.selectedDifficulty = setup.difficulty;
@@ -425,6 +428,7 @@ async function launchGame(gameId, launchOptions = {}) {
       controls: data.settings.controls[gameId],
       continueCompetition: Boolean(launchOptions.continueCompetition),
       continueCampaign: Boolean(launchOptions.continueCampaign),
+      continueGame: Boolean(launchOptions.continueGame),
     },
     onExit: async () => {
       data = await getData();
@@ -461,9 +465,9 @@ function renderStats() {
       "Normal-board solo record.",
     ),
     resultCard(
-      "Sumo",
-      data.progress.sumoRecords.recentFinalScore || "No match",
-      `${data.progress.sumoRecords.matchesPlayed} matches played.`,
+      "Sky Ludo",
+      data.progress.skyLudoRecords.recentSummary || (data.progress.skyLudoRecords.savedGameState ? "Saved match available" : "No match"),
+      `${data.progress.skyLudoRecords.totalGamesPlayed} games. ${data.progress.skyLudoRecords.totalDiceRolls} rolls. ${data.progress.skyLudoRecords.totalCaptures} captures.`,
     ),
     resultCard(
       "Archery",
@@ -549,7 +553,7 @@ function renderSettings() {
     controlsSettings("football"),
     controlsSettings("basketball"),
     controlsSettings("memory"),
-    controlsSettings("sumo"),
+    controlsSettings("sky-ludo"),
     controlsSettings("archery"),
     controlsSettings("cake-maker"),
     controlsSettings("pyramid-smash"),
@@ -637,7 +641,7 @@ function accessibilitySettings() {
     });
     renderSettings();
   });
-  card.append(motion, createElement("p", "settings-note", "Cake Maker and Runway Circuit use this to calm celebration, particle, and background motion."));
+  card.append(motion, createElement("p", "settings-note", "Cake Maker, Sky Ludo, and Runway Circuit use this to calm celebration, token, particle, and background motion."));
   return card;
 }
 

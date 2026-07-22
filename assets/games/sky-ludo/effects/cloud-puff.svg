@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" role="img" aria-label="Cartoon cloud puff capture effect">
+  <ellipse cx="46" cy="47" rx="32" ry="19" fill="#fff"/>
+  <ellipse cx="68" cy="38" rx="30" ry="23" fill="#fff"/>
+  <ellipse cx="82" cy="52" rx="24" ry="17" fill="#fff"/>
+  <ellipse cx="34" cy="56" rx="18" ry="12" fill="#fff"/>
+  <path d="M28 49c10-18 28-22 38-10 14-8 31-1 34 13" fill="none" stroke="#38aee2" stroke-opacity=".55" stroke-width="5" stroke-linecap="round"/>
+</svg>
