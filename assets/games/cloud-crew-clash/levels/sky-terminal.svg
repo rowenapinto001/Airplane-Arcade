@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 140" role="img" aria-label="Floating sky terminal level">
-  <rect width="220" height="140" rx="24" fill="#dff7ff"/>
-  <path d="M22 80c51-45 92-46 142-4 17 15 26 17 41 6" fill="none" stroke="#b8eefa" stroke-width="28" stroke-linecap="round"/>
-  <path d="M22 80c51-45 92-46 142-4 17 15 26 17 41 6" fill="none" stroke="#2aa7c9" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="110" cy="72" r="20" fill="#fff" stroke="#657184" stroke-width="4"/>
-  <rect x="14" y="58" width="34" height="32" rx="8" fill="#d7f7ff" stroke="#17657f" stroke-width="4"/>
-  <rect x="173" y="58" width="34" height="32" rx="8" fill="#fff0df" stroke="#9a5126" stroke-width="4"/>
-</svg>

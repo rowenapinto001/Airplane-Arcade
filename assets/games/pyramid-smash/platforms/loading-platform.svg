@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 80" role="img" aria-label="Pyramid Smash loading platform">
+  <rect x="8" y="18" width="204" height="42" rx="14" fill="#6f4d35"/>
+  <rect x="8" y="18" width="204" height="18" rx="12" fill="#8a6748"/>
+  <path d="M34 42h34M92 42h34M150 42h34" stroke="#ffe6af" stroke-width="8" stroke-linecap="round" opacity=".45"/>
+</svg>

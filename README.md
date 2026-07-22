@@ -1,6 +1,6 @@
 # Airplane Arcade
 
-Airplane Arcade is a Manifest V3 Chrome extension containing a small offline mini-game arcade. It includes a compact popup launcher and a full arcade page with eight playable games:
+Airplane Arcade is a Manifest V3 Chrome extension containing a small offline mini-game arcade. It includes a compact popup launcher and a full arcade page with ten playable games:
 
 - Simple Football
 - Basket & Ball
@@ -8,8 +8,10 @@ Airplane Arcade is a Manifest V3 Chrome extension containing a small offline min
 - Sumo
 - Archery
 - Cake Maker
-- Cloud Crew Clash
+- Pyramid Smash
 - Runway Rumble
+- Cloud Ridge Rally
+- Red-Eye Run
 
 The extension uses vanilla HTML, CSS, JavaScript, Canvas, local SVG art, local PNG icons, local WAV sounds, and `chrome.storage.local`.
 
@@ -32,8 +34,10 @@ The extension uses vanilla HTML, CSS, JavaScript, Canvas, local SVG art, local P
   /sumo/
   /archery/
   /cake-maker/
-  /cloud-crew-clash/
+  /pyramid-smash/
   /runway-rumble/
+  /cloud-ridge-rally/
+  /red-eye-run/
 /shared/
   audio.js
   controls.js
@@ -94,11 +98,12 @@ Cake Maker:
 - Party Mode: `B`
 - Pause: `Escape`
 
-Cloud Crew Clash:
-- Mouse: aim and hold to launch crew
-- Keyboard aim: `A` / `D` or Left / Right
-- Launch: `Space`
-- Abilities: `1`, `2`, `3`
+Pyramid Smash:
+- Mouse: drag from the launcher and release
+- Keyboard aim: Arrow keys
+- Launch: hold and release `Space`
+- Next Ball: `N`
+- Reset aim: `R`
 - Pause: `Escape`
 
 Runway Rumble:
@@ -112,15 +117,15 @@ Controls can be changed from **Settings**.
 
 ## Difficulty Levels
 
-Simple Football, Basket & Ball, Memory Match, Sumo, Archery, Cloud Crew Clash, and Runway Rumble support **Easy**, **Normal**, and **Hard** from the game setup screen. Cake Maker is a creative sandbox with no timer, score, winner, or loser.
+Simple Football, Basket & Ball, Memory Match, Sumo, Archery, Runway Rumble, Cloud Ridge Rally, and Red-Eye Run support **Easy**, **Normal**, and **Hard** from the game setup screen. Cake Maker is a creative sandbox with no timer, score, winner, or loser. Pyramid Smash uses one balanced offline physics ruleset with level-by-level challenge progression.
 
-- Easy uses more forgiving rules, such as smaller Memory boards, wider basketball rims, longer timers, bigger football goals, larger Sumo rings, larger Archery targets, slower Cloud Crew rivals, and slower Runway Rumble opponents.
+- Easy uses more forgiving rules, such as smaller Memory boards, wider basketball rims, longer timers, bigger football goals, larger Sumo rings, larger Archery targets, slower Runway Rumble opponents, easier Rally routes, and longer Red-Eye green phases.
 - Normal is the balanced default.
-- Hard increases pressure with larger Memory boards, tighter basketball timing, wind, shorter timers, smaller football goals, tighter Sumo rings, smaller Archery targets, stronger Cloud Crew rivals, and more efficient Runway Rumble opponents.
+- Hard increases pressure with larger Memory boards, tighter basketball timing, wind, shorter timers, smaller football goals, tighter Sumo rings, smaller Archery targets, more efficient Runway Rumble opponents, tougher Rally routes, and stricter Red-Eye detection.
 
 ## Offline Operation
 
-All code, artwork, icons, Cake Maker assets, Cloud Crew Clash assets, Runway Rumble assets, party music, and sounds are local files inside the extension. There are no APIs, CDNs, external fonts, accounts, analytics, ads, iframes, or internet-loaded assets. Progress, settings, saved cakes, campaign progress, and Runway Rumble competition records are saved with `chrome.storage.local`, so no sign-in is required.
+All code, artwork, icons, Cake Maker assets, Pyramid Smash assets, Rally assets, Runway Rumble assets, Red-Eye Run assets, party music, and sounds are local files inside the extension. There are no APIs, CDNs, external fonts, accounts, analytics, ads, iframes, or internet-loaded assets. Progress, settings, saved cakes, campaign progress, and competition records are saved with `chrome.storage.local`, so no sign-in is required.
 
 ## Add Another Game
 

@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 140" role="img" aria-label="Departure Hub">
-  <rect width="180" height="140" rx="28" fill="#dff7ff"/>
-  <rect x="28" y="34" width="124" height="72" rx="20" fill="#d7f7ff" stroke="#17657f" stroke-width="8"/>
-  <path d="M53 70l74-26-19 28 19 27z" fill="#2aa7c9"/>
-  <text x="90" y="127" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="900" fill="#132035">DEPARTURE</text>
-</svg>

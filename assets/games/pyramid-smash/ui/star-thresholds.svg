@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 80" role="img" aria-label="Pyramid Smash star thresholds">
+  <rect x="4" y="8" width="212" height="64" rx="14" fill="#fffdf8" stroke="#132035" stroke-width="6"/>
+  <g fill="#ffd35a" stroke="#132035" stroke-width="3">
+    <path d="M44 22l6 13 15 1-12 9 4 15-13-8-13 8 4-15-12-9 15-1z"/>
+    <path d="M108 22l6 13 15 1-12 9 4 15-13-8-13 8 4-15-12-9 15-1z"/>
+    <path d="M172 22l6 13 15 1-12 9 4 15-13-8-13 8 4-15-12-9 15-1z"/>
+  </g>
+</svg>

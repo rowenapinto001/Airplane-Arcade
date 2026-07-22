@@ -148,27 +148,29 @@ export const GAME_CATALOG = [
     },
   },
   {
-    id: "cloud-crew-clash",
-    name: "Cloud Crew Clash",
-    shortName: "Cloud Crew",
-    description: "Launch your crew, choose strategic sky routes, capture stations, and defeat the computer rival.",
+    id: "pyramid-smash",
+    name: "Pyramid Smash",
+    shortName: "Pyramid",
+    description: "Launch balls, smash cargo pyramids, earn stars, and unlock a 25-level physics campaign.",
     longDescription:
-      "A solo sky-terminal crowd strategy game with a rotating Crew Launcher, route choices, boost portals, missions, crew types, and a fair computer rival.",
-    image: "../assets/games/cloud-crew-clash.svg",
-    accent: "#2aa7c9",
-    modes: ["solo"],
-    difficulties: ["easy", "normal", "hard"],
-    badges: ["Strategy", "Campaign"],
+      "A fully offline cargo-pyramid physics game with solo campaign play, local two-player turns, seven ball types, special cargo boxes, star ratings, Flight Coins, and Endless Structure Mode after the finale.",
+    image: "../assets/games/pyramid-smash.svg",
+    accent: "#ff8a3d",
+    modes: ["solo", "two"],
+    difficulties: ["normal"],
+    badges: ["Physics", "25 Levels"],
     defaultDifficulty: "normal",
-    hasPlayerSetup: false,
+    hasPlayerSetup: true,
     instructions: [
-      "Aim the Crew Launcher toward a route, then hold launch to send tiny crew across the sky terminal.",
-      "Capture stations, collect Sky Energy, and use portals to shift the size, speed, or protection of your crew.",
-      "Use Rally Beacon, Cloud Shield, and Turbo Launch to redirect, protect, and surge at the right moment.",
-      "Complete campaign missions to earn stars, Flight Badges, crew types, and permanent upgrades.",
+      "Aim the launcher and throw limited balls at the cargo pyramid.",
+      "Clear every required box by breaking it or knocking it off the platforms.",
+      "Use standard, heavy, bouncy, sticky, split, air, and precision balls strategically.",
+      "Earn up to three stars per level, unlock all 25 stages, and finish Level 25 to open Endless Structure Mode.",
+      "Two-player mode gives each local player one full turn on the same level.",
     ],
     controls: {
-      solo: ["Mouse: aim and hold to launch", "Keyboard: A/D or Arrow keys aim, Space launches", "Abilities: 1, 2, 3", "Pause: Escape"],
+      solo: ["Mouse: drag from launcher and release", "Keyboard: Arrow keys aim, Space throws", "Next Ball: N", "Pause: Escape"],
+      two: ["Shared mouse or keyboard", "Arrow keys aim, Space throws", "Next Ball: N", "Pause: Escape"],
     },
   },
   {
@@ -328,10 +330,8 @@ export const DIFFICULTY_DETAILS = {
   "cake-maker": {
     normal: "Creative sandbox mode with no timer, score, winner, or loser.",
   },
-  "cloud-crew-clash": {
-    easy: "Slower rival decisions, less frequent abilities, gentler routes, and more time to learn crowd control.",
-    normal: "Balanced rival route choices, fair ability use, useful upgrades, and steady mission pressure.",
-    hard: "Sharper route switching, better defense timing, smarter station pressure, and fully visible fair upgrades.",
+  "pyramid-smash": {
+    normal: "A handcrafted 25-level physics campaign with limited balls, local turns, saved stars, and fair offline simulation.",
   },
   "runway-rumble": {
     easy: "Slower opponents, longer obstacle waits, more frequent AI stumbles, and extra room to qualify.",
@@ -339,9 +339,9 @@ export const DIFFICULTY_DETAILS = {
     hard: "Efficient fair opponents, quicker recovery, cleaner routes, and rare but still human-like mistakes.",
   },
   "cloud-ridge-rally": {
-    easy: "Gentler hills, more fuel, slower hazards, and forgiving crash checks.",
-    normal: "Balanced terrain, fuel pickups, stunts, upgrades, and campaign progression.",
-    hard: "Steeper sky roads, tighter fuel, stronger obstacle pressure, and higher coin rewards.",
+    easy: "Longer rolling routes with wider recovery roads, more fuel, and forgiving crash checks.",
+    normal: "Long-distance routes with paced checkpoints, spaced obstacles, fuel planning, and varied terrain sections.",
+    hard: "Very long sky roads with stricter fuel planning, steeper sections, and fair but stronger obstacle pressure.",
   },
   "red-eye-run": {
     easy: "Longer green phases, slower watchkeeper turns, forgiving movement tolerance, and more dummy mistakes.",

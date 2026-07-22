@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-label="Pyramid Smash cargo pyramid game illustration">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#a8e8ff"/>
+      <stop offset="1" stop-color="#fff0be"/>
+    </linearGradient>
+    <linearGradient id="platform" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#7b5a3e"/>
+      <stop offset="1" stop-color="#503626"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" rx="34" fill="url(#sky)"/>
+  <circle cx="96" cy="76" r="30" fill="#fff" opacity=".85"/>
+  <circle cx="128" cy="68" r="40" fill="#fff" opacity=".85"/>
+  <circle cx="166" cy="82" r="28" fill="#fff" opacity=".85"/>
+  <circle cx="470" cy="86" r="34" fill="#fff" opacity=".82"/>
+  <circle cx="506" cy="74" r="44" fill="#fff" opacity=".82"/>
+  <circle cx="548" cy="92" r="30" fill="#fff" opacity=".82"/>
+  <rect x="210" y="315" width="340" height="34" rx="12" fill="url(#platform)"/>
+  <g stroke="#7b4c31" stroke-width="6" stroke-linejoin="round">
+    <rect x="306" y="265" width="54" height="54" rx="8" fill="#c7824f"/>
+    <rect x="368" y="265" width="54" height="54" rx="8" fill="#ffd35a"/>
+    <rect x="430" y="265" width="54" height="54" rx="8" fill="#c7824f"/>
+    <rect x="337" y="206" width="54" height="54" rx="8" fill="#c7824f"/>
+    <rect x="399" y="206" width="54" height="54" rx="8" fill="#657386" stroke="#dbe6ee"/>
+    <rect x="368" y="147" width="54" height="54" rx="8" fill="#ff8a3d" stroke="#fff2b6"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-width="8">
+    <path d="M70 306a46 46 0 0 1 92 0" stroke="#132035"/>
+    <path d="M116 247v-44" stroke="#ffd35a"/>
+  </g>
+  <circle cx="116" cy="306" r="31" fill="#ff8a3d" stroke="#132035" stroke-width="6"/>
+  <circle cx="174" cy="250" r="26" fill="#38aee2" stroke="#fff" stroke-width="8"/>
+  <path d="M194 241l74-26" stroke="#7f59e8" stroke-width="8" stroke-linecap="round" stroke-dasharray="18 14"/>
+  <g fill="#132035" opacity=".28">
+    <ellipse cx="350" cy="363" rx="190" ry="18"/>
+    <ellipse cx="116" cy="344" rx="70" ry="12"/>
+  </g>
+  <text x="320" y="394" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" font-weight="900" fill="#132035">Pyramid Smash</text>
+</svg>

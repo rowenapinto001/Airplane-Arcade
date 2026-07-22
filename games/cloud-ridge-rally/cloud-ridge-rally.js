@@ -1,16 +1,16 @@
 import { labelsFor, matchesControl, shouldPreventScroll } from "../../shared/controls.js";
 import { getData, recordGameResult, updateData } from "../../shared/storage.js";
 import { ABILITIES, VEHICLES, getVehicle, isVehicleUnlocked, upgradedStats, upgradeCost } from "./rally-vehicles.js";
-import { CAMPAIGN_LEVELS, environmentList, getEnvironment, getLevel, levelStars } from "./rally-levels.js";
+import { CAMPAIGN_LEVELS, environmentList, getEnvironment, getLevel, levelStars, worldUnitsToMetres } from "./rally-levels.js";
 import { collectNear, extendEndlessTerrain, generateTerrain } from "./rally-terrain.js";
 import { activateAbility, createVehicleState, updateVehiclePhysics } from "./rally-physics.js";
 import { createRallyRenderer } from "./rally-renderer.js";
 import { garageSummary, garageVehicleCards, upgradeRows } from "./rally-garage.js";
 
 const DIFFICULTY = {
-  easy: { fuel: 1.24, terrain: 0.9, coins: 1, damage: 0.78, endlessDistance: 3200, label: "Longer routes with gentler hills, more fuel, and forgiving crashes." },
-  normal: { fuel: 0.96, terrain: 1.1, coins: 1, damage: 1, endlessDistance: 3800, label: "Long-distance routes with tougher fuel, stunts, and progression." },
-  hard: { fuel: 0.82, terrain: 1.3, coins: 1.18, damage: 1.2, endlessDistance: 4500, label: "Very long routes, steeper ridges, tighter fuel, and higher rewards." },
+  easy: { fuel: 1.24, terrain: 0.9, coins: 1, damage: 0.78, endlessDistance: 64000, label: "Long routes with gentler hills, more fuel, and forgiving crashes." },
+  normal: { fuel: 0.96, terrain: 1.1, coins: 1, damage: 1, endlessDistance: 76000, label: "Long-distance routes with tougher fuel, stunts, and progression." },
+  hard: { fuel: 0.82, terrain: 1.3, coins: 1.18, damage: 1.2, endlessDistance: 90000, label: "Very long routes, steeper ridges, tighter fuel, and higher rewards." },
 };
 
 function clone(value) {
@@ -29,7 +29,11 @@ function clamp(value, min, max) {
 }
 
 function formatDistance(value) {
-  return `${Math.max(0, Math.floor(value))}m`;
+  return `${worldUnitsToMetres(value)}m`;
+}
+
+function formatMetres(value) {
+  return `${Math.max(0, Math.floor(value || 0))}m`;
 }
 
 export function createCloudRidgeRallyGame(context) {
@@ -294,7 +298,7 @@ export function createCloudRidgeRallyGame(context) {
         renderEndlessSelection();
       });
       card.style.setProperty("--env", environment.ground);
-      card.append(el("strong", "", environment.name), el("span", "", `Best ${formatDistance(best)}`));
+      card.append(el("strong", "", environment.name), el("span", "", `Best ${formatMetres(best)}`));
       grid.append(card);
     });
     const actions = el("div", "rally-menu-actions");
@@ -764,10 +768,10 @@ export function createCloudRidgeRallyGame(context) {
       el("h2", "", "Run Over"),
       el("p", "", run.vehicleState.crashReason || "The vehicle needs a hangar reset."),
       resultGrid([
-        ["Distance", formatDistance(result.distance)],
+        ["Distance", formatMetres(result.distance)],
         ["Flight Coins", result.coins],
         ["Stunts", result.stunts.length],
-        ["Previous Best", formatDistance(best)],
+        ["Previous Best", formatMetres(best)],
       ]),
       resultActions(false),
     );
@@ -785,7 +789,7 @@ export function createCloudRidgeRallyGame(context) {
       el("p", "", unlockCopy),
       el("div", "rally-big-stars", `${"★".repeat(result.stars)}${"☆".repeat(3 - result.stars)}`),
       resultGrid([
-        ["Distance", formatDistance(result.distance)],
+        ["Distance", formatMetres(result.distance)],
         ["Flight Coins", result.coins],
         ["Stunts", result.stunts.length],
         ["Fuel Left", `${Math.floor(result.fuelLeft)}%`],
@@ -819,7 +823,8 @@ export function createCloudRidgeRallyGame(context) {
 
   function resultFromRun(outcome) {
     const run = state.run;
-    const distance = Math.max(0, run.vehicleState.distance - 120);
+    const worldDistance = Math.max(0, run.vehicleState.distance - 120);
+    const distance = worldUnitsToMetres(worldDistance);
     const totalCoins = run.terrain.totalCoins || 1;
     return {
       gameId: "cloud-ridge-rally",
@@ -829,6 +834,7 @@ export function createCloudRidgeRallyGame(context) {
       winner: outcome === "complete" ? "solo" : "computer",
       score: Math.floor(distance),
       distance,
+      worldDistance,
       coins: run.coins,
       coinsCollected: run.collectedCoins,
       totalCoins,
@@ -842,8 +848,8 @@ export function createCloudRidgeRallyGame(context) {
       rare: { ...run.rare },
       challengeComplete: run.challengeComplete,
       summary: outcome === "complete"
-        ? `${run.level.name} complete - ${formatDistance(distance)}`
-        : `${run.terrain.environment.name} - ${formatDistance(distance)}`,
+        ? `${run.level.name} complete - ${formatMetres(distance)}`
+        : `${run.terrain.environment.name} - ${formatMetres(distance)}`,
     };
   }
 

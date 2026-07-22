@@ -48,13 +48,14 @@ export const DEFAULT_CONTROLS = {
     party: ["KeyB"],
     pause: ["Escape"],
   },
-  "cloud-crew-clash": {
-    left: ["KeyA", "ArrowLeft"],
-    right: ["KeyD", "ArrowRight"],
-    launch: ["Space"],
-    ability1: ["Digit1"],
-    ability2: ["Digit2"],
-    ability3: ["Digit3"],
+  "pyramid-smash": {
+    aimLeft: ["ArrowLeft"],
+    aimRight: ["ArrowRight"],
+    aimUp: ["ArrowUp"],
+    aimDown: ["ArrowDown"],
+    power: ["Space"],
+    nextBall: ["KeyN"],
+    resetCamera: ["KeyR"],
     pause: ["Escape"],
   },
   "runway-rumble": {
@@ -114,7 +115,7 @@ export const DEFAULT_DATA = {
       sumo: 0,
       archery: 0,
       "cake-maker": 0,
-      "cloud-crew-clash": 0,
+      "pyramid-smash": 0,
       "runway-rumble": 0,
       "cloud-ridge-rally": 0,
       "red-eye-run": 0,
@@ -170,27 +171,30 @@ export const DEFAULT_DATA = {
       recentCakeName: null,
       savedCakes: [],
     },
-    cloudCrewRecords: {
+    pyramidSmashRecords: {
       highestUnlockedLevel: 1,
       stars: {},
-      selectedDifficulty: "normal",
-      selectedCrewType: "basic",
-      flightBadges: 0,
-      permanentUpgrades: {
-        launchRate: 0,
-        hubStrength: 0,
-        rallyDuration: 0,
-        shieldDuration: 0,
-        energyCollection: 0,
-      },
-      totalVictories: 0,
-      totalDefeats: 0,
-      missionsCompleted: 0,
-      stationsCaptured: 0,
-      energyCollected: 0,
-      tutorialComplete: false,
+      bestShots: {},
       completedLevels: [],
-      recentLevel: 1,
+      bonusTargets: {},
+      flightCoins: 0,
+      championBadge: false,
+      endlessUnlocked: false,
+      endlessBest: 0,
+      totalBallsThrown: 0,
+      totalBoxesRemoved: 0,
+      totalThreeStarLevels: 0,
+      selectedMode: "solo",
+      selectedLevel: 1,
+      player1Name: "Player 1",
+      player2Name: "Player 2",
+      tutorialComplete: false,
+      recentSummary: null,
+      soloCompletions: 0,
+      twoPlayerMatches: 0,
+      player1Wins: 0,
+      player2Wins: 0,
+      draws: 0,
     },
     runwayRumbleRecords: {
       tutorialComplete: false,
@@ -395,10 +399,10 @@ export function getGameProgress(data, gameId) {
       ? `${saved} saved cake${saved === 1 ? "" : "s"} | Recent: ${recent}`
       : `${saved} saved cake${saved === 1 ? "" : "s"}`;
   }
-  if (gameId === "cloud-crew-clash") {
-    const record = progress.cloudCrewRecords;
+  if (gameId === "pyramid-smash") {
+    const record = progress.pyramidSmashRecords;
     const stars = Object.values(record.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0);
-    return `Level ${record.highestUnlockedLevel} | ${stars} stars | ${record.selectedDifficulty}`;
+    return `Level ${record.highestUnlockedLevel} | ${stars} stars | ${record.flightCoins} coins`;
   }
   if (gameId === "runway-rumble") {
     const record = progress.runwayRumbleRecords;
@@ -527,24 +531,43 @@ export async function recordGameResult(result) {
       }
     }
 
-    if (stamped.gameId === "cloud-crew-clash") {
-      const record = progress.cloudCrewRecords;
-      record.selectedDifficulty = stamped.difficulty || record.selectedDifficulty;
-      record.selectedCrewType = stamped.crewType || record.selectedCrewType;
-      record.recentLevel = stamped.level || record.recentLevel || 1;
-      record.stationsCaptured += stamped.stationsCaptured || 0;
-      record.energyCollected += stamped.energyCollected || 0;
+    if (stamped.gameId === "pyramid-smash") {
+      const record = progress.pyramidSmashRecords;
+      record.selectedMode = stamped.pyramidMode || record.selectedMode;
+      record.selectedLevel = stamped.level || record.selectedLevel || 1;
+      record.recentSummary = stamped.summary || record.recentSummary;
+      record.totalBallsThrown += stamped.totalShots || stamped.shots || 0;
+      record.totalBoxesRemoved += stamped.boxesRemoved || 0;
+      record.flightCoins += Math.max(0, Math.floor(stamped.flightCoins || 0));
       if (stamped.tutorialComplete) record.tutorialComplete = true;
-      if (stamped.winner === "solo") {
-        record.totalVictories += 1;
-        record.missionsCompleted += 1;
-        const levelKey = String(stamped.level || 1);
-        record.stars[levelKey] = Math.max(record.stars[levelKey] || 0, stamped.stars || 1);
-        record.highestUnlockedLevel = Math.max(record.highestUnlockedLevel, Math.min(10, (stamped.level || 1) + 1));
-        if (!record.completedLevels.includes(stamped.level)) record.completedLevels.push(stamped.level);
-        record.flightBadges += stamped.flightBadges || 0;
+      if (stamped.pyramidMode === "two") {
+        record.twoPlayerMatches += 1;
+        if (stamped.winner === "player1") record.player1Wins += 1;
+        if (stamped.winner === "player2") record.player2Wins += 1;
+        if (stamped.winner === "draw") record.draws += 1;
       }
-      if (stamped.winner === "computer") record.totalDefeats += 1;
+      if (stamped.pyramidMode === "endless") {
+        record.endlessBest = Math.max(record.endlessBest || 0, stamped.endlessScore || 0);
+      }
+      if (stamped.completed && stamped.level && stamped.level <= 25) {
+        const levelKey = String(stamped.level);
+        record.stars[levelKey] = Math.max(record.stars[levelKey] || 0, stamped.stars || 1);
+        if (stamped.shots) {
+          record.bestShots[levelKey] =
+            record.bestShots[levelKey] === undefined
+              ? stamped.shots
+              : Math.min(record.bestShots[levelKey], stamped.shots);
+        }
+        record.bonusTargets[levelKey] = Math.max(record.bonusTargets[levelKey] || 0, stamped.bonusCollected || 0);
+        record.highestUnlockedLevel = Math.max(record.highestUnlockedLevel || 1, Math.min(25, stamped.level + 1));
+        if (!record.completedLevels.includes(stamped.level)) record.completedLevels.push(stamped.level);
+        if (stamped.pyramidMode !== "two") record.soloCompletions += 1;
+        if (stamped.level >= 25) {
+          record.championBadge = true;
+          record.endlessUnlocked = true;
+        }
+      }
+      record.totalThreeStarLevels = Object.values(record.stars || {}).filter((value) => Number(value || 0) >= 3).length;
     }
 
     if (stamped.gameId === "runway-rumble") {

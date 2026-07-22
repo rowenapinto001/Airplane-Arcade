@@ -1,6 +1,7 @@
 import { ABILITIES } from "./rally-vehicles.js";
 import { terrainAt } from "./rally-terrain.js";
 import { wheelPoint } from "./rally-physics.js";
+import { worldUnitsToMetres } from "./rally-levels.js";
 
 export function createRallyRenderer() {
   function draw(ctx, canvas, state) {
@@ -15,8 +16,8 @@ export function createRallyRenderer() {
     ctx.translate(-camera.x, -camera.y);
     drawTerrain(ctx, terrain, width, height, camera);
     drawCheckpoints(ctx, terrain);
-    drawPickups(ctx, terrain, state.time);
-    drawObstacles(ctx, terrain, state.time);
+    drawPickups(ctx, terrain, state.time, camera, width);
+    drawObstacles(ctx, terrain, state.time, camera, width);
     drawVehicle(ctx, vehicleState, state.run.vehicle, state.time);
     drawStuntMessages(ctx, state.run, camera);
     ctx.restore();
@@ -28,9 +29,10 @@ export function createRallyRenderer() {
 }
 
 function updateCamera(camera, vehicle, width, height, reduceMotion) {
-  const lookAhead = vehicle.vx >= 0 ? 240 : 90;
-  const jumpPull = Math.min(0.18, vehicle.airtime * 0.08);
-  const targetX = vehicle.x - width * (0.28 + jumpPull) + lookAhead;
+  const speed = Math.max(0, vehicle.vx);
+  const speedLook = Math.min(0.1, speed / 6200);
+  const jumpPull = Math.min(0.04, vehicle.airtime * 0.018);
+  const targetX = vehicle.x - width * (0.34 - speedLook - jumpPull);
   const targetY = vehicle.y - height * 0.58 - Math.min(90, Math.max(0, -vehicle.vy * 0.12));
   const ease = reduceMotion ? 0.24 : 0.08;
   camera.x += (targetX - camera.x) * ease;
@@ -124,9 +126,12 @@ function drawTerrain(ctx, terrain, width, height, camera) {
   ctx.restore();
 }
 
-function drawPickups(ctx, terrain, time) {
+function drawPickups(ctx, terrain, time, camera, width) {
+  const start = camera.x - 220;
+  const end = camera.x + width + 260;
   for (const pickup of terrain.pickups) {
     if (pickup.collected) continue;
+    if (pickup.x < start || pickup.x > end) continue;
     const bob = Math.sin(time / 300 + pickup.x * 0.02) * 5;
     ctx.save();
     ctx.translate(pickup.x, pickup.y + bob);
@@ -196,8 +201,11 @@ function drawRare(ctx, type) {
   ctx.strokeRect(-10, -7, 20, 14);
 }
 
-function drawObstacles(ctx, terrain, time) {
+function drawObstacles(ctx, terrain, time, camera, width) {
+  const start = camera.x - 260;
+  const end = camera.x + width + 320;
   for (const obstacle of terrain.obstacles) {
+    if (obstacle.x < start || obstacle.x > end) continue;
     const ground = terrainAt(terrain, obstacle.x);
     ctx.save();
     ctx.translate(obstacle.x, ground.y - obstacle.height / 2);
@@ -339,7 +347,7 @@ function drawHud(ctx, width, height, state) {
   const run = state.run;
   const vehicle = run.vehicleState;
   hudPanel(ctx, 16, 14, 232, 78, [
-    `Distance ${Math.floor(Math.max(0, vehicle.distance - 120))}m`,
+    `Distance ${worldUnitsToMetres(Math.max(0, vehicle.distance - 120))}m`,
     run.mode === "campaign" ? run.level.name : `Endless ${run.terrain.environment.name}`,
     `Checkpoint ${run.checkpointIndex}/${run.terrain.checkpoints.length}`,
   ]);

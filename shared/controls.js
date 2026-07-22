@@ -92,12 +92,13 @@ export function describeGameControls(settings, gameId) {
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }
-  if (gameId === "cloud-crew-clash") {
+  if (gameId === "pyramid-smash") {
     return [
-      "Mouse: move to aim, hold to launch",
-      `Aim: ${labelsFor([controls.left[0], controls.right[0]])}`,
-      `Launch: ${labelsFor(controls.launch)}`,
-      `Abilities: ${labelsFor(controls.ability1)}, ${labelsFor(controls.ability2)}, ${labelsFor(controls.ability3)}`,
+      "Mouse: drag from launcher and release",
+      `Aim: ${labelsFor([controls.aimLeft[0], controls.aimRight[0], controls.aimUp[0], controls.aimDown[0]])}`,
+      `Launch: ${labelsFor(controls.power)}`,
+      `Next Ball: ${labelsFor(controls.nextBall)}`,
+      `Reset Aim: ${labelsFor(controls.resetCamera)}`,
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }
