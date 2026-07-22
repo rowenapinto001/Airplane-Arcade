@@ -23,6 +23,7 @@ import { createFootballGame } from "../games/football/football.js";
 import { createBasketballGame } from "../games/basketball/basketball.js";
 import { createMemoryGame } from "../games/memory/memory.js";
 import { createSkyLudoGame } from "../games/sky-ludo/sky-ludo.js";
+import { createAirportChefGame } from "../games/airport-chef/airport-chef.js";
 import { createArcheryGame } from "../games/archery/archery.js";
 import { createCakeMakerGame } from "../games/cake-maker/cake-maker.js";
 import { createPyramidSmashGame } from "../games/pyramid-smash/pyramid-smash.js";
@@ -41,6 +42,7 @@ const GAME_FACTORIES = {
   basketball: createBasketballGame,
   memory: createMemoryGame,
   "sky-ludo": createSkyLudoGame,
+  "airport-chef": createAirportChefGame,
   archery: createArcheryGame,
   "cake-maker": createCakeMakerGame,
   "pyramid-smash": createPyramidSmashGame,
@@ -114,7 +116,7 @@ function renderLibrary(filter = libraryFilter) {
   const copy = createElement(
     "p",
     "",
-    "A small offline arcade for laptops: ten original games, solo and local two-player modes, saved progress, and no internet needed after install.",
+    "A small offline arcade for laptops: eleven original games, solo and local two-player modes, saved progress, and no internet needed after install.",
   );
   heroCopy.append(title, copy);
 
@@ -203,6 +205,9 @@ function gameCard(game) {
   }
   if (game.id === "sky-ludo" && data.progress.skyLudoRecords.savedGameState) {
     playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueGame: true })));
+  }
+  if (game.id === "airport-chef" && data.progress.airportChefRecords.highestUnlockedLevel > 1) {
+    playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueCampaign: true })));
   }
   playRow.append(button("Play", "primary-button", () => renderGameSetup(game.id)));
 
@@ -406,9 +411,13 @@ async function launchGame(gameId, launchOptions = {}) {
   setRibbon(`${game.name} is running. Pause, restart, or return to the library from inside the game.`);
   clearNode(view);
 
-  if (gameId === "sky-ludo" || gameId === "archery" || gameId === "runway-circuit" || gameId === "cloud-ridge-rally" || gameId === "red-eye-run") {
+  if (gameId === "sky-ludo" || gameId === "airport-chef" || gameId === "archery" || gameId === "runway-circuit" || gameId === "cloud-ridge-rally" || gameId === "red-eye-run") {
     data = await updateData((draft) => {
       if (gameId === "sky-ludo") draft.progress.skyLudoRecords.selectedDifficulty = setup.difficulty;
+      if (gameId === "airport-chef") {
+        draft.progress.airportChefRecords.selectedDifficulty = setup.difficulty;
+        draft.progress.airportChefRecords.selectedMode = setup.mode;
+      }
       if (gameId === "archery") draft.progress.archeryRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "runway-circuit") draft.progress.runwayCircuitRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "cloud-ridge-rally") draft.progress.cloudRidgeRallyRecords.selectedDifficulty = setup.difficulty;
@@ -468,6 +477,11 @@ function renderStats() {
       "Sky Ludo",
       data.progress.skyLudoRecords.recentSummary || (data.progress.skyLudoRecords.savedGameState ? "Saved match available" : "No match"),
       `${data.progress.skyLudoRecords.totalGamesPlayed} games. ${data.progress.skyLudoRecords.totalDiceRolls} rolls. ${data.progress.skyLudoRecords.totalCaptures} captures.`,
+    ),
+    resultCard(
+      "Airport Chef",
+      data.progress.airportChefRecords.recentSummary || `Level ${data.progress.airportChefRecords.highestUnlockedLevel}/20`,
+      `${data.progress.airportChefRecords.ordersCompleted} orders. ${data.progress.airportChefRecords.flightCoins} Flight Coins. ${data.progress.airportChefRecords.highestCombo}x best combo.`,
     ),
     resultCard(
       "Archery",
@@ -554,6 +568,7 @@ function renderSettings() {
     controlsSettings("basketball"),
     controlsSettings("memory"),
     controlsSettings("sky-ludo"),
+    controlsSettings("airport-chef"),
     controlsSettings("archery"),
     controlsSettings("cake-maker"),
     controlsSettings("pyramid-smash"),
@@ -641,7 +656,7 @@ function accessibilitySettings() {
     });
     renderSettings();
   });
-  card.append(motion, createElement("p", "settings-note", "Cake Maker, Sky Ludo, and Runway Circuit use this to calm celebration, token, particle, and background motion."));
+  card.append(motion, createElement("p", "settings-note", "Cake Maker, Sky Ludo, Airport Chef, and Runway Circuit use this to calm celebration, token, particle, and background motion."));
   return card;
 }
 

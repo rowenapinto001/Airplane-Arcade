@@ -101,6 +101,40 @@ export const GAME_CATALOG = [
     },
   },
   {
+    id: "airport-chef",
+    name: "Airport Chef",
+    shortName: "Chef",
+    description: "Cook airport meals, serve passengers, upgrade stations, and beat a 20-level food-court campaign.",
+    longDescription:
+      "A fully offline cooking and time-management game with solo and local two-player co-op, live kitchen stations, passenger patience, burgers, sandwiches, noodles, drinks, desserts, upgrades, themes, power-ups, and Endless Rush after Level 20.",
+    image: "../assets/games/airport-chef.svg",
+    accent: "#f47b43",
+    modes: ["solo", "two"],
+    difficulties: ["easy", "normal", "hard"],
+    badges: ["Co-op", "Time Management", "20 Levels", "Endless Rush"],
+    defaultDifficulty: "normal",
+    hasPlayerSetup: true,
+    instructions: [
+      "Pick up a tray, focus an order, and visit the station shown by the recipe steps.",
+      "Cook, prep, pour, or plate each component, then collect it before quality drops or food burns.",
+      "Serve completed trays before passenger patience runs out. Wrong trays can be cleared at Waste.",
+      "Clean messy or burned stations at Wash and use combo-earned power-ups during busy rushes.",
+      "Earn stars and Flight Coins across 20 levels, buy upgrades, unlock themes, and open Endless Rush after the finale.",
+    ],
+    controls: {
+      solo: [
+        "Player 1: W/A/S/D to move, Space to use stations, E to focus next order, Q to drop tray",
+        "Mouse: click station to move or use it",
+        "Pause: Escape",
+      ],
+      two: [
+        "Player 1: W/A/S/D, Space, E, Q",
+        "Player 2: Arrow keys, Enter, Right Shift, Backspace",
+        "Pause: Escape",
+      ],
+    },
+  },
+  {
     id: "archery",
     name: "Archery",
     shortName: "Archery",
@@ -325,6 +359,11 @@ export const DIFFICULTY_DETAILS = {
     easy: "Computer players prioritise releasing tokens and simple moves, with occasional missed captures.",
     normal: "Computer players balance releasing, advancing, capturing, safe spaces, blocks, and home progress.",
     hard: "Computer players score legal moves for captures, safety, blocks, risk, and efficient exact-home progress.",
+  },
+  "airport-chef": {
+    easy: "Longer passenger patience, slower queues, lower level goals, and softer mistake penalties.",
+    normal: "Balanced food-court timing, passenger patience, cooking speeds, goals, and Flight Coin rewards.",
+    hard: "Faster queues, shorter patience, higher goals, tighter cooking windows, and stronger penalties.",
   },
   archery: {
     easy: "Large target, stable crosshair, no wind, and a very gentle aim challenge.",

@@ -1,0 +1,496 @@
+.airport-chef-game {
+  display: grid;
+  gap: 12px;
+  color: #172033;
+}
+
+.airport-chef-game.is-playing {
+  min-height: calc(100vh - 126px);
+}
+
+.chef-game-bar,
+.chef-mini-stats,
+.chef-live-stats {
+  align-items: center;
+}
+
+.chef-screen-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.chef-menu-panel,
+.chef-result-panel {
+  padding: 24px;
+  border: 1px solid rgba(23, 32, 51, 0.12);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(232, 249, 255, 0.9)),
+    #fff;
+  box-shadow: 0 18px 44px rgba(23, 32, 51, 0.16);
+}
+
+.chef-hero-panel {
+  background:
+    linear-gradient(135deg, rgba(255, 246, 219, 0.96), rgba(223, 247, 255, 0.94)),
+    #fffdf8;
+}
+
+.chef-menu-panel h2,
+.chef-result-panel h2 {
+  margin: 6px 0 8px;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.chef-menu-panel p,
+.chef-result-panel p,
+.chef-info-card p,
+.chef-recipe-row span,
+.chef-choice-card span,
+.chef-player-card span,
+.chef-player-card small,
+.chef-power-row small,
+.chef-status-line,
+.chef-empty {
+  color: #5d6a80;
+  font-weight: 780;
+  line-height: 1.42;
+}
+
+.chef-info-grid,
+.chef-choice-grid,
+.chef-name-grid,
+.chef-upgrade-grid,
+.chef-recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.chef-info-card,
+.chef-choice-card,
+.chef-upgrade-card,
+.chef-recipe-category {
+  min-height: 128px;
+  padding: 16px;
+  color: #172033;
+  text-align: left;
+  border: 1px solid rgba(23, 32, 51, 0.13);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.chef-choice-card {
+  display: grid;
+  gap: 8px;
+}
+
+.chef-choice-card.is-selected,
+.chef-level-tile.is-selected,
+.chef-menu-actions .primary-action,
+.chef-control-panel .primary-action,
+.chef-upgrade-card .primary-action {
+  color: #fff;
+  background: #273b5f;
+}
+
+.chef-choice-card.is-locked,
+.chef-level-tile.is-locked {
+  opacity: 0.52;
+}
+
+.chef-theme-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.chef-theme-card::before {
+  content: "";
+  display: block;
+  height: 54px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background:
+    linear-gradient(var(--theme-wall), var(--theme-wall)) top / 100% 48% no-repeat,
+    linear-gradient(var(--theme-floor), var(--theme-floor)) bottom / 100% 52% no-repeat;
+  border: 1px solid rgba(23, 32, 51, 0.14);
+}
+
+.chef-choice-row,
+.chef-menu-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.chef-menu-actions {
+  margin-top: 16px;
+}
+
+.chef-menu-actions button,
+.chef-control-panel button,
+.chef-power-row button,
+.chef-level-tile,
+.chef-order-card,
+.chef-upgrade-card button {
+  min-height: 42px;
+  padding: 0 14px;
+  color: #172033;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(23, 32, 51, 0.12);
+}
+
+.chef-pill {
+  display: grid;
+  min-width: 142px;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid rgba(23, 32, 51, 0.11);
+}
+
+.chef-pill small,
+.chef-level-tile small,
+.chef-order-card small {
+  color: #66728a;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0;
+}
+
+.chef-step-list {
+  display: grid;
+  gap: 10px;
+  padding-left: 22px;
+  color: #26354f;
+  font-weight: 820;
+}
+
+.chef-field {
+  display: grid;
+  gap: 8px;
+}
+
+.chef-field input {
+  min-height: 44px;
+  padding: 0 12px;
+  color: #172033;
+  border: 1px solid rgba(23, 32, 51, 0.18);
+  border-radius: 8px;
+  background: #fff;
+  font-weight: 850;
+}
+
+.chef-level-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.chef-level-tile {
+  display: grid;
+  min-height: 104px;
+  justify-items: start;
+  align-content: center;
+  gap: 4px;
+}
+
+.chef-level-tile strong {
+  font-size: 2rem;
+}
+
+.chef-recipe-category {
+  border-top: 6px solid var(--category-color, #43acd8);
+}
+
+.chef-recipe-row {
+  display: grid;
+  gap: 4px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(23, 32, 51, 0.09);
+}
+
+.chef-level-bar {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px;
+  margin: 12px 0;
+}
+
+.chef-level-bar span {
+  height: 9px;
+  border-radius: 99px;
+  background: rgba(23, 32, 51, 0.12);
+}
+
+.chef-level-bar .is-filled {
+  background: #40a86f;
+}
+
+.chef-play-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 22vw);
+  gap: 14px;
+  min-height: calc(100vh - 222px);
+}
+
+.chef-stage-wrap {
+  position: relative;
+  min-height: 680px;
+  border: 1px solid rgba(23, 32, 51, 0.12);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #b8eef8;
+  box-shadow: 0 18px 44px rgba(23, 32, 51, 0.14);
+}
+
+.chef-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 680px;
+}
+
+.chef-side {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  min-width: 0;
+}
+
+.chef-side-card {
+  padding: 14px;
+  border: 1px solid rgba(23, 32, 51, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 12px 28px rgba(23, 32, 51, 0.1);
+}
+
+.chef-side-card h2 {
+  margin: 0 0 10px;
+  font-size: 1.08rem;
+  letter-spacing: 0;
+}
+
+.chef-order-list,
+.chef-player-panel,
+.chef-power-panel,
+.chef-control-panel {
+  display: grid;
+  gap: 8px;
+}
+
+.chef-order-card {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  height: auto;
+  min-height: 96px;
+  text-align: left;
+}
+
+.chef-order-card.is-selected {
+  border-color: #273b5f;
+  box-shadow: inset 0 0 0 2px #273b5f;
+}
+
+.chef-order-card.mood-worried {
+  border-color: #ef5b63;
+}
+
+.chef-patience {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(23, 32, 51, 0.12);
+}
+
+.chef-patience span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ef5b63, #ffd35a, #40a86f);
+}
+
+.chef-player-card {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(232, 249, 255, 0.9);
+}
+
+.chef-power-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.chef-power-row span {
+  display: grid;
+  gap: 3px;
+}
+
+.chef-control-panel button,
+.chef-power-row button {
+  width: 100%;
+}
+
+.chef-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%) translateY(12px);
+  max-width: min(620px, calc(100% - 28px));
+  padding: 10px 14px;
+  color: #fff;
+  font-weight: 900;
+  opacity: 0;
+  border-radius: 8px;
+  background: rgba(23, 32, 51, 0.88);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.chef-toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.chef-play-shell.is-clean-preview {
+  grid-template-columns: 1fr;
+}
+
+.chef-play-shell.is-clean-preview .chef-side {
+  display: none;
+}
+
+.chef-result-panel.is-win {
+  background:
+    linear-gradient(135deg, rgba(255, 244, 203, 0.96), rgba(229, 250, 235, 0.94)),
+    #fff;
+}
+
+.chef-finale-banner {
+  display: grid;
+  gap: 4px;
+  margin: 14px 0;
+  padding: 14px;
+  color: #172033;
+  border-radius: 8px;
+  background: #ffd35a;
+}
+
+.chef-pause-overlay {
+  align-items: center;
+  justify-content: center;
+}
+
+.chef-pause-card {
+  display: grid;
+  gap: 12px;
+  max-width: 520px;
+  padding: 24px;
+  border-radius: 8px;
+  background: #fff;
+  color: #172033;
+  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.24);
+}
+
+.chef-pause-card h2 {
+  margin: 0;
+}
+
+[data-theme="dark"] .airport-chef-game {
+  color: #f7fbff;
+}
+
+[data-theme="dark"] .chef-menu-panel,
+[data-theme="dark"] .chef-result-panel,
+[data-theme="dark"] .chef-side-card,
+[data-theme="dark"] .chef-pause-card {
+  color: #f7fbff;
+  background: rgba(24, 34, 53, 0.92);
+}
+
+[data-theme="dark"] .chef-info-card,
+[data-theme="dark"] .chef-choice-card,
+[data-theme="dark"] .chef-upgrade-card,
+[data-theme="dark"] .chef-recipe-category,
+[data-theme="dark"] .chef-pill,
+[data-theme="dark"] .chef-player-card,
+[data-theme="dark"] .chef-menu-actions button,
+[data-theme="dark"] .chef-control-panel button,
+[data-theme="dark"] .chef-power-row button,
+[data-theme="dark"] .chef-level-tile,
+[data-theme="dark"] .chef-order-card {
+  color: #f7fbff;
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.13);
+}
+
+[data-theme="dark"] .chef-menu-panel p,
+[data-theme="dark"] .chef-result-panel p,
+[data-theme="dark"] .chef-info-card p,
+[data-theme="dark"] .chef-recipe-row span,
+[data-theme="dark"] .chef-choice-card span,
+[data-theme="dark"] .chef-player-card span,
+[data-theme="dark"] .chef-player-card small,
+[data-theme="dark"] .chef-power-row small,
+[data-theme="dark"] .chef-status-line,
+[data-theme="dark"] .chef-empty {
+  color: #b8c5d8;
+}
+
+[data-theme="contrast"] .chef-menu-panel,
+[data-theme="contrast"] .chef-result-panel,
+[data-theme="contrast"] .chef-side-card,
+[data-theme="contrast"] .chef-info-card,
+[data-theme="contrast"] .chef-choice-card,
+[data-theme="contrast"] .chef-upgrade-card,
+[data-theme="contrast"] .chef-recipe-category,
+[data-theme="contrast"] .chef-pause-card {
+  border-color: #050a12;
+  box-shadow: none;
+}
+
+@media (max-width: 1120px) {
+  .chef-play-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .chef-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .chef-info-grid,
+  .chef-choice-grid,
+  .chef-name-grid,
+  .chef-upgrade-grid,
+  .chef-recipe-grid,
+  .chef-side {
+    grid-template-columns: 1fr;
+  }
+
+  .chef-stage-wrap,
+  .chef-canvas {
+    min-height: 520px;
+  }
+
+  .chef-game-bar {
+    align-items: stretch;
+  }
+}

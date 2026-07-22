@@ -59,13 +59,13 @@ function boardLayout(canvas) {
 
 function drawBackground(ctx, width, height, options) {
   const gradient = ctx.createLinearGradient(0, 0, width, height);
-  gradient.addColorStop(0, "#a8e8ff");
-  gradient.addColorStop(0.58, "#f7fbff");
-  gradient.addColorStop(1, "#e8fbf3");
+  gradient.addColorStop(0, "#173a5a");
+  gradient.addColorStop(0.58, "#1d2e4a");
+  gradient.addColorStop(1, "#101a2e");
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, width, height);
   if (options.reduceMotion) return;
-  ctx.fillStyle = "rgba(255,255,255,0.58)";
+  ctx.fillStyle = "rgba(214,232,255,0.18)";
   for (let i = 0; i < 7; i += 1) {
     const x = 40 + i * 132;
     const y = 35 + (i % 3) * 42;
@@ -83,9 +83,9 @@ function cloud(ctx, x, y, scale) {
 
 function drawBoard(ctx, state, layout) {
   rounded(ctx, layout.x, layout.y, layout.size, layout.size, 18);
-  ctx.fillStyle = "rgba(255,255,255,0.9)";
+  ctx.fillStyle = "rgba(223,235,248,0.94)";
   ctx.fill();
-  ctx.strokeStyle = "rgba(19,32,53,0.16)";
+  ctx.strokeStyle = "rgba(255,255,255,0.22)";
   ctx.lineWidth = 2;
   ctx.stroke();
   drawYards(ctx, layout);
@@ -119,7 +119,7 @@ function drawYards(ctx, layout) {
 function drawMainPath(ctx, layout) {
   MAIN_PATH.forEach(([gx, gy], index) => {
     const safe = SAFE_MAIN_INDICES.has(index);
-    drawSquare(ctx, layout, gx, gy, safe ? "#fff4c8" : "#f7fbff", safe ? "#ffd35a" : "rgba(19,32,53,0.22)");
+    drawSquare(ctx, layout, gx, gy, safe ? "#f3d778" : "#cfdae8", safe ? "#936f00" : "rgba(19,32,53,0.36)");
     if (safe) {
       const center = gridCenter(layout, gx, gy);
       ctx.fillStyle = "#ff8a3d";
@@ -156,7 +156,7 @@ function drawCenter(ctx, layout) {
   ctx.save();
   ctx.translate(c.x, c.y);
   ctx.rotate(Math.PI / 4);
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = "#e9f2fb";
   ctx.strokeStyle = "#132035";
   ctx.lineWidth = 2;
   rounded(ctx, -layout.cell * 0.92, -layout.cell * 0.92, layout.cell * 1.84, layout.cell * 1.84, 12);
@@ -233,13 +233,13 @@ function drawBoardLabels(ctx, state, layout) {
   const player = currentPlayer(state);
   const def = getPlayerDefinition(player.id);
   const labelY = layout.y + layout.size + 26;
-  ctx.fillStyle = "rgba(255,255,255,0.86)";
+  ctx.fillStyle = "rgba(16,26,46,0.9)";
   rounded(ctx, layout.x, labelY - 21, layout.size, 34, 8);
   ctx.fill();
   ctx.fillStyle = def.color;
   ctx.font = "900 14px system-ui, sans-serif";
   ctx.fillText(`${player.name}'s turn`, layout.x + 16, labelY);
-  ctx.fillStyle = "#132035";
+  ctx.fillStyle = "#f7fbff";
   ctx.font = "800 13px system-ui, sans-serif";
   ctx.fillText(state.message || "Roll the dice", layout.x + 190, labelY);
 }

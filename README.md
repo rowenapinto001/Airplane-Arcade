@@ -1,11 +1,12 @@
 # Airplane Arcade
 
-Airplane Arcade is a Manifest V3 Chrome extension containing a small offline mini-game arcade. It includes a compact popup launcher and a full arcade page with ten playable games:
+Airplane Arcade is a Manifest V3 Chrome extension containing a small offline mini-game arcade. It includes a compact popup launcher and a full arcade page with eleven playable games:
 
 - Simple Football
 - Basket & Ball
 - Memory Match
 - Sky Ludo
+- Airport Chef
 - Archery
 - Cake Maker
 - Pyramid Smash
@@ -32,6 +33,7 @@ The extension uses vanilla HTML, CSS, JavaScript, Canvas, local SVG art, local P
   /basketball/
   /memory/
   /sky-ludo/
+  /airport-chef/
   /archery/
   /cake-maker/
   /pyramid-smash/
@@ -85,6 +87,18 @@ Sky Ludo:
 - Pause: `Escape`
 - Solo modes use fair local computer opponents; Two Player mode shares one laptop
 
+Airport Chef:
+- Player 1 move: `W` / `A` / `S` / `D`
+- Player 1 use station: `Space`
+- Player 1 focus next order: `E`
+- Player 1 drop tray: `Q`
+- Player 2 move: Arrow keys
+- Player 2 use station: `Enter`
+- Player 2 focus next order: Right `Shift`
+- Player 2 drop tray: `Backspace`
+- Mouse in Solo: click a station to move toward it or use it
+- Pause: `Escape`
+
 Archery:
 - Mouse: move to aim and click to shoot
 - Keyboard: Arrow keys move the crosshair
@@ -119,15 +133,15 @@ Controls can be changed from **Settings**.
 
 ## Difficulty Levels
 
-Simple Football, Basket & Ball, Memory Match, Sky Ludo, Archery, Runway Circuit, Cloud Ridge Rally, and Red-Eye Run support **Easy**, **Normal**, and **Hard** from the game setup screen. Cake Maker is a creative sandbox with no timer, score, winner, or loser. Pyramid Smash uses one balanced offline physics ruleset with level-by-level challenge progression.
+Simple Football, Basket & Ball, Memory Match, Sky Ludo, Airport Chef, Archery, Runway Circuit, Cloud Ridge Rally, and Red-Eye Run support **Easy**, **Normal**, and **Hard** from the game setup screen. Cake Maker is a creative sandbox with no timer, score, winner, or loser. Pyramid Smash uses one balanced offline physics ruleset with level-by-level challenge progression.
 
-- Easy uses more forgiving rules, such as smaller Memory boards, wider basketball rims, longer timers, bigger football goals, simpler Sky Ludo AI, larger Archery targets, slower Runway Circuit AI cars, easier Rally routes, and longer Red-Eye green phases.
+- Easy uses more forgiving rules, such as smaller Memory boards, wider basketball rims, longer timers, bigger football goals, simpler Sky Ludo AI, slower Airport Chef queues, larger Archery targets, slower Runway Circuit AI cars, easier Rally routes, and longer Red-Eye green phases.
 - Normal is the balanced default.
-- Hard increases pressure with larger Memory boards, tighter basketball timing, wind, shorter timers, smaller football goals, stronger Sky Ludo move evaluation, smaller Archery targets, faster Runway Circuit rivals, tougher Rally routes, and stricter Red-Eye detection.
+- Hard increases pressure with larger Memory boards, tighter basketball timing, wind, shorter timers, smaller football goals, stronger Sky Ludo move evaluation, faster Airport Chef queues, smaller Archery targets, faster Runway Circuit rivals, tougher Rally routes, and stricter Red-Eye detection.
 
 ## Offline Operation
 
-All code, artwork, icons, Cake Maker assets, Pyramid Smash assets, Sky Ludo assets, Rally assets, Runway Circuit assets, Red-Eye Run assets, party music, and sounds are local files inside the extension. There are no APIs, CDNs, external fonts, accounts, analytics, ads, iframes, or internet-loaded assets. Progress, settings, saved cakes, saved Ludo matches, campaign progress, race records, and ghost data are saved with `chrome.storage.local`, so no sign-in is required.
+All code, artwork, icons, Cake Maker assets, Airport Chef assets, Pyramid Smash assets, Sky Ludo assets, Rally assets, Runway Circuit assets, Red-Eye Run assets, party music, and sounds are local files inside the extension. There are no APIs, CDNs, external fonts, accounts, analytics, ads, iframes, or internet-loaded assets. Progress, settings, saved cakes, saved Ludo matches, cooking campaign progress, race records, and ghost data are saved with `chrome.storage.local`, so no sign-in is required.
 
 ## Add Another Game
 

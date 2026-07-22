@@ -30,6 +30,23 @@ export const DEFAULT_CONTROLS = {
     right: ["ArrowRight"],
     pause: ["Escape"],
   },
+  "airport-chef": {
+    p1Up: ["KeyW"],
+    p1Left: ["KeyA"],
+    p1Down: ["KeyS"],
+    p1Right: ["KeyD"],
+    p1Interact: ["Space"],
+    p1Secondary: ["KeyE"],
+    p1Drop: ["KeyQ"],
+    p2Up: ["ArrowUp"],
+    p2Left: ["ArrowLeft"],
+    p2Down: ["ArrowDown"],
+    p2Right: ["ArrowRight"],
+    p2Interact: ["Enter"],
+    p2Secondary: ["ShiftRight"],
+    p2Drop: ["Backspace"],
+    pause: ["Escape"],
+  },
   archery: {
     up: ["ArrowUp"],
     down: ["ArrowDown"],
@@ -107,6 +124,7 @@ export const DEFAULT_DATA = {
       basketball: 0,
       memory: 0,
       "sky-ludo": 0,
+      "airport-chef": 0,
       archery: 0,
       "cake-maker": 0,
       "pyramid-smash": 0,
@@ -168,6 +186,46 @@ export const DEFAULT_DATA = {
         fasterAi: false,
         fasterAnimations: false,
       },
+    },
+    airportChefRecords: {
+      highestUnlockedLevel: 1,
+      selectedLevel: 1,
+      selectedMode: "solo",
+      selectedDifficulty: "normal",
+      player1Name: "Player 1",
+      player2Name: "Player 2",
+      flightCoins: 0,
+      stars: {},
+      bestScores: {},
+      soloLevels: {},
+      twoPlayerLevels: {},
+      upgrades: {
+        grillSpeed: 0,
+        grillSize: 0,
+        boilerSpeed: 0,
+        drinkMachine: 0,
+        blenderSpeed: 0,
+        freshness: 0,
+        patience: 0,
+        traySlot: 0,
+        cleaningSpeed: 0,
+        walkingSpeed: 0,
+      },
+      unlockedThemes: ["runway-cafe"],
+      selectedTheme: "runway-cafe",
+      endlessUnlocked: false,
+      endlessBestScore: 0,
+      endlessLongestShift: 0,
+      endlessHighestCombo: 0,
+      highestCombo: 0,
+      ordersCompleted: 0,
+      perfectOrders: 0,
+      burnedFood: 0,
+      missedPassengers: 0,
+      totalShifts: 0,
+      tutorialComplete: false,
+      recentSummary: null,
+      airportMasterChef: false,
     },
     archeryRecords: {
       bestSoloTotal: 0,
@@ -404,6 +462,12 @@ export function getGameProgress(data, gameId) {
     const saved = record.savedGameState ? "Continue saved" : "No saved match";
     return `${saved} | ${wins} wins | ${modeLabel(record.selectedMode)}`;
   }
+  if (gameId === "airport-chef") {
+    const record = progress.airportChefRecords;
+    const stars = Object.values(record.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0);
+    const summary = record.recentSummary || `Level ${record.highestUnlockedLevel || 1}/20`;
+    return `${summary} | ${stars} stars | ${record.flightCoins || 0} coins`;
+  }
   if (gameId === "archery") {
     const record = progress.archeryRecords;
     const played = record.soloGamesPlayed + record.twoPlayerMatchesPlayed;
@@ -556,6 +620,49 @@ export async function recordGameResult(result) {
       if (stamped.winner === "player1") record.player1Wins += 1;
       if (stamped.winner === "player2") record.player2Wins += 1;
       if (stamped.completed) record.savedGameState = null;
+    }
+
+    if (stamped.gameId === "airport-chef") {
+      const record = progress.airportChefRecords;
+      const levelKey = String(stamped.level || record.selectedLevel || 1);
+      record.selectedMode = stamped.mode || record.selectedMode;
+      record.selectedDifficulty = stamped.difficulty || record.selectedDifficulty;
+      record.selectedLevel = stamped.level || record.selectedLevel || 1;
+      record.recentSummary = stamped.summary || record.recentSummary;
+      record.flightCoins += Math.max(0, Math.floor(stamped.flightCoins || 0));
+      record.totalShifts += 1;
+      record.ordersCompleted += stamped.ordersServed || 0;
+      record.perfectOrders += stamped.perfectOrders || 0;
+      record.burnedFood += stamped.burnedFood || 0;
+      record.missedPassengers += stamped.missedPassengers || 0;
+      record.highestCombo = Math.max(record.highestCombo || 0, stamped.highestCombo || 0);
+      if (stamped.mode === "solo") record.soloLevels[levelKey] = (record.soloLevels[levelKey] || 0) + 1;
+      if (stamped.mode === "two") record.twoPlayerLevels[levelKey] = (record.twoPlayerLevels[levelKey] || 0) + 1;
+      record.bestScores[levelKey] = Math.max(record.bestScores[levelKey] || 0, stamped.score || 0);
+      if (stamped.chefMode === "endless") {
+        record.endlessBestScore = Math.max(record.endlessBestScore || 0, stamped.endlessScore || stamped.score || 0);
+        record.endlessLongestShift = Math.max(record.endlessLongestShift || 0, stamped.endlessShift || stamped.duration || 0);
+        record.endlessHighestCombo = Math.max(record.endlessHighestCombo || 0, stamped.highestCombo || 0);
+      }
+      if (stamped.completed && stamped.level && stamped.level <= 20) {
+        record.stars[levelKey] = Math.max(record.stars[levelKey] || 0, stamped.stars || 1);
+        record.highestUnlockedLevel = Math.max(record.highestUnlockedLevel || 1, Math.min(20, stamped.level + 1));
+        const unlockThemeByLevel = [
+          [5, "cloud-kitchen"],
+          [9, "night-terminal"],
+          [13, "tropical-airport"],
+          [17, "moon-station"],
+        ];
+        for (const [minimumLevel, themeId] of unlockThemeByLevel) {
+          if (record.highestUnlockedLevel >= minimumLevel && !record.unlockedThemes.includes(themeId)) {
+            record.unlockedThemes.push(themeId);
+          }
+        }
+        if (stamped.level >= 20 || stamped.airportMasterChef) {
+          record.airportMasterChef = true;
+          record.endlessUnlocked = true;
+        }
+      }
     }
 
     if (stamped.gameId === "archery") {
