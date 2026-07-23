@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80">
-  <rect x="8" y="14" width="64" height="52" rx="18" fill="#2fb36d"/>
-  <rect x="88" y="14" width="64" height="52" rx="18" fill="#ffd35a"/>
-  <rect x="168" y="14" width="64" height="52" rx="18" fill="#ef3f55"/>
-  <text x="40" y="48" text-anchor="middle" font-family="Arial" font-size="16" font-weight="900" fill="#fff">GO</text>
-  <text x="120" y="48" text-anchor="middle" font-family="Arial" font-size="14" font-weight="900" fill="#132035">WAIT</text>
-  <text x="200" y="48" text-anchor="middle" font-family="Arial" font-size="15" font-weight="900" fill="#fff">STOP</text>
-</svg>

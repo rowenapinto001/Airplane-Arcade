@@ -132,14 +132,6 @@ export function describeGameControls(settings, gameId) {
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }
-  if (gameId === "red-eye-run") {
-    return [
-      `Move: ${labelsFor([controls.up[0], controls.left[0], controls.down[0], controls.right[0]])}`,
-      `Sprint: ${labelsFor(controls.sprint)}`,
-      `Dive and freeze: ${labelsFor(controls.dive)}`,
-      `Pause: ${labelsFor(controls.pause)}`,
-    ];
-  }
   return [
     `Player 1: ${labelsFor(controls.p1Action)}`,
     `Player 2: ${labelsFor(controls.p2Action)}`,

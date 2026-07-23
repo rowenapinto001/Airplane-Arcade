@@ -29,7 +29,6 @@ import { createCakeMakerGame } from "../games/cake-maker/cake-maker.js";
 import { createPyramidSmashGame } from "../games/pyramid-smash/pyramid-smash.js";
 import { createRunwayCircuitGame } from "../games/runway-circuit/runway-circuit.js";
 import { createCloudRidgeRallyGame } from "../games/cloud-ridge-rally/cloud-ridge-rally.js";
-import { createRedEyeRunGame } from "../games/red-eye-run/red-eye-run.js";
 
 const app = document.querySelector("#arcadeApp");
 const view = document.querySelector("#arcadeView");
@@ -48,7 +47,6 @@ const GAME_FACTORIES = {
   "pyramid-smash": createPyramidSmashGame,
   "runway-circuit": createRunwayCircuitGame,
   "cloud-ridge-rally": createCloudRidgeRallyGame,
-  "red-eye-run": createRedEyeRunGame,
 };
 
 let data;
@@ -116,7 +114,7 @@ function renderLibrary(filter = libraryFilter) {
   const copy = createElement(
     "p",
     "",
-    "A small offline arcade for laptops: eleven original games, solo and local two-player modes, saved progress, and no internet needed after install.",
+    "A small offline arcade for laptops: ten original games, solo and local two-player modes, saved progress, and no internet needed after install.",
   );
   heroCopy.append(title, copy);
 
@@ -419,7 +417,7 @@ async function launchGame(gameId, launchOptions = {}) {
   setRibbon(`${game.name} is running. Pause, restart, or return to the library from inside the game.`);
   clearNode(view);
 
-  if (gameId === "sky-ludo" || gameId === "sky-hangman" || gameId === "archery" || gameId === "runway-circuit" || gameId === "cloud-ridge-rally" || gameId === "red-eye-run") {
+  if (gameId === "sky-ludo" || gameId === "sky-hangman" || gameId === "archery" || gameId === "runway-circuit" || gameId === "cloud-ridge-rally") {
     data = await updateData((draft) => {
       if (gameId === "sky-ludo") draft.progress.skyLudoRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "sky-hangman") {
@@ -429,7 +427,6 @@ async function launchGame(gameId, launchOptions = {}) {
       if (gameId === "archery") draft.progress.archeryRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "runway-circuit") draft.progress.runwayCircuitRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "cloud-ridge-rally") draft.progress.cloudRidgeRallyRecords.selectedDifficulty = setup.difficulty;
-      if (gameId === "red-eye-run") draft.progress.redEyeRunRecords.selectedDifficulty = setup.difficulty;
       return draft;
     });
   }
@@ -518,11 +515,6 @@ function renderStats() {
       `Best ${Math.floor(Math.max(data.progress.cloudRidgeRallyRecords.bestCampaignDistance || 0, ...Object.values(data.progress.cloudRidgeRallyRecords.bestEndless || {}).map(Number)))}m`,
       `Level ${data.progress.cloudRidgeRallyRecords.highestUnlockedLevel}. ${data.progress.cloudRidgeRallyRecords.flightCoins} Flight Coins. ${Object.values(data.progress.cloudRidgeRallyRecords.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0)} stars.`,
     ),
-    resultCard(
-      "Red-Eye Run",
-      data.progress.redEyeRunRecords.bestPlacement ? `Best ${ordinal(data.progress.redEyeRunRecords.bestPlacement)}` : "No qualification yet",
-      `${data.progress.redEyeRunRecords.totalMatches} matches. ${data.progress.redEyeRunRecords.totalQualifications} qualifications. ${data.progress.redEyeRunRecords.firstPlaceVictories} wins.`,
-    ),
   );
   panel.append(grid, recentResultsList());
   view.append(panel);
@@ -544,12 +536,13 @@ function ordinal(value) {
 function recentResultsList() {
   const card = createElement("section", "settings-card");
   card.append(createElement("h2", "", "Recent Results"));
-  if (!data.progress.recentResults.length) {
+  const installedResults = data.progress.recentResults.filter((result) => getGame(result.gameId));
+  if (!installedResults.length) {
     card.append(createElement("div", "empty-state", "No completed games yet."));
     return card;
   }
   const list = createElement("ul", "recent-list");
-  for (const result of data.progress.recentResults.slice(0, 8)) {
+  for (const result of installedResults.slice(0, 8)) {
     const line = `${getGameName(result.gameId)} - ${result.summary || "Result saved"}`;
     list.append(createElement("li", "", line));
   }
@@ -582,7 +575,6 @@ function renderSettings() {
     controlsSettings("pyramid-smash"),
     controlsSettings("runway-circuit"),
     controlsSettings("cloud-ridge-rally"),
-    controlsSettings("red-eye-run"),
   );
   panel.append(grid);
   view.append(panel);
@@ -770,7 +762,9 @@ function renderError(title, message) {
 }
 
 function applyTheme() {
-  app.dataset.theme = data.settings.theme;
+  const theme = data.settings.theme || "light";
+  document.documentElement.dataset.theme = theme;
+  app.dataset.theme = theme;
 }
 
 function navigate(name) {

@@ -21,13 +21,19 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --ink: #f7fbff;
-  --muted: #b8c5d8;
-  --paper: #101827;
-  --panel: rgba(24, 34, 53, 0.88);
-  --panel-solid: #182235;
-  --line: rgba(255, 255, 255, 0.14);
-  --shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+  --ink: #f5f8ff;
+  --muted: #b5c4d9;
+  --paper: #070b13;
+  --panel: rgba(11, 18, 31, 0.94);
+  --panel-solid: #111a2c;
+  --line: rgba(181, 196, 217, 0.22);
+  --aqua: #6bdff0;
+  --green: #46d282;
+  --orange: #ff9d5c;
+  --violet: #a78bfa;
+  --red: #ff6b7a;
+  --yellow: #ffdc6b;
+  --shadow: 0 22px 52px rgba(0, 0, 0, 0.46);
 }
 
 [data-theme="contrast"] {
@@ -61,10 +67,7 @@ body {
 }
 
 [data-theme="dark"] body {
-  background:
-    radial-gradient(circle at 14% 8%, rgba(127, 89, 232, 0.34), transparent 26%),
-    radial-gradient(circle at 86% 12%, rgba(70, 199, 217, 0.26), transparent 28%),
-    linear-gradient(135deg, #101827 0%, #17233a 52%, #13231d 100%);
+  background: linear-gradient(135deg, #050812 0%, #101525 48%, #071814 100%);
 }
 
 [data-theme="contrast"] body {
@@ -160,6 +163,15 @@ select:focus-visible {
   background: var(--ink);
 }
 
+[data-theme="dark"] .topnav button.is-active,
+[data-theme="dark"] .filter-row button.is-selected,
+[data-theme="dark"] .secondary-button.is-selected,
+[data-theme="dark"] .segmented button.is-selected {
+  color: #07111f;
+  background: var(--aqua);
+  border-color: transparent;
+}
+
 .status-ribbon {
   width: var(--arcade-page-width);
   max-width: none;
@@ -228,9 +240,11 @@ select:focus-visible {
 }
 
 [data-theme="dark"] .stat-tile,
+[data-theme="dark"] .settings-card,
 [data-theme="dark"] .option-box,
 [data-theme="dark"] .result-card {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(18, 28, 45, 0.96);
+  border-color: rgba(181, 196, 217, 0.24);
 }
 
 .stat-tile span,
@@ -302,8 +316,8 @@ select:focus-visible {
 }
 
 [data-theme="dark"] .close-arcade-button {
-  color: #101827;
-  background: #f7fbff;
+  color: #07111f;
+  background: var(--aqua);
 }
 
 .library-card {
@@ -316,6 +330,24 @@ select:focus-visible {
   box-shadow: 0 14px 30px rgba(19, 32, 53, 0.12);
 }
 
+[data-theme="dark"] .brand-button,
+[data-theme="dark"] .topnav,
+[data-theme="dark"] .hero-band,
+[data-theme="dark"] .setup-panel,
+[data-theme="dark"] .stats-panel,
+[data-theme="dark"] .settings-panel,
+[data-theme="dark"] .help-panel,
+[data-theme="dark"] .error-panel,
+[data-theme="dark"] .library-card {
+  background: var(--panel);
+  border-color: var(--line);
+}
+
+[data-theme="dark"] .library-body,
+[data-theme="dark"] .library-card.is-coming .library-body {
+  background: var(--panel-solid);
+}
+
 .library-card.is-coming {
   opacity: 0.72;
 }
@@ -324,6 +356,11 @@ select:focus-visible {
   display: grid;
   place-items: center;
   background: linear-gradient(135deg, rgba(70, 199, 217, 0.18), rgba(255, 211, 90, 0.28));
+}
+
+[data-theme="dark"] .library-art,
+[data-theme="dark"] .setup-art {
+  background: linear-gradient(135deg, rgba(107, 223, 240, 0.18), rgba(255, 220, 107, 0.1));
 }
 
 .library-art img {
@@ -466,8 +503,12 @@ select:focus-visible {
 [data-theme="dark"] .segmented button,
 [data-theme="dark"] .filter-row button,
 [data-theme="dark"] .secondary-button,
+[data-theme="dark"] .toggle-button,
+[data-theme="dark"] .small-button,
 [data-theme="dark"] .popup-actions button {
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--ink);
+  background: rgba(20, 31, 50, 0.96);
+  border-color: rgba(181, 196, 217, 0.22);
 }
 
 .segmented button.is-selected {
@@ -501,6 +542,10 @@ select:focus-visible {
   background: var(--panel-solid);
 }
 
+.volume-input {
+  accent-color: var(--aqua);
+}
+
 .instructions-list {
   display: grid;
   gap: 8px;
@@ -514,6 +559,31 @@ select:focus-visible {
   border-radius: 8px;
   background: rgba(70, 199, 217, 0.12);
   font-weight: 760;
+}
+
+[data-theme="dark"] .field input,
+[data-theme="dark"] .field select,
+[data-theme="dark"] .volume-input,
+[data-theme="dark"] .instructions-list li,
+[data-theme="dark"] .recent-list li,
+[data-theme="dark"] .history-list li,
+[data-theme="dark"] .empty-state,
+[data-theme="dark"] .ghost-label {
+  color: var(--ink);
+  background: rgba(8, 14, 25, 0.72);
+  border-color: rgba(181, 196, 217, 0.2);
+}
+
+[data-theme="dark"] .card-meta,
+[data-theme="dark"] .field-label,
+[data-theme="dark"] .settings-note,
+[data-theme="dark"] .control-list li,
+[data-theme="dark"] .library-body p,
+[data-theme="dark"] .setup-title p,
+[data-theme="dark"] .option-box p,
+[data-theme="dark"] .help-panel p,
+[data-theme="dark"] .error-panel p {
+  color: var(--muted);
 }
 
 .control-list {

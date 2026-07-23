@@ -89,14 +89,6 @@ const SOUND_FILES = {
   rallyComplete: "cloud-ridge-rally/complete.wav",
   rallyUnlock: "cloud-ridge-rally/unlock.wav",
   rallyUpgrade: "cloud-ridge-rally/upgrade.wav",
-  redGreen: "red-eye-run/green.wav",
-  redWarning: "red-eye-run/warning.wav",
-  redSignal: "red-eye-run/red-signal.wav",
-  redDetected: "red-eye-run/detected.wav",
-  redEliminate: "red-eye-run/eliminate.wav",
-  redQualify: "red-eye-run/qualify.wav",
-  redVictory: "red-eye-run/victory.wav",
-  redCountdown: "red-eye-run/countdown.wav",
 };
 
 function assetUrl(path) {

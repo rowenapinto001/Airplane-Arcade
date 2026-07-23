@@ -267,36 +267,6 @@ export const GAME_CATALOG = [
       ],
     },
   },
-  {
-    id: "red-eye-run",
-    name: "Red-Eye Run",
-    shortName: "Red-Eye",
-    description: "Run while the watchkeeper looks away, freeze when its eyes turn red, and reach the finish safely.",
-    longDescription:
-      "An original solo stop-and-go survival race with 15 local dummy opponents, a friendly airport watchkeeper robot, momentum-based movement, fair red-light detection, qualification and first-place modes, and locally saved rewards.",
-    image: "../assets/games/red-eye-run.svg",
-    accent: "#ef5b63",
-    modes: ["solo"],
-    difficulties: ["easy", "normal", "hard"],
-    badges: ["Computer Opponents", "Stop-and-Go"],
-    defaultDifficulty: "normal",
-    hasPlayerSetup: false,
-    instructions: [
-      "Race 15 computer-controlled dummy contestants toward the boarding arch.",
-      "Run during green, slow down during warning, and freeze completely when the watchkeeper's eyes turn red.",
-      "Momentum matters: sprinting and diving are useful, but sliding during red can trigger detection.",
-      "Qualification Race accepts the first 8 finishers. First Place Challenge only rewards the first finisher.",
-      "Results, Freeze Stars, cosmetics, difficulty, countdown, and controls are saved locally.",
-    ],
-    controls: {
-      solo: [
-        "Move: W/A/S/D or Arrow keys",
-        "Sprint: Shift",
-        "Dive and freeze: Space",
-        "Pause: Escape",
-      ],
-    },
-  },
 ];
 
 export const COMING_SOON = [
@@ -377,11 +347,6 @@ export const DIFFICULTY_DETAILS = {
     easy: "Longer rolling routes with wider recovery roads, more fuel, and forgiving crash checks.",
     normal: "Long-distance routes with paced checkpoints, spaced obstacles, fuel planning, and varied terrain sections.",
     hard: "Very long sky roads with stricter fuel planning, steeper sections, and fair but stronger obstacle pressure.",
-  },
-  "red-eye-run": {
-    easy: "Longer green phases, slower watchkeeper turns, forgiving movement tolerance, and more dummy mistakes.",
-    normal: "Balanced green and red phases, fair momentum detection, and believable computer opponents.",
-    hard: "Less predictable green phases, faster turns, stricter fair detection, and skilled computer opponents.",
   },
 };
 
