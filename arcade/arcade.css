@@ -276,7 +276,8 @@ select:focus-visible {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-bottom: 14px;
+  margin: 0 0 14px;
+  padding: 0 14px;
 }
 
 .filter-row button,
