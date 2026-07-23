@@ -83,6 +83,14 @@ export function describeGameControls(settings, gameId) {
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }
+  if (gameId === "fish-grab-frenzy") {
+    return [
+      `Solo grab: ${labelsFor(controls.soloGrab)}`,
+      `Player 1 grab: ${labelsFor(controls.p1Grab)}`,
+      `Player 2 grab: ${labelsFor(controls.p2Grab)}`,
+      `Pause: ${labelsFor(controls.pause)}`,
+    ];
+  }
   if (gameId === "archery") {
     return [
       "Mouse: move to aim, click to shoot",
@@ -97,16 +105,6 @@ export function describeGameControls(settings, gameId) {
       `Undo: ${labelsFor(controls.undo)}`,
       `Save: ${labelsFor(controls.save)}`,
       `Party Mode: ${labelsFor(controls.party)}`,
-      `Pause: ${labelsFor(controls.pause)}`,
-    ];
-  }
-  if (gameId === "pyramid-smash") {
-    return [
-      "Mouse: drag from launcher and release",
-      `Aim: ${labelsFor([controls.aimLeft[0], controls.aimRight[0], controls.aimUp[0], controls.aimDown[0]])}`,
-      `Launch: ${labelsFor(controls.power)}`,
-      `Next Ball: ${labelsFor(controls.nextBall)}`,
-      `Reset Aim: ${labelsFor(controls.resetCamera)}`,
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }

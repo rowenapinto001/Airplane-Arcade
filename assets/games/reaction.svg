@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-label="Signal Snap coming soon">
-  <rect width="360" height="220" rx="18" fill="#e8fbf3"/>
-  <rect x="94" y="34" width="172" height="152" rx="20" fill="#132035"/>
-  <circle cx="142" cy="82" r="28" fill="#ef5b63"/>
-  <circle cx="218" cy="82" r="28" fill="#ffd35a"/>
-  <circle cx="180" cy="138" r="32" fill="#2fb36d"/>
-  <path d="M62 58 34 34M298 58l28-24M66 164l-34 22M294 164l34 22" stroke="#46c7d9" stroke-width="8" stroke-linecap="round"/>
-</svg>

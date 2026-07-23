@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 80" role="img" aria-label="Cartoon puff effect">
+  <g fill="#eef7fb" stroke="#8ba4b6" stroke-width="4">
+    <circle cx="34" cy="42" r="22"/>
+    <circle cx="58" cy="31" r="24"/>
+    <circle cx="80" cy="45" r="19"/>
+    <ellipse cx="60" cy="53" rx="45" ry="18"/>
+  </g>
+</svg>

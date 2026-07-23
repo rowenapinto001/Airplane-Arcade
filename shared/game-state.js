@@ -1,4 +1,4 @@
-export const GAME_CATALOG = [
+const GAME_CATALOG_ITEMS = [
   {
     id: "football",
     name: "Simple Football",
@@ -127,6 +127,32 @@ export const GAME_CATALOG = [
     },
   },
   {
+    id: "fish-grab-frenzy",
+    name: "Fish Grab Frenzy",
+    shortName: "Fish Grab",
+    description: "React fast with four cartoon cats, grab safe fish, and avoid Bomb Fish.",
+    longDescription:
+      "A fully offline reaction game with exactly four cartoon cats around a table, solo and local two-player modes, fair random fish timing, Bomb Fish traps, computer opponents, first-to-five scoring, and locally saved reaction stats.",
+    image: "../assets/games/fish-grab-frenzy.svg",
+    accent: "#2fb36d",
+    modes: ["solo", "two"],
+    difficulties: ["easy", "normal", "hard"],
+    badges: ["Reaction", "Computer Opponents", "First to 5"],
+    defaultDifficulty: "normal",
+    hasPlayerSetup: true,
+    instructions: [
+      "Each match has exactly four cats around the table.",
+      "Wait for the fish to appear. Grabbing too early locks that cat out for the round.",
+      "Normal Fish give +1. Bomb Fish give -1, and scores can go below zero.",
+      "The first cat to 5 points wins. There is no match timer.",
+      "Solo mode uses one human cat and three local computer cats. Two-player mode uses two human cats and two computer cats.",
+    ],
+    controls: {
+      solo: ["Grab: Space or Enter", "Pause: Escape"],
+      two: ["Player 1: A or Space", "Player 2: L or Enter", "Pause: Escape"],
+    },
+  },
+  {
     id: "archery",
     name: "Archery",
     shortName: "Archery",
@@ -173,32 +199,6 @@ export const GAME_CATALOG = [
     ],
     controls: {
       solo: ["Mouse: choose tools and drag decorations", "Keyboard: Tab through controls, Z to undo", "Pause: Escape"],
-    },
-  },
-  {
-    id: "pyramid-smash",
-    name: "Pyramid Smash",
-    shortName: "Pyramid",
-    description: "Launch balls, smash cargo pyramids, earn stars, and unlock a 25-level physics campaign.",
-    longDescription:
-      "A fully offline cargo-pyramid physics game with solo campaign play, local two-player turns, seven ball types, special cargo boxes, star ratings, Flight Coins, and Endless Structure Mode after the finale.",
-    image: "../assets/games/pyramid-smash.svg",
-    accent: "#ff8a3d",
-    modes: ["solo", "two"],
-    difficulties: ["normal"],
-    badges: ["Physics", "25 Levels"],
-    defaultDifficulty: "normal",
-    hasPlayerSetup: true,
-    instructions: [
-      "Aim the launcher and throw limited balls at the cargo pyramid.",
-      "Clear every required box by breaking it or knocking it off the platforms.",
-      "Use standard, heavy, bouncy, sticky, split, air, and precision balls strategically.",
-      "Earn up to three stars per level, unlock all 25 stages, and finish Level 25 to open Endless Structure Mode.",
-      "Two-player mode gives each local player one full turn on the same level.",
-    ],
-    controls: {
-      solo: ["Mouse: drag from launcher and release", "Keyboard: Arrow keys aim, Space throws", "Next Ball: N", "Pause: Escape"],
-      two: ["Shared mouse or keyboard", "Arrow keys aim, Space throws", "Next Ball: N", "Pause: Escape"],
     },
   },
   {
@@ -269,18 +269,27 @@ export const GAME_CATALOG = [
   },
 ];
 
+const GAME_ORDER = [
+  "basketball",
+  "cloud-ridge-rally",
+  "cake-maker",
+  "football",
+  "fish-grab-frenzy",
+  "sky-ludo",
+  "memory",
+  "archery",
+  "sky-hangman",
+  "runway-circuit",
+];
+
+export const GAME_CATALOG = GAME_ORDER.map((gameId) => GAME_CATALOG_ITEMS.find((game) => game.id === gameId)).filter(Boolean);
+
 export const COMING_SOON = [
   {
     id: "puzzle",
     name: "Cargo Puzzle",
     description: "A compact packing puzzle planned for the next hangar.",
     image: "../assets/games/puzzle.svg",
-  },
-  {
-    id: "reaction",
-    name: "Signal Snap",
-    description: "A reaction-speed game with lights, tones, and close calls.",
-    image: "../assets/games/reaction.svg",
   },
   {
     id: "platform",
@@ -327,6 +336,11 @@ export const DIFFICULTY_DETAILS = {
     normal: "Moderate words, 6 mistakes, category visible, and hints reduce the final score.",
     hard: "Longer words, 5 mistakes, hidden category until hinted, and Reveal Letter can cost a mistake.",
   },
+  "fish-grab-frenzy": {
+    easy: "Computer cats react slowly, miss more safe fish, and make more Bomb Fish mistakes.",
+    normal: "Computer cats react at a balanced pace with fair Bomb Fish awareness.",
+    hard: "Computer cats react quickly, avoid most Bomb Fish, and punish slow grabs.",
+  },
   archery: {
     easy: "Large target, stable crosshair, no wind, and a very gentle aim challenge.",
     normal: "Standard target size with smooth crosshair sway and light aiming pressure.",
@@ -334,9 +348,6 @@ export const DIFFICULTY_DETAILS = {
   },
   "cake-maker": {
     normal: "Creative sandbox mode with no timer, score, winner, or loser.",
-  },
-  "pyramid-smash": {
-    normal: "A handcrafted 25-level physics campaign with limited balls, local turns, saved stars, and fair offline simulation.",
   },
   "runway-circuit": {
     easy: "Lower AI pace, more steering assist, gentler obstacle timing, and forgiving checkpoint recovery.",

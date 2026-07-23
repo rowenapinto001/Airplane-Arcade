@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Cloud Nori cat">
+  <path d="M25 31 35 8l8 26M71 31 61 8l-8 26" fill="#ded7c2" stroke="#132035" stroke-width="5"/>
+  <ellipse cx="48" cy="50" rx="34" ry="31" fill="#f4f0df" stroke="#132035" stroke-width="5"/>
+  <g fill="none" stroke="#42bfd0" stroke-width="6">
+    <circle cx="36" cy="48" r="11"/>
+    <circle cx="60" cy="48" r="11"/>
+    <path d="M47 48h2"/>
+  </g>
+  <circle cx="36" cy="48" r="3" fill="#132035"/>
+  <circle cx="60" cy="48" r="3" fill="#132035"/>
+  <path d="M48 56v7m0 0-6 5m6-5 6 5" fill="none" stroke="#132035" stroke-width="3" stroke-linecap="round"/>
+</svg>

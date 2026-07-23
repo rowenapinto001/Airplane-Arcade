@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Pyramid Smash cargo box">
-  <rect x="18" y="18" width="84" height="84" rx="12" fill="#c7824f" stroke="#7b4c31" stroke-width="8"/>
-  <path d="M18 60h84M60 18v84" stroke="#7b4c31" stroke-width="8"/>
-  <path d="M32 34h22M66 84h22" stroke="#ffd35a" stroke-width="7" stroke-linecap="round"/>
-</svg>

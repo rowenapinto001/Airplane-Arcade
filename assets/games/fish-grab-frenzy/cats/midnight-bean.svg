@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Midnight Bean cat">
+  <path d="M25 31 35 8l8 26M71 31 61 8l-8 26" fill="#334252" stroke="#132035" stroke-width="5"/>
+  <ellipse cx="48" cy="49" rx="34" ry="31" fill="#44566b" stroke="#132035" stroke-width="5"/>
+  <path d="M22 65h52v12H22z" fill="#ef5b63" stroke="#132035" stroke-width="4"/>
+  <path d="M57 75h12v17H57z" fill="#ef5b63" stroke="#132035" stroke-width="4"/>
+  <circle cx="37" cy="49" r="4" fill="#fff8d8"/>
+  <circle cx="59" cy="49" r="4" fill="#fff8d8"/>
+  <path d="M48 56v7m0 0-6 5m6-5 6 5" fill="none" stroke="#fff8d8" stroke-width="3" stroke-linecap="round"/>
+</svg>

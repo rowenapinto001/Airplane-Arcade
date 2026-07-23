@@ -36,6 +36,12 @@ export const DEFAULT_CONTROLS = {
     continue: ["Enter"],
     pause: ["Escape"],
   },
+  "fish-grab-frenzy": {
+    soloGrab: ["Space", "Enter"],
+    p1Grab: ["KeyA", "Space"],
+    p2Grab: ["KeyL", "Enter"],
+    pause: ["Escape"],
+  },
   archery: {
     up: ["ArrowUp"],
     down: ["ArrowDown"],
@@ -48,16 +54,6 @@ export const DEFAULT_CONTROLS = {
     undo: ["KeyZ"],
     save: ["KeyS"],
     party: ["KeyB"],
-    pause: ["Escape"],
-  },
-  "pyramid-smash": {
-    aimLeft: ["ArrowLeft"],
-    aimRight: ["ArrowRight"],
-    aimUp: ["ArrowUp"],
-    aimDown: ["ArrowDown"],
-    power: ["Space"],
-    nextBall: ["KeyN"],
-    resetCamera: ["KeyR"],
     pause: ["Escape"],
   },
   "runway-circuit": {
@@ -105,9 +101,9 @@ export const DEFAULT_DATA = {
       memory: 0,
       "sky-ludo": 0,
       "sky-hangman": 0,
+      "fish-grab-frenzy": 0,
       archery: 0,
       "cake-maker": 0,
-      "pyramid-smash": 0,
       "runway-circuit": 0,
       "cloud-ridge-rally": 0,
     },
@@ -194,6 +190,30 @@ export const DEFAULT_DATA = {
       recentWords: [],
       recentSummary: null,
     },
+    fishGrabFrenzyRecords: {
+      totalMatches: 0,
+      soloWins: 0,
+      soloLosses: 0,
+      twoPlayerWins: 0,
+      player1Wins: 0,
+      player2Wins: 0,
+      computerWins: 0,
+      normalGrabbed: 0,
+      bombGrabbed: 0,
+      earlyGrabs: 0,
+      bestReaction: null,
+      reactionTotal: 0,
+      reactionCount: 0,
+      preferredCat: "captain-miso",
+      preferredPlayer2Cat: "cloud-nori",
+      preferredDifficulty: "normal",
+      selectedMode: "solo",
+      player1Name: "Player 1",
+      player2Name: "Player 2",
+      currentStreak: 0,
+      bestStreak: 0,
+      recentSummary: null,
+    },
     archeryRecords: {
       bestSoloTotal: 0,
       bestShot: 0,
@@ -212,31 +232,6 @@ export const DEFAULT_DATA = {
       recentlyCreatedCake: null,
       recentCakeName: null,
       savedCakes: [],
-    },
-    pyramidSmashRecords: {
-      highestUnlockedLevel: 1,
-      stars: {},
-      bestShots: {},
-      completedLevels: [],
-      bonusTargets: {},
-      flightCoins: 0,
-      championBadge: false,
-      endlessUnlocked: false,
-      endlessBest: 0,
-      totalBallsThrown: 0,
-      totalBoxesRemoved: 0,
-      totalThreeStarLevels: 0,
-      selectedMode: "solo",
-      selectedLevel: 1,
-      player1Name: "Player 1",
-      player2Name: "Player 2",
-      tutorialComplete: false,
-      recentSummary: null,
-      soloCompletions: 0,
-      twoPlayerMatches: 0,
-      player1Wins: 0,
-      player2Wins: 0,
-      draws: 0,
     },
     runwayCircuitRecords: {
       tutorialComplete: false,
@@ -361,6 +356,7 @@ function sanitizeData(data) {
   for (const gameId of Object.keys(data.settings.controls || {})) {
     if (!installedGames.has(gameId)) delete data.settings.controls[gameId];
   }
+  delete data.progress["pyra" + "midSmashRecords"];
   return data;
 }
 
@@ -421,6 +417,12 @@ export function getGameProgress(data, gameId) {
     const summary = record.recentSummary || "No words guessed yet";
     return `${summary} | High ${record.highestScore || 0} | Streak ${record.longestStreak || 0}`;
   }
+  if (gameId === "fish-grab-frenzy") {
+    const record = progress.fishGrabFrenzyRecords;
+    const wins = (record.soloWins || 0) + (record.player1Wins || 0) + (record.player2Wins || 0);
+    const best = Number.isFinite(record.bestReaction) ? `${Math.round(record.bestReaction)}ms` : "No reaction";
+    return `Best ${best} | ${wins} wins | ${record.preferredDifficulty || "normal"}`;
+  }
   if (gameId === "archery") {
     const record = progress.archeryRecords;
     const played = record.soloGamesPlayed + record.twoPlayerMatchesPlayed;
@@ -432,11 +434,6 @@ export function getGameProgress(data, gameId) {
     return recent
       ? `${saved} saved cake${saved === 1 ? "" : "s"} | Recent: ${recent}`
       : `${saved} saved cake${saved === 1 ? "" : "s"}`;
-  }
-  if (gameId === "pyramid-smash") {
-    const record = progress.pyramidSmashRecords;
-    const stars = Object.values(record.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0);
-    return `Level ${record.highestUnlockedLevel} | ${stars} stars | ${record.flightCoins} coins`;
   }
   if (gameId === "runway-circuit") {
     const record = progress.runwayCircuitRecords;
@@ -612,6 +609,52 @@ export async function recordGameResult(result) {
       }
     }
 
+    if (stamped.gameId === "fish-grab-frenzy") {
+      const record = progress.fishGrabFrenzyRecords;
+      record.totalMatches += 1;
+      record.selectedMode = stamped.mode || record.selectedMode;
+      record.preferredDifficulty = stamped.difficulty || record.preferredDifficulty;
+      record.preferredCat = stamped.preferredCat || record.preferredCat;
+      record.preferredPlayer2Cat = stamped.preferredPlayer2Cat || record.preferredPlayer2Cat;
+      record.recentSummary = stamped.summary || record.recentSummary;
+      record.normalGrabbed += stamped.normalGrabbed || 0;
+      record.bombGrabbed += stamped.bombGrabbed || 0;
+      record.earlyGrabs += stamped.earlyGrabs || 0;
+
+      if (Number.isFinite(stamped.bestReaction)) {
+        record.bestReaction =
+          record.bestReaction === null ? stamped.bestReaction : Math.min(record.bestReaction, stamped.bestReaction);
+      }
+      if (Number.isFinite(stamped.reactionTotal) && Number.isFinite(stamped.reactionCount)) {
+        record.reactionTotal += stamped.reactionTotal;
+        record.reactionCount += stamped.reactionCount;
+      }
+
+      const humanWon = ["solo", "player1", "player2"].includes(stamped.winner);
+      if (stamped.winner === "solo") {
+        record.soloWins += 1;
+        record.currentStreak += 1;
+      }
+      if (stamped.mode === "solo" && stamped.winner === "computer") {
+        record.soloLosses += 1;
+        record.computerWins += 1;
+        record.currentStreak = 0;
+      }
+      if (stamped.mode === "two") {
+        if (stamped.winner === "player1") {
+          record.player1Wins += 1;
+          record.twoPlayerWins += 1;
+        }
+        if (stamped.winner === "player2") {
+          record.player2Wins += 1;
+          record.twoPlayerWins += 1;
+        }
+        if (stamped.winner === "computer") record.computerWins += 1;
+        record.currentStreak = humanWon ? record.currentStreak + 1 : 0;
+      }
+      record.bestStreak = Math.max(record.bestStreak || 0, record.currentStreak || 0);
+    }
+
     if (stamped.gameId === "archery") {
       const record = progress.archeryRecords;
       record.selectedDifficulty = stamped.difficulty || record.selectedDifficulty;
@@ -628,45 +671,6 @@ export async function recordGameResult(result) {
         if (stamped.winner === "player2") record.player2Wins += 1;
         if (stamped.winner === "draw") record.sharedTieWins += 1;
       }
-    }
-
-    if (stamped.gameId === "pyramid-smash") {
-      const record = progress.pyramidSmashRecords;
-      record.selectedMode = stamped.pyramidMode || record.selectedMode;
-      record.selectedLevel = stamped.level || record.selectedLevel || 1;
-      record.recentSummary = stamped.summary || record.recentSummary;
-      record.totalBallsThrown += stamped.totalShots || stamped.shots || 0;
-      record.totalBoxesRemoved += stamped.boxesRemoved || 0;
-      record.flightCoins += Math.max(0, Math.floor(stamped.flightCoins || 0));
-      if (stamped.tutorialComplete) record.tutorialComplete = true;
-      if (stamped.pyramidMode === "two") {
-        record.twoPlayerMatches += 1;
-        if (stamped.winner === "player1") record.player1Wins += 1;
-        if (stamped.winner === "player2") record.player2Wins += 1;
-        if (stamped.winner === "draw") record.draws += 1;
-      }
-      if (stamped.pyramidMode === "endless") {
-        record.endlessBest = Math.max(record.endlessBest || 0, stamped.endlessScore || 0);
-      }
-      if (stamped.completed && stamped.level && stamped.level <= 25) {
-        const levelKey = String(stamped.level);
-        record.stars[levelKey] = Math.max(record.stars[levelKey] || 0, stamped.stars || 1);
-        if (stamped.shots) {
-          record.bestShots[levelKey] =
-            record.bestShots[levelKey] === undefined
-              ? stamped.shots
-              : Math.min(record.bestShots[levelKey], stamped.shots);
-        }
-        record.bonusTargets[levelKey] = Math.max(record.bonusTargets[levelKey] || 0, stamped.bonusCollected || 0);
-        record.highestUnlockedLevel = Math.max(record.highestUnlockedLevel || 1, Math.min(25, stamped.level + 1));
-        if (!record.completedLevels.includes(stamped.level)) record.completedLevels.push(stamped.level);
-        if (stamped.pyramidMode !== "two") record.soloCompletions += 1;
-        if (stamped.level >= 25) {
-          record.championBadge = true;
-          record.endlessUnlocked = true;
-        }
-      }
-      record.totalThreeStarLevels = Object.values(record.stars || {}).filter((value) => Number(value || 0) >= 3).length;
     }
 
     if (stamped.gameId === "runway-circuit") {

@@ -24,9 +24,9 @@ import { createBasketballGame } from "../games/basketball/basketball.js";
 import { createMemoryGame } from "../games/memory/memory.js";
 import { createSkyLudoGame } from "../games/sky-ludo/sky-ludo.js";
 import { createSkyHangmanGame } from "../games/sky-hangman/sky-hangman.js";
+import { createFishGrabFrenzyGame } from "../games/fish-grab-frenzy/fish-grab-frenzy.js";
 import { createArcheryGame } from "../games/archery/archery.js";
 import { createCakeMakerGame } from "../games/cake-maker/cake-maker.js";
-import { createPyramidSmashGame } from "../games/pyramid-smash/pyramid-smash.js";
 import { createRunwayCircuitGame } from "../games/runway-circuit/runway-circuit.js";
 import { createCloudRidgeRallyGame } from "../games/cloud-ridge-rally/cloud-ridge-rally.js";
 
@@ -42,9 +42,9 @@ const GAME_FACTORIES = {
   memory: createMemoryGame,
   "sky-ludo": createSkyLudoGame,
   "sky-hangman": createSkyHangmanGame,
+  "fish-grab-frenzy": createFishGrabFrenzyGame,
   archery: createArcheryGame,
   "cake-maker": createCakeMakerGame,
-  "pyramid-smash": createPyramidSmashGame,
   "runway-circuit": createRunwayCircuitGame,
   "cloud-ridge-rally": createCloudRidgeRallyGame,
 };
@@ -206,9 +206,6 @@ function gameCard(game) {
   const playRow = createElement("div", "play-row");
   const recent = getRecentResult(data, game.id);
   playRow.append(createElement("span", "card-meta", recent ? "Recent result saved" : "Ready offline"));
-  if (game.id === "pyramid-smash" && data.progress.pyramidSmashRecords.highestUnlockedLevel > 1) {
-    playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueCampaign: true })));
-  }
   if (game.id === "runway-circuit" && data.progress.runwayCircuitRecords.highestUnlockedLevel > 1) {
     playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueCampaign: true })));
   }
@@ -417,12 +414,16 @@ async function launchGame(gameId, launchOptions = {}) {
   setRibbon(`${game.name} is running. Pause, restart, or return to the library from inside the game.`);
   clearNode(view);
 
-  if (gameId === "sky-ludo" || gameId === "sky-hangman" || gameId === "archery" || gameId === "runway-circuit" || gameId === "cloud-ridge-rally") {
+  if (gameId === "sky-ludo" || gameId === "sky-hangman" || gameId === "fish-grab-frenzy" || gameId === "archery" || gameId === "runway-circuit" || gameId === "cloud-ridge-rally") {
     data = await updateData((draft) => {
       if (gameId === "sky-ludo") draft.progress.skyLudoRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "sky-hangman") {
         draft.progress.skyHangmanRecords.preferredDifficulty = setup.difficulty;
         draft.progress.skyHangmanRecords.selectedMode = setup.mode;
+      }
+      if (gameId === "fish-grab-frenzy") {
+        draft.progress.fishGrabFrenzyRecords.preferredDifficulty = setup.difficulty;
+        draft.progress.fishGrabFrenzyRecords.selectedMode = setup.mode;
       }
       if (gameId === "archery") draft.progress.archeryRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "runway-circuit") draft.progress.runwayCircuitRecords.selectedDifficulty = setup.difficulty;
@@ -489,6 +490,15 @@ function renderStats() {
       `${data.progress.skyHangmanRecords.totalWordsCompleted} solved. High ${data.progress.skyHangmanRecords.highestScore}. ${data.progress.skyHangmanRecords.longestStreak} longest streak.`,
     ),
     resultCard(
+      "Fish Grab Frenzy",
+      data.progress.fishGrabFrenzyRecords.recentSummary || "No fish grabbed yet",
+      `${data.progress.fishGrabFrenzyRecords.totalMatches} matches. Best reaction ${
+        Number.isFinite(data.progress.fishGrabFrenzyRecords.bestReaction)
+          ? Math.round(data.progress.fishGrabFrenzyRecords.bestReaction)
+          : "0"
+      }ms. ${data.progress.fishGrabFrenzyRecords.earlyGrabs} early grabs.`,
+    ),
+    resultCard(
       "Archery",
       data.progress.archeryRecords.recentFinalScores || "No shots",
       `Best solo ${data.progress.archeryRecords.bestSoloTotal}. ${data.progress.archeryRecords.totalBullseyes} bullseyes.`,
@@ -497,11 +507,6 @@ function renderStats() {
       "Cake Maker",
       data.progress.cakeMakerRecords.recentCakeName || "No cake",
       `${data.progress.cakeMakerRecords.savedCakes.length} saved. ${data.progress.cakeMakerRecords.partyStarts} parties started.`,
-    ),
-    resultCard(
-      "Pyramid Smash",
-      `Level ${data.progress.pyramidSmashRecords.highestUnlockedLevel}`,
-      `${Object.values(data.progress.pyramidSmashRecords.stars || {}).reduce((sum, value) => sum + Number(value || 0), 0)} stars. ${data.progress.pyramidSmashRecords.flightCoins} coins. ${data.progress.pyramidSmashRecords.endlessBest || 0} endless.`,
     ),
     resultCard(
       "Runway Circuit",
@@ -570,9 +575,9 @@ function renderSettings() {
     controlsSettings("memory"),
     controlsSettings("sky-ludo"),
     controlsSettings("sky-hangman"),
+    controlsSettings("fish-grab-frenzy"),
     controlsSettings("archery"),
     controlsSettings("cake-maker"),
-    controlsSettings("pyramid-smash"),
     controlsSettings("runway-circuit"),
     controlsSettings("cloud-ridge-rally"),
   );
@@ -656,7 +661,7 @@ function accessibilitySettings() {
     });
     renderSettings();
   });
-  card.append(motion, createElement("p", "settings-note", "Cake Maker, Sky Ludo, Sky Hangman, and Runway Circuit use this to calm celebration, token, particle, and background motion."));
+  card.append(motion, createElement("p", "settings-note", "Cake Maker, Sky Ludo, Sky Hangman, Fish Grab Frenzy, and Runway Circuit use this to calm celebration, token, particle, and background motion."));
   return card;
 }
 

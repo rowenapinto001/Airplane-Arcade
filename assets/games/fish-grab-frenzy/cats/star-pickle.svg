@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Star Pickle cat">
+  <path d="M25 31 35 8l8 26M71 31 61 8l-8 26" fill="#78c46f" stroke="#132035" stroke-width="5"/>
+  <ellipse cx="48" cy="50" rx="34" ry="31" fill="#9bdc8c" stroke="#132035" stroke-width="5"/>
+  <path d="m48 18 5 11 12 1-9 8 3 12-11-6-11 6 3-12-9-8 12-1z" fill="#ffd35a" stroke="#132035" stroke-width="4"/>
+  <circle cx="37" cy="50" r="4" fill="#132035"/>
+  <circle cx="59" cy="50" r="4" fill="#132035"/>
+  <path d="M48 57v7m0 0-6 5m6-5 6 5" fill="none" stroke="#132035" stroke-width="3" stroke-linecap="round"/>
+</svg>

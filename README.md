@@ -2,16 +2,16 @@
 
 Airplane Arcade is a Manifest V3 Chrome extension containing a small offline mini-game arcade. It includes a compact popup launcher and a full arcade page with ten playable games:
 
-- Simple Football
 - Basket & Ball
-- Memory Match
-- Sky Ludo
-- Sky Hangman
-- Archery
-- Cake Maker
-- Pyramid Smash
-- Runway Circuit
 - Cloud Ridge Rally
+- Cake Maker
+- Simple Football
+- Fish Grab Frenzy
+- Sky Ludo
+- Memory Match
+- Archery
+- Sky Hangman
+- Runway Circuit
 
 The extension uses vanilla HTML, CSS, JavaScript, Canvas, local SVG art, local PNG icons, local WAV sounds, and `chrome.storage.local`.
 
@@ -33,9 +33,9 @@ The extension uses vanilla HTML, CSS, JavaScript, Canvas, local SVG art, local P
   /memory/
   /sky-ludo/
   /sky-hangman/
+  /fish-grab-frenzy/
   /archery/
   /cake-maker/
-  /pyramid-smash/
   /runway-circuit/
   /cloud-ridge-rally/
 /shared/
@@ -93,6 +93,13 @@ Sky Hangman:
 - Pause: `Escape`
 - Two Player mode uses local secret-word entry and clears secret words after the match
 
+Fish Grab Frenzy:
+- Solo grab: `Space` or `Enter`
+- Player 1 grab: `A` or `Space`
+- Player 2 grab: `L` or `Enter`
+- Pause: `Escape`
+- Normal Fish score +1, Bomb Fish score -1, and the first cat to 5 points wins
+
 Archery:
 - Mouse: move to aim and click to shoot
 - Keyboard: Arrow keys move the crosshair
@@ -104,14 +111,6 @@ Cake Maker:
 - Undo: `Z`
 - Save: `S`
 - Party Mode: `B`
-- Pause: `Escape`
-
-Pyramid Smash:
-- Mouse: drag from the launcher and release
-- Keyboard aim: Arrow keys
-- Launch: hold and release `Space`
-- Next Ball: `N`
-- Reset aim: `R`
 - Pause: `Escape`
 
 Runway Circuit:
@@ -127,15 +126,15 @@ Controls can be changed from **Settings**.
 
 ## Difficulty Levels
 
-Simple Football, Basket & Ball, Memory Match, Sky Ludo, Sky Hangman, Archery, Runway Circuit, and Cloud Ridge Rally support **Easy**, **Normal**, and **Hard** from the game setup screen. Cake Maker is a creative sandbox with no timer, score, winner, or loser. Pyramid Smash uses one balanced offline physics ruleset with level-by-level challenge progression.
+Simple Football, Basket & Ball, Memory Match, Sky Ludo, Sky Hangman, Fish Grab Frenzy, Archery, Runway Circuit, and Cloud Ridge Rally support **Easy**, **Normal**, and **Hard** from the game setup screen. Cake Maker is a creative sandbox with no timer, score, winner, or loser.
 
-- Easy uses more forgiving rules, such as smaller Memory boards, wider basketball rims, longer timers, bigger football goals, simpler Sky Ludo AI, short Sky Hangman words with more lives, larger Archery targets, slower Runway Circuit AI cars, and easier Rally routes.
+- Easy uses more forgiving rules, such as smaller Memory boards, wider basketball rims, longer timers, bigger football goals, simpler Sky Ludo AI, short Sky Hangman words with more lives, slower Fish Grab Frenzy computer cats, larger Archery targets, slower Runway Circuit AI cars, and easier Rally routes.
 - Normal is the balanced default.
-- Hard increases pressure with larger Memory boards, tighter basketball timing, wind, shorter timers, smaller football goals, stronger Sky Ludo move evaluation, longer Sky Hangman words with fewer lives, smaller Archery targets, faster Runway Circuit rivals, and tougher Rally routes.
+- Hard increases pressure with larger Memory boards, tighter basketball timing, wind, shorter timers, smaller football goals, stronger Sky Ludo move evaluation, longer Sky Hangman words with fewer lives, faster Fish Grab Frenzy computer cats, smaller Archery targets, faster Runway Circuit rivals, and tougher Rally routes.
 
 ## Offline Operation
 
-All code, artwork, icons, Cake Maker assets, Sky Hangman assets, Pyramid Smash assets, Sky Ludo assets, Rally assets, Runway Circuit assets, party music, and sounds are local files inside the extension. There are no APIs, CDNs, external fonts, accounts, analytics, ads, iframes, or internet-loaded assets. Progress, settings, saved cakes, saved Ludo matches, word-game statistics, race records, and ghost data are saved with `chrome.storage.local`, so no sign-in is required.
+All code, artwork, icons, Cake Maker assets, Sky Hangman assets, Fish Grab Frenzy assets, Sky Ludo assets, Rally assets, Runway Circuit assets, party music, and sounds are local files inside the extension. There are no APIs, CDNs, external fonts, accounts, analytics, ads, iframes, or internet-loaded assets. Progress, settings, saved cakes, saved Ludo matches, word-game statistics, Fish Grab Frenzy reaction records, race records, and ghost data are saved with `chrome.storage.local`, so no sign-in is required.
 
 ## Add Another Game
 
