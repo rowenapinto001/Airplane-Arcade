@@ -239,8 +239,6 @@ export function createMemoryGame(context) {
       sideTitle("Round"),
       textLine(`Find every pair on a ${state.size.cols} x ${state.size.rows} ${options.difficulty} board.`),
       textLine("Easy gives fewer cards and longer previews. Hard gives more cards and shorter previews."),
-      sideTitle("History"),
-      historyList(),
       actionButton("Back to setup", "", () => {
         destroyGame();
         onSetup();
@@ -280,13 +278,6 @@ export function createMemoryGame(context) {
     const paragraph = document.createElement("p");
     paragraph.textContent = text;
     return paragraph;
-  }
-
-  function historyList() {
-    const list = document.createElement("ul");
-    list.className = "history-list";
-    list.id = "memoryHistory";
-    return list;
   }
 
   function overlay(id) {
