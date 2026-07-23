@@ -6,7 +6,6 @@
   "offline_enabled": true,
   "action": {
     "default_title": "Airplane Arcade",
-    "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "assets/icons/icon16.png",
       "32": "assets/icons/icon32.png",
@@ -14,13 +13,19 @@
       "128": "assets/icons/icon128.png"
     }
   },
+  "side_panel": {
+    "default_path": "popup/popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
   "icons": {
     "16": "assets/icons/icon16.png",
     "32": "assets/icons/icon32.png",
     "48": "assets/icons/icon48.png",
     "128": "assets/icons/icon128.png"
   },
-  "permissions": ["storage"],
+  "permissions": ["storage", "sidePanel"],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self';"
   }

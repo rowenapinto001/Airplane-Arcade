@@ -18,12 +18,12 @@ import {
   updateData,
 } from "../shared/storage.js";
 import { bindKeyRecorder, describeGameControls, keyLabel } from "../shared/controls.js";
-import { clearNode, createElement, formatDuration, setPressed } from "../shared/navigation.js";
+import { clearNode, closeCurrentPage, createElement, formatDuration, setPressed } from "../shared/navigation.js";
 import { createFootballGame } from "../games/football/football.js";
 import { createBasketballGame } from "../games/basketball/basketball.js";
 import { createMemoryGame } from "../games/memory/memory.js";
 import { createSkyLudoGame } from "../games/sky-ludo/sky-ludo.js";
-import { createAirportChefGame } from "../games/airport-chef/airport-chef.js";
+import { createSkyHangmanGame } from "../games/sky-hangman/sky-hangman.js";
 import { createArcheryGame } from "../games/archery/archery.js";
 import { createCakeMakerGame } from "../games/cake-maker/cake-maker.js";
 import { createPyramidSmashGame } from "../games/pyramid-smash/pyramid-smash.js";
@@ -42,7 +42,7 @@ const GAME_FACTORIES = {
   basketball: createBasketballGame,
   memory: createMemoryGame,
   "sky-ludo": createSkyLudoGame,
-  "airport-chef": createAirportChefGame,
+  "sky-hangman": createSkyHangmanGame,
   archery: createArcheryGame,
   "cake-maker": createCakeMakerGame,
   "pyramid-smash": createPyramidSmashGame,
@@ -163,8 +163,19 @@ function renderLibrary(filter = libraryFilter) {
     }
   }
 
-  view.append(hero, filters, grid);
+  view.append(hero, filters, grid, libraryCloseAction());
   focusView();
+}
+
+function libraryCloseAction() {
+  const section = createElement("section", "library-close-panel");
+  const closeButton = button("Close Arcade", "close-arcade-button", () => {
+    destroyActiveGame();
+    closeCurrentPage();
+  });
+  closeButton.setAttribute("aria-label", "Close Airplane Arcade");
+  section.append(closeButton);
+  return section;
 }
 
 function statTile(label, value) {
@@ -205,9 +216,6 @@ function gameCard(game) {
   }
   if (game.id === "sky-ludo" && data.progress.skyLudoRecords.savedGameState) {
     playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueGame: true })));
-  }
-  if (game.id === "airport-chef" && data.progress.airportChefRecords.highestUnlockedLevel > 1) {
-    playRow.append(button("Continue", "secondary-button", () => launchGame(game.id, { continueCampaign: true })));
   }
   playRow.append(button("Play", "primary-button", () => renderGameSetup(game.id)));
 
@@ -411,12 +419,12 @@ async function launchGame(gameId, launchOptions = {}) {
   setRibbon(`${game.name} is running. Pause, restart, or return to the library from inside the game.`);
   clearNode(view);
 
-  if (gameId === "sky-ludo" || gameId === "airport-chef" || gameId === "archery" || gameId === "runway-circuit" || gameId === "cloud-ridge-rally" || gameId === "red-eye-run") {
+  if (gameId === "sky-ludo" || gameId === "sky-hangman" || gameId === "archery" || gameId === "runway-circuit" || gameId === "cloud-ridge-rally" || gameId === "red-eye-run") {
     data = await updateData((draft) => {
       if (gameId === "sky-ludo") draft.progress.skyLudoRecords.selectedDifficulty = setup.difficulty;
-      if (gameId === "airport-chef") {
-        draft.progress.airportChefRecords.selectedDifficulty = setup.difficulty;
-        draft.progress.airportChefRecords.selectedMode = setup.mode;
+      if (gameId === "sky-hangman") {
+        draft.progress.skyHangmanRecords.preferredDifficulty = setup.difficulty;
+        draft.progress.skyHangmanRecords.selectedMode = setup.mode;
       }
       if (gameId === "archery") draft.progress.archeryRecords.selectedDifficulty = setup.difficulty;
       if (gameId === "runway-circuit") draft.progress.runwayCircuitRecords.selectedDifficulty = setup.difficulty;
@@ -479,9 +487,9 @@ function renderStats() {
       `${data.progress.skyLudoRecords.totalGamesPlayed} games. ${data.progress.skyLudoRecords.totalDiceRolls} rolls. ${data.progress.skyLudoRecords.totalCaptures} captures.`,
     ),
     resultCard(
-      "Airport Chef",
-      data.progress.airportChefRecords.recentSummary || `Level ${data.progress.airportChefRecords.highestUnlockedLevel}/20`,
-      `${data.progress.airportChefRecords.ordersCompleted} orders. ${data.progress.airportChefRecords.flightCoins} Flight Coins. ${data.progress.airportChefRecords.highestCombo}x best combo.`,
+      "Sky Hangman",
+      data.progress.skyHangmanRecords.recentSummary || "No words guessed yet",
+      `${data.progress.skyHangmanRecords.totalWordsCompleted} solved. High ${data.progress.skyHangmanRecords.highestScore}. ${data.progress.skyHangmanRecords.longestStreak} longest streak.`,
     ),
     resultCard(
       "Archery",
@@ -568,7 +576,7 @@ function renderSettings() {
     controlsSettings("basketball"),
     controlsSettings("memory"),
     controlsSettings("sky-ludo"),
-    controlsSettings("airport-chef"),
+    controlsSettings("sky-hangman"),
     controlsSettings("archery"),
     controlsSettings("cake-maker"),
     controlsSettings("pyramid-smash"),
@@ -656,7 +664,7 @@ function accessibilitySettings() {
     });
     renderSettings();
   });
-  card.append(motion, createElement("p", "settings-note", "Cake Maker, Sky Ludo, Airport Chef, and Runway Circuit use this to calm celebration, token, particle, and background motion."));
+  card.append(motion, createElement("p", "settings-note", "Cake Maker, Sky Ludo, Sky Hangman, and Runway Circuit use this to calm celebration, token, particle, and background motion."));
   return card;
 }
 

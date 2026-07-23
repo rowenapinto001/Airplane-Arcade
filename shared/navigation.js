@@ -25,6 +25,22 @@ export function openArcade(route = "") {
   }
 }
 
+export function closeCurrentPage() {
+  if (typeof chrome !== "undefined" && chrome.tabs?.getCurrent && chrome.tabs?.remove) {
+    chrome.tabs.getCurrent((tab) => {
+      if (chrome.runtime?.lastError || !tab?.id) {
+        window.close();
+        return;
+      }
+      chrome.tabs.remove(tab.id, () => {
+        if (chrome.runtime?.lastError) window.close();
+      });
+    });
+    return;
+  }
+  window.close();
+}
+
 export function formatDuration(seconds) {
   const safe = Math.max(0, Math.floor(seconds || 0));
   const minutes = Math.floor(safe / 60);

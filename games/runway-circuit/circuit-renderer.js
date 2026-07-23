@@ -29,13 +29,8 @@ export function createCircuitRenderer() {
 function drawScene(ctx, state, time) {
   const race = state.race;
   if (!race) return;
-  const player = race.player;
-  const camera = cameraFor(player, state);
   drawBackground(ctx, race, state);
   ctx.save();
-  ctx.translate(WORLD_W / 2, WORLD_H / 2);
-  ctx.scale(camera.zoom, camera.zoom);
-  ctx.translate(-camera.x, -camera.y);
   drawTrack(ctx, race);
   drawDecorations(ctx, race, time);
   drawCheckpoints(ctx, race);
@@ -44,17 +39,6 @@ function drawScene(ctx, state, time) {
   drawRacers(ctx, race);
   ctx.restore();
   drawHud(ctx, race, state);
-}
-
-function cameraFor(player, state) {
-  const distance = state.cameraDistance || 1;
-  const pullBack = player.boostActive ? 0.86 : 1;
-  const look = 88 * distance;
-  return {
-    x: player.x + Math.cos(player.angle) * look,
-    y: player.y + Math.sin(player.angle) * look,
-    zoom: 0.88 * pullBack / distance,
-  };
 }
 
 function drawBackground(ctx, race, state) {

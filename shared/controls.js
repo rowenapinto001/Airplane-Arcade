@@ -74,13 +74,12 @@ export function describeGameControls(settings, gameId) {
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }
-  if (gameId === "airport-chef") {
+  if (gameId === "sky-hangman") {
     return [
-      `Player 1 move: ${labelsFor([controls.p1Up[0], controls.p1Left[0], controls.p1Down[0], controls.p1Right[0]])}`,
-      `Player 1 use / focus / drop: ${labelsFor(controls.p1Interact)} / ${labelsFor(controls.p1Secondary)} / ${labelsFor(controls.p1Drop)}`,
-      `Player 2 move: ${labelsFor([controls.p2Up[0], controls.p2Left[0], controls.p2Down[0], controls.p2Right[0]])}`,
-      `Player 2 use / focus / drop: ${labelsFor(controls.p2Interact)} / ${labelsFor(controls.p2Secondary)} / ${labelsFor(controls.p2Drop)}`,
-      "Solo mouse: click a station to move toward it or use it",
+      "Guess letters: A-Z keyboard or on-screen letter buttons",
+      `Meaning hint: ${labelsFor(controls.hint)}`,
+      `Restart confirmation: ${labelsFor(controls.restart)}`,
+      `Continue from results: ${labelsFor(controls.continue)}`,
       `Pause: ${labelsFor(controls.pause)}`,
     ];
   }

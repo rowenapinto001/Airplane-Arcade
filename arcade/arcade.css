@@ -286,6 +286,26 @@ select:focus-visible {
   gap: 14px;
 }
 
+.library-close-panel {
+  display: flex;
+  justify-content: center;
+  padding: 28px 0 10px;
+}
+
+.close-arcade-button {
+  min-height: 46px;
+  padding: 0 24px;
+  color: white;
+  background: var(--ink);
+  border: 1px solid transparent;
+  box-shadow: 0 12px 24px rgba(19, 32, 53, 0.18);
+}
+
+[data-theme="dark"] .close-arcade-button {
+  color: #101827;
+  background: #f7fbff;
+}
+
 .library-card {
   display: grid;
   grid-template-rows: 162px auto;

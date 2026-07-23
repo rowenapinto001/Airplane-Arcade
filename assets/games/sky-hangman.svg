@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 180" role="img" aria-labelledby="title desc">
+  <title id="title">Sky Hangman</title>
+  <desc id="desc">A friendly airplane word game with letters and airport clouds.</desc>
+  <rect width="256" height="180" rx="22" fill="#dff7ff"/>
+  <rect y="118" width="256" height="62" fill="#3f4a5c"/>
+  <path d="M28 148h200" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-dasharray="22 18"/>
+  <g fill="#fff">
+    <circle cx="52" cy="42" r="18"/>
+    <circle cx="72" cy="35" r="24"/>
+    <circle cx="98" cy="44" r="17"/>
+    <rect x="45" y="44" width="60" height="18" rx="9"/>
+  </g>
+  <g transform="translate(62 84)">
+    <ellipse cx="63" cy="44" rx="72" ry="10" fill="#132035" opacity=".16"/>
+    <rect x="0" y="5" width="130" height="34" rx="17" fill="#fffdf8" stroke="#132035" stroke-width="5"/>
+    <path d="M48 7 82-24l20 32zM50 34l38 24 20-24z" fill="#46c7d9" stroke="#132035" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M108 9 136-12l-7 34z" fill="#ef5b63" stroke="#132035" stroke-width="5" stroke-linejoin="round"/>
+    <circle cx="28" cy="22" r="8" fill="#dff7ff" stroke="#132035" stroke-width="4"/>
+    <circle cx="56" cy="22" r="8" fill="#dff7ff" stroke="#132035" stroke-width="4"/>
+    <circle cx="84" cy="22" r="8" fill="#dff7ff" stroke="#132035" stroke-width="4"/>
+  </g>
+  <rect x="24" y="18" width="72" height="36" rx="8" fill="#26354f"/>
+  <text x="60" y="42" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" font-weight="900" fill="#ffd35a">A _ R</text>
+  <circle cx="206" cy="34" r="15" fill="#748399"/>
+  <path d="M203 50v14M215 48v14M193 48v14" stroke="#3294d1" stroke-width="4" stroke-linecap="round"/>
+</svg>
